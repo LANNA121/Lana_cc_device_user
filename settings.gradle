@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='Lana_cc_device_user'
