@@ -14,6 +14,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 class ApiErrorLiveEvent : LiveEvent<Event<Throwable>>()
 
@@ -38,7 +39,12 @@ fun ApiErrorLiveEvent.bindDialog(context: Context, owner: LifecycleOwner) {
         AlertDialog.Builder(context)
             //.setTitle(error.errorModel.message)
             .setMessage(
-                (error as? ApiException)?.messageStr ?: context.getString(R.string.api_error_network_error)
+                when (error) {
+                    is ApiException -> error.messageStr
+                    is SocketTimeoutException -> context.getString(R.string.api_error_server_error)
+                    else -> "未知异常"
+                }
+
             )
             .setCancelable(
                 when {

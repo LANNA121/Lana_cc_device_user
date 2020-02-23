@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
 
         <variable
-                name="photography"
-                type="com.lana.cc.device.user.model.Photography" />
+            name="news"
+            type="com.lana.cc.device.user.model.api.news.News" />
+
+        <variable
+            name="imgUrl"
+            type="String" />
 
     </data>
 
-        <ImageView
-                android:id="@+id/gird_img"
-                imageUrl="@{photography.imgUrl}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="4dp"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/bg_welcome" />
+    <ImageView
+        android:id="@+id/gird_img"
+        imageUrl="@{imgUrl}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="4dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/bg_welcome" />
 
 
 </layout>

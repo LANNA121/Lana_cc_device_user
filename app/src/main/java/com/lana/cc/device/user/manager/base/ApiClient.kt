@@ -3,6 +3,7 @@ package jp.co.nikkei.t21.android.manager.api.base
 import android.annotation.SuppressLint
 import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.manager.base.globalMoshi
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -80,10 +81,19 @@ class ApiClient constructor(val retrofit: Retrofit, val okHttpClient: OkHttpClie
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create(globalMoshi).asLenient())
 
+            val client = okBuilder.addInterceptor { chain ->
+                val origin = chain.request()
+                val request = origin
+                    .newBuilder()
+                    .header("Accept", "application/json;charset=UTF-8")
+                    .header("X-Token", SharedPrefModel.token)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .method(origin.method, origin.body)
+                    .build()
+                chain.proceed(request)
+            }.build()
             if (BuildConfig.ALLOW_ALL_CERTIFICATES)
                 setAllowAllCerTificates()
-
-            val client = okBuilder.build()
             val retrofit = adapterBuilder.client(client).build()
             return ApiClient(retrofit, client)
         }

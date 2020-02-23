@@ -1,6 +1,7 @@
 package com.lana.cc.device.user.ui.base
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,8 @@ import io.reactivex.disposables.CompositeDisposable
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import com.lana.cc.device.user.BR
+import com.lana.cc.device.user.R
+import com.lana.cc.device.user.model.base.ApiException
 
 abstract class BaseFragment<Bind : ViewDataBinding, VM : BaseViewModel>
 constructor(
@@ -79,7 +82,6 @@ constructor(
     open fun initDataAlways() {}
 
     //ext
-
     protected fun <T> LiveData<T>.observe(observer: (T?) -> Unit) where T : Any =
         observe(viewLifecycleOwner, Observer<T> { v -> observer(v) })
 
@@ -93,9 +95,19 @@ constructor(
 
     fun Context.checkNet(): Completable =
         Completable.create { emitter ->
-            /*            if (!isNetworkAvailable()) emitter.onError(UiError(context!!.getString(R.string.net_unavailable)))
-                        else emitter.onComplete()*/
+            if (!isNetworkAvailable()) emitter.onError(
+                ApiException(
+                    2222,
+                    getString(R.string.net_unavailable)
+                )
+            )
+            else emitter.onComplete()
         }
+
+    //check network
+    protected fun isNetworkAvailable() =
+        (context?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.activeNetworkInfo?.isConnected
+            ?: false
 
     override fun onDestroy() {
         super.onDestroy()

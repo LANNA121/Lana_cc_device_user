@@ -1,4 +1,4 @@
-package com.lana.cc.device.user.model.api.guide
+package com.lana.cc.device.user.model.api.guide.login
 
 data class LoginResultModel(
     val uid:Int,

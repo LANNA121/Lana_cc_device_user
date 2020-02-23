@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //backEnd api
             //buildConfigField("String", "BASE_URL", '"https://api.upuphub.com/"')
-            buildConfigField("String", "BASE_URL", '"http://192.168.0.108:8080"')
+            buildConfigField("String", "BASE_URL", '"http://192.168.0.110:8080"')
             //聚合 api
             buildConfigField("String", "JUHE_APPKEY", '"214dc714d14b8eb6341080f3e14bc139"')
             buildConfigField("String", "JUHE_URL", '"http://v.juhe.cn/toutiao/"')
@@ -45,7 +45,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //backEnd api
             //buildConfigField("String", "BASE_URL", '"https://api.upuphub.com/"')
-            buildConfigField("String", "BASE_URL", '"http://192.168.0.108:8080"')
+            buildConfigField("String", "BASE_URL", '"http://192.168.0.110:8080"')
             //聚合 api
             buildConfigField("String", "JUHE_APPKEY", '"214dc714d14b8eb6341080f3e14bc139"')
             buildConfigField("String", "JUHE_URL", '"http://v.juhe.cn/toutiao/"')

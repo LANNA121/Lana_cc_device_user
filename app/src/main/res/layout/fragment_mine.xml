@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.graphics.Color" />
+
+        <variable
+            name="vm"
+            type="com.lana.cc.device.user.ui.fragment.mine.MineViewModel" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="6dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/img_setting"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/icon_setting"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/ll_title">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="8dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:elevation="3dp"
+                                android:background="@null"
+                                android:text="@{vm.profile.coins.toString()}"
+                                android:textColor="#FFC107"
+                                android:textSize="24dp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                                app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                                app:layout_constraintStart_toStartOf="@+id/imageView3"
+                                app:layout_constraintTop_toTopOf="@+id/imageView3"
+                                tools:text="0" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/portrait"
+                                imageUrl="@{vm.avatar}"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_margin="32dp"
+                                app:layout_constraintDimensionRatio="w,1:1"
+                                android:src="@drawable/bg_404"
+                                app:civ_border_color="@color/white"
+                                app:civ_border_width="1dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:targetApi="lollipop" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.profile.nikeName}"
+                                android:textColor="@color/black"
+                                android:textSize="32sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="@+id/portrait"
+                                app:layout_constraintTop_toBottomOf="@+id/portrait"
+                                tools:text="Lanna" />
+
+                            <ImageView
+                                android:id="@+id/img_gender"
+                                gender="@{vm.profile.gender}"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_marginEnd="24dp"
+                                android:background="@drawable/bg_circle"
+                                android:elevation="4dp"
+                                android:padding="4dp"
+                                android:tint="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/portrait"
+                                tools:ignore="UnusedAttribute" />
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
+                                android:layout_margin="24dp"
+                                android:backgroundTint="@color/white"
+                                android:background="@drawable/bg_circle"
+                                android:elevation="1dp"
+                                android:padding="4dp"
+                                android:tint="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@+id/portrait"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                tools:ignore="UnusedAttribute" />
+
+                            <TextView
+                                android:id="@+id/tv_age"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text='@{vm.age}'
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/textView3"
+                                app:layout_constraintTop_toTopOf="@+id/textView3"
+                                tools:text="3岁" />
+
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.profile.signature}"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:layout_marginTop="16dp"
+                                app:layout_constraintEnd_toEndOf="@+id/textView3"
+                                app:layout_constraintStart_toStartOf="@+id/textView3"
+                                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                                tools:text="我要我觉得" />
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/card_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="#FF5722"
+                                app:cardElevation="8dp"
+                                android:layout_margin="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/tv_age"
+                                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginRight="24dp"
+                                    android:layout_marginBottom="12dp">
+
+                                    <ImageView
+                                        android:id="@+id/img_2"
+                                        android:layout_width="18dp"
+                                        android:layout_height="18dp"
+                                        android:tint="@color/white"
+                                        app:srcCompat="@drawable/signup" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="立即签到"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="兑换记录"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardElevation="2dp">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rec_good_history"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:itemCount="4"
+                                tools:listitem="@layout/item_goods_history" />
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/btn_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="32dp"
+                        android:background="@drawable/bg_cornerbtn_nor"
+                        android:backgroundTint="@color/colorRed"
+                        android:elevation="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="50dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="50dp"
+                        android:paddingBottom="10dp"
+                        tools:targetApi="lollipop">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/icon_logout"
+                            android:tint="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:targetApi="lollipop" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="切换账号/注销"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:targetApi="lollipop" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

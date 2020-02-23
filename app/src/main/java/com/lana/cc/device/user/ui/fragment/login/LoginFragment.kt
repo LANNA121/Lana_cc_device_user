@@ -1,11 +1,12 @@
 package com.lana.cc.device.user.ui.fragment.login
 
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.lana.cc.device.user.ui.base.BaseFragment
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.FragmentLoginBinding
-import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.ui.activity.showMainActivity
 
 //登录的Fragment，BaseFragment 的子类 ，定义其中的 布局 Binding 和 ViewModel 的类型
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
@@ -21,18 +22,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
         //登录按钮 点击事件 点击调用 ViewModel 的 login 发起登录网络请求
         binding.btnLogin.setOnClickListener {
             //判断邮箱长度是否大于10位， 密码长度是否大于6位
-            if ((viewModel.password.value
-                    ?: "").length >= 6
-            ) viewModel.login()
+            if ((viewModel.password.value ?: "").length >= 6) viewModel.login()
             else Toast.makeText(context!!, "密码必须6位以上", Toast.LENGTH_SHORT).show()
         }
 
         //是否成功登录的状态监听 成功便将信息存在本地 并跳转至主界面
         viewModel.isLoginSuccess.observeNonNull {
             if (it) {
-                saveUserData()
-/*                startActivity(Intent(context, MainActivity::class.java))
-                activity!!.finish()*/
+                //跳转至主界面
+                showMainActivity(activity as AppCompatActivity)
             }
         }
     }
@@ -42,12 +40,5 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
         viewModel.init()
     }
 
-    //存user的数据到本地
-    private fun saveUserData() {
-        SharedPrefModel.hasLogin = true
-        SharedPrefModel.userEmail = viewModel.userEmail.value!!
-        SharedPrefModel.password = viewModel.userEmail.value!!
-        SharedPrefModel.rememberPassword = binding.checkBox.isChecked
-    }
 
 }

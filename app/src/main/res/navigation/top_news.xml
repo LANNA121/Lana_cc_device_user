@@ -2,20 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_article_detail"
+    android:id="@+id/navigation_news"
     app:startDestination="@id/NewsFragment">
     <fragment
         android:id="@+id/NewsFragment"
         android:name="com.lana.cc.device.user.ui.fragment.news.NewsFragment"
         android:label="fragment_sa21article_detail"
         tools:layout="@layout/fragment_news" >
-        <action
-                android:id="@+id/action_sa21ArticleDetailFragment_to_articleDetailPdfFragment"
-                app:destination="@id/articleDetailPdfFragment" />
+
     </fragment>
-    <fragment
-            android:id="@+id/articleDetailPdfFragment"
-            android:name="jp.co.nikkei.t21.android.ui.fragment.articledetailpdf.ArticleDetailPdfFragment"
-            android:label="fragment_article_detail_pdf"
-            tools:layout="@layout/fragment_article_detail_pdf" />
+
 </navigation>

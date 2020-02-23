@@ -16,7 +16,8 @@
     <string name="dialog_button_clear">清除</string>
 
     <!--错误-->
-    <string name="api_error_network_error">ネットワーク異常</string>
+    <string name="api_error_network_error">API业务数据异常</string>
+    <string name="api_error_server_error">服务器已关闭</string>
     <string name="error_dialog_msg_error">エラーが発生しました</string>
     <string name="service_error_exception_system">現在、システムが混み合っています。\nしばらく待ってもう一度試してください。</string>
     <string name="service_error_cmn_passwd_unable">ユーザーＩＤまたはパスワードがまちがっています。</string>

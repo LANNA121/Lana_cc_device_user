@@ -4,16 +4,15 @@ import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.gsonpref.gsonPref
 import com.lana.cc.device.user.util.Constants
 
-/**
- *  user data need to be encrypt / decrypt
- */
+
 object SharedPrefModel : KotprefModel() {
     override val kotprefName: String = Constants.SHARED_PREF_FILE_NAME
     var hasLogin: Boolean by booleanPref(false)
     var userEmail: String by stringPref()
+    var uid: Int by intPref()
     var password: String by stringPref()
     var rememberPassword:Boolean by booleanPref()
-    var localToken: String by stringPref()
+    var token: String by stringPref()
 
     var userSettingMap: MutableMap<String, UserModel> by gsonPref(hashMapOf())
 

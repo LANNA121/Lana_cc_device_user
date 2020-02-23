@@ -11,15 +11,17 @@ class NetErrorInterceptor : Interceptor {
         val response = chain.proceed(chain.request())
         val resStr = response.body?.source()?.buffer?.clone()?.readString(Charset.defaultCharset())
 
+        //判断Http返回码
         if (response.code in 400..503) {
             throw ServerError(
                 response.code,
                 response.message
             )
         } else {
+            //判断meta中的业务状态码，例如密码错误，meta中的code就会是一个大于1000的数字，数字由后端定义
             val code = resStr?.getCode()
             val message = resStr?.getMessage()
-            if (code?:0 > 1000) {
+            if (code?:0 >= 2000) {
                 throw ApiException(code?:0, message?:"")
             }
         }

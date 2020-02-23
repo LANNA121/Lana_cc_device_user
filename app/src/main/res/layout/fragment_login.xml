@@ -37,12 +37,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/lin_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/appname"
@@ -281,6 +283,7 @@
             android:layout_marginTop="16dp"
             android:textColor="#CD8F4715"
             android:textSize="16sp"
+            android:checked="@{vm.rememberPassword}"
             android:text="记住密码"
             android:theme="@style/checkBox_remember_login"
             app:layout_constraintEnd_toEndOf="@+id/lin_content"
