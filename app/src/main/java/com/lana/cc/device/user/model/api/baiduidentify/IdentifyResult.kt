@@ -9,6 +9,7 @@ data class IdentifyResult(
 	val resultNum:Int,
 	@Json(name = "result")
 	val result:MutableList<Thing>
+
 )
 
 data class Thing(
