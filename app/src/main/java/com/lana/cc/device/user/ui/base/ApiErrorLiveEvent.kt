@@ -1,14 +1,11 @@
 package com.lana.cc.device.user.ui.base
 
-import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.observe
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.model.base.ApiException
-import com.lana.cc.device.user.ui.activity.LoginActivity
-import com.lana.cc.device.user.util.ApiUtil
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -46,22 +43,8 @@ fun ApiErrorLiveEvent.bindDialog(context: Context, owner: LifecycleOwner) {
                 }
 
             )
-            .setCancelable(
-                when {
-                    ApiUtil.isLoginUnable(error) -> false
-                    else -> true
-                }
-            )
-            .setPositiveButton("ok") { d, i ->
-                when {
-                    ApiUtil.isLoginUnable(error) -> {
-                        context.startActivity(
-                            LoginActivity.createIntent(context)
-                        )
-                        (context as? Activity)?.finish()
-                    }
-                }
-            }
+            .setCancelable(true)
+            .setPositiveButton("ok") { _, _ -> }
             .setOnDismissListener { event.getContentIfNotHandled() }
             .show()
     }

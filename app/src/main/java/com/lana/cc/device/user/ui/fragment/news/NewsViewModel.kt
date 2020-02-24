@@ -6,7 +6,7 @@ import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.model.api.news.News
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import io.reactivex.Single
-import jp.co.nikkei.t21.android.util.switchThread
+import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance
 
 

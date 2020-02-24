@@ -40,7 +40,7 @@ private fun String.getCode(): Int {
 private fun String.getMessage(): String {
     val str = this.split(",")[1]
     val tempStr = str.replace("\"msg\":\"", "")
-    val message = tempStr.replace("\"}}", "")
+    val message = tempStr.replace("\"}", "")
     return message
 }
 

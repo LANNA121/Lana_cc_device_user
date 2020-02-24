@@ -1,9 +1,12 @@
 package com.lana.cc.device.user.ui.fragment.news
 
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.FragmentNewsBinding
 import com.lana.cc.device.user.ui.base.BaseFragment
+import com.lana.cc.device.user.ui.fragment.newsdetail.INTENT_KEY_NEWS_URl
 
 class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
     NewsViewModel::class.java, R.layout.fragment_news
@@ -23,12 +26,19 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
             (binding.recyclerNews.adapter as NewsListAdapter).replaceData(it)
         }
 
+        //指定列表数据变化监听
         viewModel.topList.observeNonNull {
             if (it.isNotEmpty()) {
+                //设置指定的banner数据
                 binding.banner.run {
-                    pause()
-                    setPages(it.toList()) { BannerViewHolder(it.toMutableList()) }
-                    start()
+                    pause() //先暂停轮播
+                    setPages(it.toList()) {
+                        BannerViewHolder(it.toMutableList()){news ->
+                            //banner的点击事件，点击跳转至详情页
+                            jumpToDetail(news?.newsUrl?:"")
+                        }
+                    } //设置数据
+                    start() //开启轮播
                 }
             }
         }
@@ -37,7 +47,8 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
         binding.recyclerNews.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = NewsListAdapter { news ->
-
+                //新闻列表点击事件，点击跳转至详情页面
+                jumpToDetail(news.newsUrl)
             }
         }
 
@@ -63,6 +74,14 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
     override fun onPause() {
         super.onPause()
         binding.banner.pause()
+    }
+
+    //跳转至新闻详情页面
+    private fun jumpToDetail(url:String){
+        findNavController().navigate(
+            R.id.action_NewsFragment_to_NewsDetailFragment,
+            bundleOf(Pair(INTENT_KEY_NEWS_URl,url))
+        )
     }
 
 

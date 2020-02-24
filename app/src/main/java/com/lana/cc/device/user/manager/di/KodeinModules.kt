@@ -4,7 +4,7 @@ package com.lana.cc.device.user.manager.di
 import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.manager.api.*
 import com.lana.cc.device.user.manager.base.BaiduIdentifyClient
-import jp.co.nikkei.t21.android.manager.api.base.ApiClient
+import com.lana.cc.device.user.manager.base.ApiClient
 import com.lana.cc.device.user.manager.base.HeaderInterceptor
 import com.lana.cc.device.user.manager.base.NetErrorInterceptor
 import okhttp3.logging.HttpLoggingInterceptor

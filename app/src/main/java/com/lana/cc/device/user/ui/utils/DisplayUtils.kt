@@ -12,7 +12,7 @@ import com.lana.cc.device.user.R
 @BindingAdapter("imageUrl")
 fun loadImage(imageView: ImageView, url: String?) {
     Glide.with(imageView.context).load(url)
-        .placeholder(R.drawable.bg_404)
+        .placeholder(R.drawable.icon_img)
         .centerCrop()
         .into(imageView)
 }

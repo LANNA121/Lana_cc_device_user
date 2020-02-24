@@ -10,20 +10,7 @@
         android:name="com.lana.cc.device.user.ui.base.BridgeFragment"
         android:label="fragment_bridge">
 
-<!--        <action
-            android:id="@+id/action_bridgeFragment_to_sp11PersonSearchResultListFragment"
-            app:destination="@id/sp11PersonSearchResultListFragment" />-->
-
     </fragment>
 
-<!--    <fragment
-        android:id="@+id/sp11PersonSearchResultListFragment"
-        android:name="jp.co.nikkei.t21.android.ui.fragment.sp11personsearchresultlist.Sp11PersonSearchResultListFragment"
-        android:label="fragment_sp11_personsearch_resultlist"
-        tools:layout="@layout/fragment_sp11_personsearch_resultlist">
-        <action
-            android:id="@+id/action_sp11PersonSearchResultListFragment_to_sp21PersonSearchResultDetailFragment"
-            app:destination="@+id/sp21PersonSearchResultDetailFragment" />
-    </fragment>-->
 
 </navigation>

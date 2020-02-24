@@ -8,17 +8,13 @@ import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.model.api.guide.register.RegisterRequestModel
-import com.lana.cc.device.user.ui.activity.MainActivity
-import com.lana.cc.device.user.ui.activity.showMainActivity
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import io.reactivex.Single
-import jp.co.nikkei.t21.android.util.switchThread
-import okhttp3.MediaType
+import com.lana.cc.device.user.util.switchThread
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.kodein.di.generic.instance
-import timber.log.Timber
 import java.io.File
 
 class RegisterViewModel(application: Application) : BaseViewModel(application) {

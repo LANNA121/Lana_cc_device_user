@@ -1,8 +1,7 @@
-package jp.co.nikkei.t21.android.manager.api.base
+package com.lana.cc.device.user.manager.base
 
 import android.annotation.SuppressLint
 import com.lana.cc.device.user.BuildConfig
-import com.lana.cc.device.user.manager.base.globalMoshi
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,6 +12,7 @@ import timber.log.Timber
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
 import kotlin.reflect.KClass
 
@@ -81,7 +81,9 @@ class ApiClient constructor(val retrofit: Retrofit, val okHttpClient: OkHttpClie
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create(globalMoshi).asLenient())
 
-            val client = okBuilder.addInterceptor { chain ->
+            val client = okBuilder.callTimeout(600,TimeUnit.SECONDS)
+                .connectTimeout(600,TimeUnit.SECONDS)
+                .addInterceptor { chain ->
                 val origin = chain.request()
                 val request = origin
                     .newBuilder()

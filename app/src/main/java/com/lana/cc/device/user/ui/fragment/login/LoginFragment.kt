@@ -12,6 +12,8 @@ import com.lana.cc.device.user.ui.activity.showMainActivity
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
     LoginViewModel::class.java, layoutRes = R.layout.fragment_login
 ) {
+
+    //初始化控件
     override fun initView() {
 
         //注册按钮 点击事件 点击跳转至注册界面 （action_LoginFragment_to_RegisterFragment）

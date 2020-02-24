@@ -1,8 +1,7 @@
 package com.lana.cc.device.user.manager.api
 
-import com.lana.cc.device.user.model.api.Profile
+import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.ResultModel
-import com.lana.cc.device.user.model.api.guide.*
 import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.model.api.guide.register.RegisterRequestModel
@@ -39,15 +38,6 @@ interface UserService {
     //获取新闻列表
     @GET("news")
     fun getNews(): Single<ResultModel<NewsListModel>>
-
-    //完善用户信息
-    @POST("api/account/profile/new")
-    fun completeInfo(@Body completeInfoRequestModel: CompleteInfoRequestModel): Single<ResultModel<String?>>
-
-    //修改用户信息
-    //修改用户昵称
-    @PUT("api/account/profile/modify")
-    fun editUserInfo(@Body modifyMap: HashMap<String, String>): Single<ResultModel<String>>
 
 
 }

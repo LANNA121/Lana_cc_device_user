@@ -67,38 +67,6 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20dip"
-            android:layout_marginStart="64dp"
-            android:layout_marginLeft="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginRight="64dp"
-            android:background="@drawable/bg_rotate_layout"
-            android:orientation="vertical"
-            android:padding="10dip"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="10dip"
-                android:elevation="10dp"
-                android:indeterminateTint="@color/colorGuideBack"
-                android:indeterminateTintMode="src_atop"
-                tools:targetApi="lollipop" />
-        </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/lin_content"
             android:layout_width="match_parent"

@@ -7,7 +7,7 @@
 
         <variable
             name="profile"
-            type="com.lana.cc.device.user.model.api.Profile" />
+            type="com.lana.cc.device.user.model.api.mine.Profile" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,16 +25,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="修改信息"
+                android:text="个人信息"
                 android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textSize="24dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="32dp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/tv_tip_nickname"
@@ -52,11 +51,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_inputlin"
+                    android:gravity="center"
+                    android:maxLength="10"
+                    android:padding="4dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:background="@drawable/bg_corner_rect"
-                    android:maxLength="10"
-                    android:gravity="center"
                     android:text="@{profile.nikeName}"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -71,16 +71,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_tip_signature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="签名"
                     android:layout_weight="1"
+                    android:text="签名"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -91,12 +91,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_inputlin"
                     android:gravity="center"
+                    android:maxLength="30"
+                    android:padding="4dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:background="@drawable/bg_corner_rect"
                     android:text="@{profile.signature}"
-                    android:maxLength="30"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -109,8 +110,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_tip_birthday"
@@ -129,7 +130,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/selector_inputlin"
                     android:gravity="center"
+                    android:padding="6dp"
                     android:textColor="#8F8F8F"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

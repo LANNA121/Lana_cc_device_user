@@ -20,14 +20,9 @@ android {
             multiDexEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //backEnd api
-            //buildConfigField("String", "BASE_URL", '"https://api.upuphub.com/"')
-            buildConfigField("String", "BASE_URL", '"http://192.168.0.110:8080"')
-            //聚合 api
-            buildConfigField("String", "JUHE_APPKEY", '"214dc714d14b8eb6341080f3e14bc139"')
-            buildConfigField("String", "JUHE_URL", '"http://v.juhe.cn/toutiao/"')
-            //天行 api
-            buildConfigField("String", "TIANXING_URL", '"http://api.tianapi.com/txapi/"')
+
+            //后端 api
+            buildConfigField("String", "BASE_URL", '"http://10.147.20.155:8080"')
             //百度图像 api
             buildConfigField("String", "BAIDU_IDENTIFY_URL", '"https://aip.baidubce.com/"')
             buildConfigField("String", "BAIDU_API_KEY1", '"Qf2Wrr5KDoQ8goNkgqdOmPEa"')
@@ -42,14 +37,8 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //backEnd api
-            //buildConfigField("String", "BASE_URL", '"https://api.upuphub.com/"')
-            buildConfigField("String", "BASE_URL", '"http://192.168.0.110:8080"')
-            //聚合 api
-            buildConfigField("String", "JUHE_APPKEY", '"214dc714d14b8eb6341080f3e14bc139"')
-            buildConfigField("String", "JUHE_URL", '"http://v.juhe.cn/toutiao/"')
-            //天行 api
-            buildConfigField("String", "TIANXING_URL", '"http://api.tianapi.com/txapi/"')
+            //后端 api
+            buildConfigField("String", "BASE_URL", '"http://10.147.20.155:8080"')
             //百度图像 api
             buildConfigField("String", "BAIDU_IDENTIFY_URL", '"https://aip.baidubce.com/"')
             buildConfigField("String", "BAIDU_API_KEY1", '"Qf2Wrr5KDoQ8goNkgqdOmPEa"')
@@ -142,11 +131,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
 
-
-
     //百度识别
     implementation group: 'com.baidu.aip', name: 'java-sdk', version: '4.12.0'
-
     implementation 'androidx.multidex:multidex:2.0.0'
 
 
@@ -155,7 +141,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //PictureSelector
-    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.4.6'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.4'
 
     //Log
     implementation 'com.jakewharton.timber:timber:4.7.0'
@@ -182,7 +168,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
-
     implementation "com.google.android.material:material:1.2.0-alpha04"
 
     //ktx

@@ -4,7 +4,7 @@ import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.CellNewsBinding
 import com.lana.cc.device.user.model.api.news.News
-import jp.co.nikkei.t21.android.ui.adapter.BaseRecyclerAdapter
+import com.lana.cc.device.user.ui.adapter.BaseRecyclerAdapter
 
 class NewsListAdapter(
     onCellClick: (News) -> Unit

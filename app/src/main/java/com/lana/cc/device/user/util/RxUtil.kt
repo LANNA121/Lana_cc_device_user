@@ -1,4 +1,4 @@
-package jp.co.nikkei.t21.android.util
+package com.lana.cc.device.user.util
 
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers

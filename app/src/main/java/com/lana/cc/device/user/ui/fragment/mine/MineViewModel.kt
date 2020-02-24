@@ -6,13 +6,14 @@ import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.manager.api.GoodsService
 import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
-import com.lana.cc.device.user.model.api.Profile
+import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.ResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
+import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.util.getAgeByBirth
 import io.reactivex.Single
-import jp.co.nikkei.t21.android.util.switchThread
+import com.lana.cc.device.user.util.switchThread
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -63,8 +64,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
             userService.upLoadAvatar(
                 photo
             ).flatMap {
-                //将带新头像的profile赋值到profile
-                profile.postValue(Profile.getAvatarDefault("${BuildConfig.BASE_URL}/image/${it.data.imagePath}"))
+                //上传成功就更新本地头像
+                avatar.postValue(getImageFromServer(it.data.imagePath))
                 //调用修改头像api
                 userService.updateUserProfile(
                     UpdateUserModel(

@@ -10,7 +10,7 @@ import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.DialogUserBinding
 import com.lana.cc.device.user.databinding.FragmentMineBinding
 import com.lana.cc.device.user.model.Good
-import com.lana.cc.device.user.model.api.Profile
+import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.ui.base.BaseFragment
 import com.lana.cc.device.user.util.showSingleAlbum
 import com.lana.cc.device.user.util.string2Date
@@ -46,7 +46,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
         //recyclerView初始化
         binding.recGoodHistory.run {
             layoutManager = LinearLayoutManager(context)
-            adapter = GoodListAdapter {
+            adapter = GoodsHistoryListAdapter {
                 //兑换记录单项点击事件
 
             }
@@ -60,7 +60,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
                 213,
                 "兑换于2020-2-22"
             )
-            (adapter as GoodListAdapter).replaceData(
+            (adapter as GoodsHistoryListAdapter).replaceData(
                 listOf(good, good, good, good, good, good, good)
             )
         }

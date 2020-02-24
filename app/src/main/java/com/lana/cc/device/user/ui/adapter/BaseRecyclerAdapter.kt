@@ -1,4 +1,4 @@
-package jp.co.nikkei.t21.android.ui.adapter
+package com.lana.cc.device.user.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
+//抽象类，万能的RecyclerView的适配器 使用DataBinding构建
 abstract class BaseRecyclerAdapter<Bean, Binding : ViewDataBinding>
 constructor(
     private val layoutRes: Int,
@@ -44,6 +45,7 @@ constructor(
 
     abstract fun bindData(binding: Binding, position: Int)
 
+    //替换列表数据的方法
     fun replaceData(newList: List<Bean>) {
         baseList = newList
         notifyDataSetChanged()

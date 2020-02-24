@@ -3,10 +3,10 @@
     <!--弹窗-->
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">cancel</string>
-    <string name="dialog_title"></string>
-    <string name="dialog_msg"></string>
     <string name="dialog_button_cancel">取消</string>
     <string name="dialog_button_delete">删除</string>
+    <string name="dialog_title"></string>
+    <string name="dialog_msg"></string>
     <string name="dialog_button_save">保存</string>
     <string name="dialog_button_show">表示</string>
     <string name="dialog_button_select">选择</string>
@@ -19,27 +19,11 @@
     <string name="api_error_network_error">API业务数据异常</string>
     <string name="api_error_server_error">服务器已关闭</string>
     <string name="error_dialog_msg_error">エラーが発生しました</string>
-    <string name="service_error_exception_system">現在、システムが混み合っています。\nしばらく待ってもう一度試してください。</string>
-    <string name="service_error_cmn_passwd_unable">ユーザーＩＤまたはパスワードがまちがっています。</string>
-    <string name="service_error_cmn_login_userover_compulsion">すでに同じユーザーＩＤでログインしています。\nログインしなおしてください。</string>
-    <string name="service_error_cmn_automatic_login_unable">この操作を継続できません。\nログインしなおしてください。</string>
-    <string name="service_error_cmn_chargecode_admin_invalidity">チャージコードの書式がまちがっています。</string>
-    <string name="service_error_CRPF_0001">現在、システムが混み合っています。\nしばらく待ってもう一度試してください。</string>
-    <string name="app_brief">您身边的环境助手</string>
-
-    <string name="brief">environment life</string>
-
     <string name="ok">ok</string>
-
     <string name="correct">确定</string>
     <string name="cancel">取消</string>
     <string name="exit">退出</string>
 
-    <!--Homepage errorData dialog-->
-
-    <string name="homepage_dialog_button_setting">设置wifi</string>
-
-    <string name="list_null_data">呃～这里是空的～</string>
 
     <!--Search Fragment-->
     <string name="current_city">当前城市</string>

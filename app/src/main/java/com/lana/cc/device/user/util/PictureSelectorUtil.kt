@@ -47,7 +47,7 @@ fun Fragment.showAlbum(
 fun Fragment.showSingleAlbum() {
     //参数很多，根据需要添加
     PictureSelector.create(this)
-        .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+        .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
         .imageSpanCount(4)// 每行显示个数
         .selectionMode(PictureConfig.SINGLE)// 多选 or 单选PictureConfig.MULTIPLE : PictureConfig.SINGLE
         .previewImage(true)// 是否可预览图片

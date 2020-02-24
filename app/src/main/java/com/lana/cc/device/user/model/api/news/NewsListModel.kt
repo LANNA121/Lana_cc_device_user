@@ -1,6 +1,6 @@
 package com.lana.cc.device.user.model.api.news
 
-import com.lana.cc.device.user.model.api.Profile
+import com.lana.cc.device.user.model.api.mine.Profile
 
 data class NewsListModel(
     val topNewsList:List<News>,
@@ -14,6 +14,6 @@ data class News(
     val image:String,
     val top:Int,
     val createTime:Long,
-    val userProfileRsp:Profile,
+    val userProfileRsp: Profile,
     val status:Int
     )

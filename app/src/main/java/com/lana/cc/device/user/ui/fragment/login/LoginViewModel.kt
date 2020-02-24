@@ -7,7 +7,7 @@ import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
-import jp.co.nikkei.t21.android.util.switchThread
+import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance
 
 class LoginViewModel(application: Application) : BaseViewModel(application) {
@@ -34,6 +34,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
         )
             .switchThread()
             .catchApiError()
+            .autoProgressDialog()
             .doOnSuccess {
                 saveUserData(it.data)
                 isLoginSuccess.postValue(true)

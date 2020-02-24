@@ -4,20 +4,20 @@
 
     <item
         android:id="@+id/navigation_news"
-        android:icon="@drawable/nav_selector_home"
+        android:icon="@drawable/icon_news"
         android:title="资讯"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/navigation_test"
-        android:icon="@drawable/nav_selector_find"
+        android:icon="@drawable/icon_test"
         android:title="答题"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/navigation_shop"
         android:icon="@drawable/shop"
-        android:title="商城"
+        android:title="积分商城"
         app:showAsAction="always" />
 
 
