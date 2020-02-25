@@ -1,4 +1,4 @@
-package com.lana.cc.device.user.model.base
+package com.lana.cc.device.user.model.api
 import com.squareup.moshi.JsonClass
 import java.io.IOException
 

@@ -17,12 +17,19 @@
 
     <!--错误-->
     <string name="api_error_network_error">API业务数据异常</string>
-    <string name="api_error_server_error">服务器已关闭</string>
+    <string name="api_error_server_error">连接服务器超时</string>
     <string name="error_dialog_msg_error">エラーが発生しました</string>
     <string name="ok">ok</string>
     <string name="correct">确定</string>
     <string name="cancel">取消</string>
     <string name="exit">退出</string>
+
+    <string name="receiveTitle">填写收货信息</string>
+    <string name="receiveName">姓名</string>
+    <string name="receivePhone">电话</string>
+    <string name="receiveAddress">地址</string>
+
+
 
 
     <!--Search Fragment-->

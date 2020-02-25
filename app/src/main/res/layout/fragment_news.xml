@@ -135,7 +135,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="164dp"
                             android:layout_marginTop="10dp"
-                            app:middle_page_cover="true"
+                            app:middle_page_cover="false"
                             app:canLoop="true"
                             app:indicatorAlign="center"
                             app:indicatorPaddingLeft="20dp"
@@ -175,6 +175,9 @@
                             tools:listitem="@layout/cell_news" />
                     </LinearLayout>
 
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp" />
 
                 </LinearLayout>
 

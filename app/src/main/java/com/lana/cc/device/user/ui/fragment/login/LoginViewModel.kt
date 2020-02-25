@@ -43,12 +43,12 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
     }
 
     //存user的数据到本地
-    private fun saveUserData(loginResultModel: LoginResultModel) {
+    private fun saveUserData(loginResultModel: LoginResultModel?) {
         SharedPrefModel.hasLogin = true
         SharedPrefModel.userEmail = userEmail.value!!
         SharedPrefModel.password = password.value!!
-        SharedPrefModel.token = loginResultModel.token
-        SharedPrefModel.uid = loginResultModel.uid
+        SharedPrefModel.token = loginResultModel?.token?:""
+        SharedPrefModel.uid = loginResultModel?.uid?:0
         SharedPrefModel.rememberPassword = rememberPassword.value!!
     }
 

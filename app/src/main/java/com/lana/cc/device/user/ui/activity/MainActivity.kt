@@ -27,6 +27,16 @@ class MainActivity : AppCompatActivity() {
             //setUpOnBackPressedDispatcher()
             setupBottomNavigationBar()
         }
+
+        //跳转至分类搜索界面
+        binding.btnSearch.setOnClickListener {
+            startActivity(
+                ContentActivity.createIntent(
+                    this,
+                    ContentActivity.Destination.Search
+                )
+            )
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

@@ -1,6 +1,6 @@
 package com.lana.cc.device.user.manager.base
 
-import com.lana.cc.device.user.model.base.ApiException
+import com.lana.cc.device.user.model.api.ApiException
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.nio.charset.Charset
@@ -21,8 +21,13 @@ class NetErrorInterceptor : Interceptor {
             //判断meta中的业务状态码，例如密码错误，meta中的code就会是一个大于1000的数字，数字由后端定义
             val code = resStr?.getCode()
             val message = resStr?.getMessage()
-            if (code?:0 >= 2000) {
-                throw ApiException(code?:0, message?:"")
+            when{
+                code ?: 0 in 2000..3000 -> throw ApiException(
+                    code ?: 0, message ?: ""
+                )
+                code ?: 0 in 400..500 -> throw ApiException(
+                    code ?: 0, message ?: ""
+                )
             }
         }
         return response

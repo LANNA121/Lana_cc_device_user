@@ -9,7 +9,6 @@ import io.reactivex.Single
 import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance
 
-
 class NewsViewModel(application: Application) : BaseViewModel(application) {
 
     private val userService by instance<UserService>()
@@ -20,8 +19,8 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
     fun getNews() {
         userService.getNews()
             .doOnApiSuccess {
-                newsList.postValue(it.data.newsList)
-                topList.postValue(it.data.topNewsList)
+                newsList.postValue(it.data?.newsList)
+                topList.postValue(it.data?.topNewsList)
             }
     }
 

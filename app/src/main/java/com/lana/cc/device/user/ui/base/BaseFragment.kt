@@ -20,7 +20,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import com.lana.cc.device.user.BR
 import com.lana.cc.device.user.R
-import com.lana.cc.device.user.model.base.ApiException
+import com.lana.cc.device.user.model.api.ApiException
 
 abstract class BaseFragment<Bind : ViewDataBinding, VM : BaseViewModel>
 constructor(

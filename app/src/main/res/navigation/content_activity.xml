@@ -10,7 +10,11 @@
         android:name="com.lana.cc.device.user.ui.base.BridgeFragment"
         android:label="fragment_bridge">
 
+        <action
+            android:id="@+id/action_bridgeFragment_to_navigation_search"
+            app:destination="@id/navigation_search" />
     </fragment>
 
+    <include app:graph="@navigation/top_search" />
 
 </navigation>

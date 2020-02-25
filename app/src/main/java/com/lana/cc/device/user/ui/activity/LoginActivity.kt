@@ -1,5 +1,6 @@
 package com.lana.cc.device.user.ui.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -42,7 +43,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
 
         fun createIntent(context: Context): Intent {
@@ -53,4 +53,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+}
+
+fun showLoginActivity(activityTemp: Activity){
+    activityTemp.startActivity(Intent(activityTemp, LoginActivity::class.java))
+    activityTemp.finish()
 }

@@ -17,23 +17,59 @@
 
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/potrait"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="170dp"
-            android:elevation="10dp"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="1dp"
-            tools:targetApi="lollipop" />
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{vm.title}"
+                    tools:text="当前题目    1/10"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.zhouwei.mzbanner.MZBannerView
+            android:id="@+id/banner"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:middle_page_cover="false"
+            app:canLoop="true"
+            app:indicatorAlign="center"
+            app:indicatorPaddingLeft="20dp"
+            app:open_mz_mode="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -24,7 +24,7 @@ import java.util.*
 class MineViewModel(application: Application) : BaseViewModel(application) {
 
     val profile = MutableLiveData(Profile.getDefault())
-    val age = MutableLiveData("0")
+    val age = MutableLiveData("0岁")
     private val userService by instance<UserService>()
     private val goodsService by instance<GoodsService>()
     val avatarFile = MutableLiveData<File>()
@@ -40,8 +40,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
     private fun Single<ResultModel<Profile>>.dealGetProfileSuccess() =
         doOnApiSuccess {
             profile.postValue(it.data)
-            avatar.postValue("${BuildConfig.BASE_URL}/image/${it.data.avatar}")
-            age.postValue(getAgeByBirth(Date(it.data.birthday ?: 0.toLong())).toString() + "岁")
+            avatar.postValue("${BuildConfig.BASE_URL}/image/${it.data?.avatar}")
+            age.postValue(getAgeByBirth(Date(it.data?.birthday ?: 0.toLong())).toString() + "岁")
         }
 
 
@@ -65,11 +65,11 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
                 photo
             ).flatMap {
                 //上传成功就更新本地头像
-                avatar.postValue(getImageFromServer(it.data.imagePath))
+                avatar.postValue(getImageFromServer(it.data?.imagePath))
                 //调用修改头像api
                 userService.updateUserProfile(
                     UpdateUserModel(
-                        0, "", "", it.data.imagePath
+                        0, "", "", it.data?.imagePath
                     )
                 )
             }.doOnApiSuccess {}

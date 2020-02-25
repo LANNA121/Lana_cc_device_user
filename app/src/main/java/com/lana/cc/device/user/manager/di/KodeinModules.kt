@@ -15,10 +15,15 @@ import org.kodein.di.generic.singleton
 import java.util.concurrent.TimeUnit
 
 val apiModule = Kodein.Module("api") {
+
     //api
     bind<ApiClient>() with singleton { provideApiClient() }
 
     bind<UserService>() with singleton { instance<ApiClient>().createService(UserService::class.java) }
+
+    bind<NewsService>() with singleton { instance<ApiClient>().createService(NewsService::class.java) }
+
+    bind<GoodsService>() with singleton { instance<ApiClient>().createService(GoodsService::class.java) }
 
     bind<RubbishService>() with singleton { instance<ApiClient>().createService(RubbishService::class.java) }
 
@@ -26,8 +31,11 @@ val apiModule = Kodein.Module("api") {
     //百度识别
     bind<BaiduIdentifyClient>() with singleton { provideBaiDuIdentifyClient() }
 
-    bind<BaiDuIdentifyService>() with singleton { instance<BaiduIdentifyClient>().createService(
-        BaiDuIdentifyService::class.java) }
+    bind<BaiDuIdentifyService>() with singleton {
+        instance<BaiduIdentifyClient>().createService(
+            BaiDuIdentifyService::class.java
+        )
+    }
 
 }
 

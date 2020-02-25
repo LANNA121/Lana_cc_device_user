@@ -1,5 +1,6 @@
 package com.lana.cc.device.user.ui.fragment.mine
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,9 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.DialogUserBinding
 import com.lana.cc.device.user.databinding.FragmentMineBinding
-import com.lana.cc.device.user.model.Good
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.model.GoodsHistory
 import com.lana.cc.device.user.model.api.mine.Profile
+import com.lana.cc.device.user.ui.activity.showLoginActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
+import com.lana.cc.device.user.ui.widget.DatePopView
 import com.lana.cc.device.user.util.showSingleAlbum
 import com.lana.cc.device.user.util.string2Date
 import com.luck.picture.lib.PictureSelector
@@ -43,6 +47,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
                 }
             }
         }
+
         //recyclerView初始化
         binding.recGoodHistory.run {
             layoutManager = LinearLayoutManager(context)
@@ -50,7 +55,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
                 //兑换记录单项点击事件
 
             }
-            val good = Good(
+            val good = GoodsHistory(
                 123213,
                 "Dior",
                 "https://www.dior.cn/couture/var/dior/storage/images/19298687/25-chi-CN/pcd-miss-dior-rose-n-roses-eau-de-toilette2_1440_1200.jpg",
@@ -64,10 +69,21 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
                 listOf(good, good, good, good, good, good, good)
             )
         }
+
         //刷新控件监听
         binding.refreshLayout.setOnRefreshListener {
             viewModel.getUserProfile()
         }
+
+        //注销按钮点击事件
+        binding.btnLogout.setOnClickListener {
+            SharedPrefModel.hasLogin = false
+            SharedPrefModel.token = ""
+            activity?.run {
+                showLoginActivity(this)
+            }
+        }
+
         //监听viewModel中的isRefreshing状态
         viewModel.isRefreshing.observeNonNull {
             binding.refreshLayout.isRefreshing = it
@@ -81,6 +97,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
 
 
     //弹窗方法
+    @SuppressLint("SetTextI18n")
     private fun showUserInfoDialog(
         profile: Profile, action: (
             birthLong: Long, nickName: String, signature: String
@@ -95,7 +112,18 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
                 false//填false无需多了解
             )
         dialogBinding.profile = profile
-        //安卓原生弹窗
+
+        //生日文本
+        dialogBinding.tvBirthday.setOnClickListener {
+            DatePopView(
+                context!!,
+                profile.birthday
+            ) { year, month, day, birthLong ->
+                dialogBinding.tvBirthday.text = "${year}年${month}月${day}日"
+            }.show()
+        }
+
+        //安卓原生弹窗  设置信息界面
         AlertDialog.Builder(context!!).setView(
             dialogBinding.root
         ).setCancelable(true)
@@ -107,7 +135,6 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
                     dialogBinding.tvSignature.text.toString()
                 )
             }
-
             .create()
             .show()
     }

@@ -53,7 +53,7 @@
                         android:lineSpacingExtra="10dp"
                         android:textColor="@color/white"
                         android:textSize="24sp"
-                        app:layout_constraintBottom_toTopOf="@+id/cardView"
+                        app:layout_constraintBottom_toTopOf="@+id/card_earn_coin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +83,7 @@
                     </FrameLayout>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView"
+                        android:id="@+id/card_earn_coin"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginBottom="4dp"
@@ -118,6 +118,10 @@
                     android:layout_margin="16dp"
                     tools:listitem="@layout/item_goods"
                     tools:itemCount="1"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

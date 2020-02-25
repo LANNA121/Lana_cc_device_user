@@ -61,7 +61,7 @@ fun getGenderDrawable(imageView: ImageView, gender: String?) {
 
 }
 
-fun getImageFromServer(relativePath: String) = "${BuildConfig.BASE_URL}/image/$relativePath"
+fun getImageFromServer(relativePath: String?) = "${BuildConfig.BASE_URL}/image/$relativePath"
 
 
 

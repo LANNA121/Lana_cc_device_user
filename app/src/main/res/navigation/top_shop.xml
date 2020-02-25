@@ -10,6 +10,17 @@
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" >
 
+        <action
+            android:id="@+id/action_ShopFragment_to_CoinHistoryFragment"
+            app:destination="@id/CoinHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CoinHistoryFragment"
+        android:name="com.lana.cc.device.user.ui.fragment.coinhistory.CoinHistoryFragment"
+        android:label="fragment_coin_history"
+        tools:layout="@layout/fragment_coin_history" >
+
     </fragment>
 
 </navigation>

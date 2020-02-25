@@ -5,7 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.observe
 import com.lana.cc.device.user.R
-import com.lana.cc.device.user.model.base.ApiException
+import com.lana.cc.device.user.model.api.ApiException
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

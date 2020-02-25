@@ -1,6 +1,6 @@
 package com.lana.cc.device.user.model
 
-data class Good(
+data class GoodsHistory(
     val id:Long,//id
     val name:String,//名字
     val image:String,//名字
