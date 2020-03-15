@@ -1,5 +1,7 @@
 package com.lana.cc.device.user.model.api.search
 
+import com.squareup.moshi.JsonClass
+
 data class Category(
 	val id: Int,
 	val color: String,

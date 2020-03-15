@@ -18,17 +18,21 @@ class NetErrorInterceptor : Interceptor {
                 response.message
             )
         } else {
-            //判断meta中的业务状态码，例如密码错误，meta中的code就会是一个大于1000的数字，数字由后端定义
-            val code = resStr?.getCode()
-            val message = resStr?.getMessage()
-            when{
-                code ?: 0 in 2000..3000 -> throw ApiException(
-                    code ?: 0, message ?: ""
-                )
-                code ?: 0 in 400..500 -> throw ApiException(
-                    code ?: 0, message ?: ""
-                )
+            //判断是否是 自己的服务端返回的数据 （数据格式是   {"meta":{"code":...,"msg":"..."},"data":{。。。}} ）
+            if(resStr?.startsWith("{\"meta\":{\"code\"") == true){
+                //判断meta中的业务状态码，例如密码错误，meta中的code就会是一个大于1000的数字，数字由后端定义
+                val code = resStr?.getCode()
+                val message = resStr?.getMessage()
+                when{
+                    code ?: 0 in 2000..3000 -> throw ApiException(
+                        code ?: 0, message ?: ""
+                    )
+                    code ?: 0 in 400..500 -> throw ApiException(
+                        code ?: 0, message ?: ""
+                    )
+                }
             }
+
         }
         return response
     }

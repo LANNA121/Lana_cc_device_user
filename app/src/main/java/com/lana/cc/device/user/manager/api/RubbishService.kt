@@ -12,13 +12,13 @@ interface RubbishService {
 
 	
 	//根据物品名称搜索分类
-	@GET("api/common/tools/{searchKey}/search")
-	fun searchClassification(@Path("searchKey") searchKey: String): Single<ResultModel<MutableList<SearchKeyConclusion>>>
+	@GET("common/tools/{searchKey}/search")
+	fun searchClassByName(@Path("searchKey") searchKey: String): Single<ResultModel<MutableList<SearchKeyConclusion>>>
 	
 	
 	//根据sortId搜索分类信息
-	@GET("api/common/tools/{classNum}/categories")
-	fun searchCategoryByName(@Path("classNum") classNum: Int): Single<ResultModel<Category>>
+	@GET("common/tools/{classNum}/categories")
+	fun searchCategoryInfo(@Path("classNum") classNum: Int): Single<ResultModel<Category>>
 	
 
 

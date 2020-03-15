@@ -28,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
                 R.id.LoginFragment
             )
         }
-
     }
 
 

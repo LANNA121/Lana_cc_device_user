@@ -2,19 +2,38 @@ package com.lana.cc.device.user.ui.fragment.news
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.lana.cc.device.user.manager.api.RubbishService
 import com.lana.cc.device.user.manager.api.UserService
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.news.News
+import com.lana.cc.device.user.model.api.search.Category
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import io.reactivex.Single
 import com.lana.cc.device.user.util.switchThread
+import io.reactivex.Observable
 import org.kodein.di.generic.instance
 
 class NewsViewModel(application: Application) : BaseViewModel(application) {
 
     private val userService by instance<UserService>()
+    private val rubbishService by instance<RubbishService>()
     val topList = MutableLiveData(emptyList<News>())
     val newsList = MutableLiveData(emptyList<News>())
     val isRefreshing = MutableLiveData(false)
+
+    fun fetchClassfication() {
+        Observable.fromIterable(listOf(1,2,3,4))
+            .flatMap {num ->
+                rubbishService.searchCategoryInfo(num).toObservable()
+        }.toList()
+            .doOnApiSuccess {
+                val map = mutableMapOf<Int,Category>()
+                it.forEach {
+                    map.put(it.data?.id?:0,it.data!!)
+                }
+                SharedPrefModel.classficationMap = map
+            }
+    }
 
     fun getNews() {
         userService.getNews()

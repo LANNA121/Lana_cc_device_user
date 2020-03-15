@@ -6,4 +6,5 @@ class UserModel {
     var receiveName: String? = null
     var receivePhone: String? = null
     var receiveAddress: String? = null
+    var receiveSearchKey: String? = null
 }

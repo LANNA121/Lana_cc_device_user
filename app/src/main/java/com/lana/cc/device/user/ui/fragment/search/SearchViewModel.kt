@@ -3,12 +3,11 @@ package com.lana.cc.device.user.ui.fragment.search
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.lana.cc.device.user.manager.api.RubbishService
-import com.lana.cc.device.user.model.api.ResultModel
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.model.api.search.Category
 import com.lana.cc.device.user.model.api.search.SearchKeyConclusion
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.util.switchThread
-import io.reactivex.Single
-import io.reactivex.SingleTransformer
 import org.kodein.di.generic.instance
 
 
@@ -24,16 +23,21 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
     val city = MutableLiveData("")
 
     //获取城市定位
-     fun getCity() {
+    fun getCity() {
         city.value = "成都"
     }
 
     fun searchKey(key: String) {
-        rubbishService.searchClassification(key)
+        rubbishService.searchClassByName(key)
             .switchThread()
             .autoProgressDialog()
             .doOnSuccess {
-                searchList.postValue(it.data)
+                val resultData = it.data?.map {searchKeyConclusion ->
+                    SearchKeyConclusion(searchKeyConclusion.name,searchKeyConclusion.sortId).apply {
+                        category = SharedPrefModel.classficationMap[searchKeyConclusion.sortId]?: Category.getNull()
+                    }
+                }?: emptyList()
+                searchList.postValue(resultData)
             }.catchApiError()
             .bindLife()
     }

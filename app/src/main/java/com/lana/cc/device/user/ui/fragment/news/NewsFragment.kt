@@ -60,6 +60,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
 
     override fun initData() {
         refresh()
+        viewModel.fetchClassfication()
     }
 
     private fun refresh() {
