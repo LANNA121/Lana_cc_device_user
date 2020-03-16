@@ -22,13 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             //后端 api
-            buildConfigField("String", "BASE_URL", '"http://10.147.20.155:8080"')
+            buildConfigField("String", "BASE_URL", '"http://192.168.0.112:8080"')
             //百度图像 api
             buildConfigField("String", "BAIDU_IDENTIFY_URL", '"https://aip.baidubce.com/"')
-            buildConfigField("String", "BAIDU_API_KEY1", '"Qf2Wrr5KDoQ8goNkgqdOmPEa"')
-            buildConfigField("String", "BAIDU_SECRET_KEY1", '"dn2puGs7eLO8UZrvajWlmIMcBmWutGhQ"')
-            buildConfigField("String", "BAIDU_API_KEY2", '"7UjUb7wznmuUusvGGKBhRU2F"')
-            buildConfigField("String", "BAIDU_SECRET_KEY2", '"P0fztig3eVKlcWy8W9xIATvmzGyS7Gme"')
+            buildConfigField("String", "BAIDU_API_KEY", '"QURieP7T9IOFnZYtAwdZLPXG"')
+            buildConfigField("String", "BAIDU_SECRET_KEY", '"AOWUcEhsmy14EVE2ApjHFSLMOnVxnDMW"')
             //允许证书
             buildConfigField "boolean", "ALLOW_ALL_CERTIFICATES", "true"
         }
@@ -38,13 +36,11 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //后端 api
-            buildConfigField("String", "BASE_URL", '"http://10.147.20.155:8080"')
+            buildConfigField("String", "BASE_URL", '"http://192.168.0.112:8080"')
             //百度图像 api
             buildConfigField("String", "BAIDU_IDENTIFY_URL", '"https://aip.baidubce.com/"')
-            buildConfigField("String", "BAIDU_API_KEY1", '"Qf2Wrr5KDoQ8goNkgqdOmPEa"')
-            buildConfigField("String", "BAIDU_SECRET_KEY1", '"dn2puGs7eLO8UZrvajWlmIMcBmWutGhQ"')
-            buildConfigField("String", "BAIDU_API_KEY2", '"7UjUb7wznmuUusvGGKBhRU2F"')
-            buildConfigField("String", "BAIDU_SECRET_KEY2", '"P0fztig3eVKlcWy8W9xIATvmzGyS7Gme"')
+            buildConfigField("String", "BAIDU_API_KEY", '"QURieP7T9IOFnZYtAwdZLPXG"')
+            buildConfigField("String", "BAIDU_SECRET_KEY", '"AOWUcEhsmy14EVE2ApjHFSLMOnVxnDMW"')
             //允许证书
             buildConfigField "boolean", "ALLOW_ALL_CERTIFICATES", "true"
         }

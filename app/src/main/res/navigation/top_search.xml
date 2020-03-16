@@ -10,6 +10,13 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
 
+        <action
+            android:id="@+id/action_SearchFragment_to_cameraSearchFragment"
+            app:destination="@id/cameraSearchFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/cameraSearchFragment"
+        android:name="com.lana.cc.device.user.ui.fragment.search.cameraSearch.CameraSearchFragment"
+        android:label="CameraSearchFragment" />
 
 </navigation>
