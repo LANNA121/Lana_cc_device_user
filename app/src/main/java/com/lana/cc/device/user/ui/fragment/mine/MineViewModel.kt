@@ -8,6 +8,7 @@ import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.ResultModel
+import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.ui.utils.getImageFromServer
@@ -53,17 +54,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
 
     //上传头像,并修改头像
     fun uploadAvatar() {
-        if (avatarFile.value != null) {
-            val photoRequestBody =
-                RequestBody.create("image/png".toMediaTypeOrNull(), avatarFile.value!!)
-            val photo = MultipartBody.Part.createFormData(
-                "imageFile",
-                avatarFile.value!!.name,
-                photoRequestBody
-            )
-            userService.upLoadAvatar(
-                photo
-            ).flatMap {
+        userService.upLoadImage(avatarFile.value)
+            ?.flatMap {
                 //上传成功就更新本地头像
                 avatar.postValue(getImageFromServer(it.data?.imagePath))
                 //调用修改头像api
@@ -72,8 +64,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
                         0, "", "", it.data?.imagePath
                     )
                 )
-            }.doOnApiSuccess {}
-        }
+            }?.doOnApiSuccess {}
+
     }
 
     //更改 昵称 生日 签名
@@ -87,7 +79,6 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
         }.dealGetProfileSuccess()
     }
 
-
     private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {
         switchThread()
             .doOnSuccess {
@@ -99,5 +90,19 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
             .catchApiError()
             .bindLife()
     }
+}
 
+fun UserService.upLoadImage(file: File?): Single<ResultModel<UploadAvatarResultModel>>? {
+    return if (file != null) {
+        val photoRequestBody =
+            RequestBody.create("image/png".toMediaTypeOrNull(), file)
+        val photo = MultipartBody.Part.createFormData(
+            "imageFile",
+            file.name,
+            photoRequestBody
+        )
+        upLoadImage(
+            photo
+        )
+    } else null
 }

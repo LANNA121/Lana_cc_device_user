@@ -24,7 +24,7 @@
     <string name="cancel">取消</string>
     <string name="exit">退出</string>
 
-    <string name="receiveTitle">填写收货信息</string>
+    <string name="receiveTitle">收货信息</string>
     <string name="receiveName">姓名</string>
     <string name="receivePhone">电话</string>
     <string name="receiveAddress">地址</string>

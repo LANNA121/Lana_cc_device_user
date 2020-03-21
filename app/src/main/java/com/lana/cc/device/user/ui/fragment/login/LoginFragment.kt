@@ -23,6 +23,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
 
         //登录按钮 点击事件 点击调用 ViewModel 的 login 发起登录网络请求
         binding.btnLogin.setOnClickListener {
+/*            SharedPrefModel.setUserModel { role = ROLE_OSS }
+            showMainActivity(activity as AppCompatActivity)*/
             //判断邮箱长度是否大于10位， 密码长度是否大于6位
             if ((viewModel.password.value ?: "").length >= 6) viewModel.login()
             else Toast.makeText(context!!, "密码必须6位以上", Toast.LENGTH_SHORT).show()

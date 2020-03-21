@@ -5,10 +5,9 @@
 
     <data>
 
-        <import type="android.view.View"/>
         <variable
             name="vm"
-            type="com.lana.cc.device.user.ui.fragment.news.NewsViewModel" />
+            type="com.lana.cc.device.user.ui.fragment.manage.news.ManageNewsViewModel" />
 
     </data>
 
@@ -43,18 +42,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
-                    <ImageView
-                        android:id="@+id/btn_add"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:src="@drawable/icon_add"
-                        android:visibility="@{vm.isOss?View.VISIBLE:View.GONE}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+
 
                     <LinearLayout
                         android:id="@+id/linear_search"
@@ -134,10 +122,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="164dp"
                             android:layout_marginTop="10dp"
+                            app:middle_page_cover="false"
                             app:canLoop="true"
                             app:indicatorAlign="center"
                             app:indicatorPaddingLeft="20dp"
-                            app:middle_page_cover="false"
                             app:open_mz_mode="true" />
 
 

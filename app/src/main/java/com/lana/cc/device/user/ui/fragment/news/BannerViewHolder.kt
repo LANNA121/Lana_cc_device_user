@@ -13,11 +13,12 @@ import com.zhouwei.mzbanner.holder.MZViewHolder
 //使用第三方库MZBanner 需要自定义MZViewHolder
 class BannerViewHolder(
     val list: MutableList<News>,
-    private val onItemClick: (News?) -> Unit
+    private val onItemClick: (News?) -> Unit,
+    private val onItemLongClick: (News?) -> Unit
 ) : MZViewHolder<News> {
     //也就是Banner中每一个 View（这是时我们的cell_photography生成的View）的 一个Holder 也就是控制这个View如何显示的类
     // 写一个ViewHolder继承自MZViewHolder 里面范型填上我们的
-    lateinit var photographyBinding: CellPhotographyBinding //cell_photography的DataBinding对象
+    private lateinit var photographyBinding: CellPhotographyBinding //cell_photography的DataBinding对象
 
     override fun createView(context: Context): View {//创建视图
         //利用 DataBindingUtil工具类的inflate方法把我们的cell_photography创建出来
@@ -38,5 +39,11 @@ class BannerViewHolder(
             //设置图片点击后触发的事件为我们创建BannerViewHolder时传进来的action（也就是onItemClick）
             onItemClick.invoke(data)
         }
+        photographyBinding.imgGrid.setOnLongClickListener {
+            //设置图片点击后触发的事件为我们创建BannerViewHolder时传进来的action（也就是onItemClick）
+            onItemLongClick.invoke(data)
+            true
+        }
+
     }
 }

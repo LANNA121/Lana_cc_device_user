@@ -11,21 +11,13 @@ import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance
 
 
-class SearchViewModel(application: Application) : BaseViewModel(application) {
+class  SearchViewModel(application: Application) : BaseViewModel(application) {
 
     private val rubbishService by instance<RubbishService>()
 
     val searchList = MutableLiveData(emptyList<SearchKeyConclusion>())
 
     val searchKey = MutableLiveData("")
-
-    //位置
-    val city = MutableLiveData("")
-
-    //获取城市定位
-    fun getCity() {
-        city.value = "成都"
-    }
 
     fun searchKey(key: String) {
         rubbishService.searchClassByName(key)
@@ -40,6 +32,28 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
                 searchList.postValue(resultData)
             }.catchApiError()
             .bindLife()
+    }
+
+
+    fun addClassification(
+        searchKeyConclusion: SearchKeyConclusion
+    ){
+        rubbishService
+
+    }
+
+    fun editClassification(
+        searchKeyConclusion: SearchKeyConclusion
+    ){
+        rubbishService
+
+    }
+
+    fun deleteClassification(
+        searchKeyConclusion: SearchKeyConclusion
+    ){
+        rubbishService
+
     }
 
 

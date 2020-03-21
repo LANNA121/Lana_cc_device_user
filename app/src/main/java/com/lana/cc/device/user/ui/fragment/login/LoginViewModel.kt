@@ -6,6 +6,7 @@ import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
+import com.lana.cc.device.user.model.api.guide.register.ROLE_OSS
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance
@@ -47,8 +48,10 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
         SharedPrefModel.hasLogin = true
         SharedPrefModel.userEmail = userEmail.value!!
         SharedPrefModel.password = password.value!!
-        SharedPrefModel.token = loginResultModel?.token?:""
-        SharedPrefModel.uid = loginResultModel?.uid?:0
+        SharedPrefModel.token = loginResultModel?.token ?: ""
+        SharedPrefModel.uid = loginResultModel?.uid ?: 0
+        SharedPrefModel.setUserModel { role = loginResultModel?.role }
+        //SharedPrefModel.setUserModel { role = ROLE_OSS }
         SharedPrefModel.rememberPassword = rememberPassword.value!!
     }
 

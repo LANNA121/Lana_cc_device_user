@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -20,6 +21,8 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import com.lana.cc.device.user.BR
 import com.lana.cc.device.user.R
+import com.lana.cc.device.user.databinding.DialogManageChooseBinding
+import com.lana.cc.device.user.databinding.DialogManageNewsBinding
 import com.lana.cc.device.user.model.api.ApiException
 
 abstract class BaseFragment<Bind : ViewDataBinding, VM : BaseViewModel>
@@ -43,7 +46,6 @@ constructor(
     override val compositeDisposable = CompositeDisposable()
 
     //method
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,4 +115,53 @@ constructor(
         super.onDestroy()
         destroyDisposable()
     }
+
+    //安卓原生弹窗  设置信息界面
+    fun showViewDialog(view: View?, onConfirmAction: () -> Unit) {
+        AlertDialog.Builder(context!!)
+            .setView(view)
+            .setCancelable(true)
+            .setPositiveButton("确定")
+            { _, _ ->
+                //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
+                onConfirmAction()
+            }
+            .create()
+            .show()
+    }
+
+    fun showManageChooseDialog(onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
+        val manageChooseDialogBinding =
+            DataBindingUtil.inflate<DialogManageChooseBinding>(
+                LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
+                R.layout.dialog_manage_choose,//弹窗的layout文件
+                null,//填null 无需多了解
+                false//填false无需多了解
+            )
+        val chooseDialog = AlertDialog.Builder(context!!).setView(manageChooseDialogBinding.root)
+            .setCancelable(true).create()
+
+        manageChooseDialogBinding.tvEdit.setOnClickListener {
+            onEditClick()
+            chooseDialog.dismiss()
+        }
+        manageChooseDialogBinding.tvDelete.setOnClickListener {
+            chooseDialog.dismiss()
+            AlertDialog.Builder(context!!)
+                .setTitle("警告")
+                .setMessage("删除后将不能恢复，确认删除吗")
+                .setCancelable(true)
+                .setPositiveButton("确认") { _, _ ->
+                    onDeleteClick()
+                }
+                .create()
+                .show()
+        }
+        chooseDialog.show()
+    }
+
+    protected enum class EditType{
+        ADD,EDIT
+    }
+
 }

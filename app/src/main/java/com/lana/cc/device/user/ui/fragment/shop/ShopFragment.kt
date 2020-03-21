@@ -43,7 +43,6 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
             adapter = ShopRecyclerAdapter(
                 {
                     //商品单项点击事件
-
                 },
                 {
                     //商品单项兑换按钮点击事件
@@ -63,7 +62,6 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                         //Todo 调用兑换接口
 
                     }
-
                 })
         }
 
