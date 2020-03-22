@@ -33,7 +33,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var chosenSortId: Int = 1
 
     override fun initView() {
-
         //结果列表
         binding.recSearchList.run {
             layoutManager = LinearLayoutManager(context)
@@ -62,11 +61,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         //监听输入框的文字变化 1秒钟延时 防止慢速连续输入多个字符时搜索多次
         RxTextView.textChanges(binding.searchEdit)
             .debounce(1, TimeUnit.SECONDS)
-            .skip(1)
             .doOnNext {
                 if ((viewModel.searchKey.value ?: "").isNotEmpty())
-                    viewModel.searchKey(viewModel.searchKey.value ?: "")
+                    viewModel.searchKey()
             }.bindLife()
+
 
         //列表数据监听
         viewModel.searchList.observeNonNull {
@@ -122,7 +121,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         viewModel.searchKey.postValue(data?.getStringExtra("searchKey"))
     }
 
-    //添加news的弹窗方法
+    //添加分类的弹窗方法
     @SuppressLint("SetTextI18n")
     private fun showAddClassificationDialog(onConfirmAction: (String, Int) -> Unit) {
         val dialogBinding = getDialogClassificationBinding()
@@ -137,7 +136,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    //修改news的弹窗方法
+    //修改分类的弹窗方法
     @SuppressLint("SetTextI18n")
     private fun showEditClassificationDialog(
         searchKeyConclusion: SearchKeyConclusion,
@@ -145,7 +144,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     ) {
         val dialogBinding = getDialogClassificationBinding()
         dialogBinding?.initDialog(searchKeyConclusion)
-        //设置News弹窗
+        //设置分类弹窗
         showViewDialog(dialogBinding?.root) {
             //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
             onConfirmAction(
@@ -159,7 +158,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         etName.setText(searchKeyConclusion?.name)
         val spinnerList = SharedPrefModel.classficationMap.values.toList().map { it.name }
         spinnerClassification.run {
-            setSelection(searchKeyConclusion?.sortId ?: 1)
             adapter =
                 ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item, spinnerList)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -173,7 +171,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                     chosenSortId = position
                 }
             }
+            setSelection((searchKeyConclusion?.sortId?:1) - 1, true)
         }
+    }
+
+    override fun onDestroy() {
+        SharedPrefModel.setUserModel {
+            receiveSearchKey = ""
+        }
+        super.onDestroy()
     }
 
 

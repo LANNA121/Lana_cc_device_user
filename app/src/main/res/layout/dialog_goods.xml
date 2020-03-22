@@ -6,8 +6,12 @@
     <data>
 
         <variable
-            name="profile"
-            type="com.lana.cc.device.user.model.api.mine.Profile" />
+            name="goods"
+            type="com.lana.cc.device.user.model.api.shop.Goods" />
+        <variable
+            name="imgUrl"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="个人信息"
+                android:text="商品信息"
                 android:textColor="@color/black"
                 android:textSize="24dp" />
 
@@ -40,14 +44,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="昵称"
+                    android:text="商品名"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/tv_name"
+                    android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -57,7 +61,8 @@
                     android:padding="4dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:text="@{profile.nikeName}"
+                    android:hint="输入商品名"
+                    android:text="@{goods.goodsName}"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -76,34 +81,36 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_tip_signature"
+                    android:id="@+id/tv_tip_coin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="签名"
+                    android:text="价值（积分）"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/tv_signature"
+                    android:id="@+id/et_coin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/selector_input_lin"
+                    android:hint="输入积分价值"
+                    android:inputType="number"
                     android:gravity="center"
-                    android:maxLength="30"
+                    android:maxLength="8"
                     android:padding="4dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:text="@{profile.signature}"
+                    android:text='@{goods.price>0 ?goods.price+ "" : ""}'
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tv_tip_signature"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="你好啊" />
+                    tools:text="100" />
 
             </LinearLayout>
 
@@ -114,34 +121,105 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_tip_birthday"
+                    android:id="@+id/tv_tip_total"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="出生日期"
+                    android:text="数量"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <EditText
+                    android:id="@+id/et_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_input_lin"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:maxLength="8"
+                    android:padding="4dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:hint="输入剩余数量"
+                    android:text='@{goods.total>0 ?goods.total+ "" : ""}'
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_tip_signature"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="999" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:id="@+id/tv_birthday"
-                    time="@{profile.birthday}"
+                    android:id="@+id/tv_tip_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="描述"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_des"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/selector_input_lin"
                     android:gravity="center"
-                    android:padding="6dp"
-                    android:textColor="#8F8F8F"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:padding="4dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:hint="输入描述"
+                    android:text="@{goods.goodsDescription}"
+                    android:singleLine="false"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_tip_birthday"
+                    app:layout_constraintStart_toEndOf="@+id/tv_tip_signature"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="2020年2月2日" />
+                    tools:text="AAAAAaaasadasdasdasdaaaasdfsdfsdfsdf" />
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="实物图"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/goods_image"
+                    imageUrl="@{imgUrl}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    android:minHeight="200dp"
+                    tools:src="@drawable/gif_tag" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -1,9 +1,11 @@
 package com.lana.cc.device.user.ui.fragment.shop
 
+import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.ItemGoodsBinding
 import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.adapter.BaseRecyclerAdapter
+import com.lana.cc.device.user.ui.utils.getImageFromServer
 
 
 class ShopRecyclerAdapter(
@@ -15,8 +17,7 @@ class ShopRecyclerAdapter(
 ) {
     override fun bindData(binding: ItemGoodsBinding, position: Int) {
         val goods = baseList[position]
-        binding.goods = goods
-        binding.currentCount = "当前剩余 ${goods.currentCount}"
+        binding.goods = goods.copy(goodsUrl = getImageFromServer(goods.goodsUrl))
         binding.btnExchamge.setOnClickListener {
             onExchangeClick(goods)
         }

@@ -26,14 +26,15 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="#B4F3B6A3">
 
                 <TextView
                     android:id="@+id/tv_answer"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="32dp"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@+id/tick_view"
@@ -54,7 +55,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:rate="normal"
-                    android:focusable="false"
+                    android:saveEnabled="false"
                     android:visibility="invisible"
                     tools:visibility="visible"/>
 
@@ -63,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{testCard.name}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +96,9 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:layout_weight="1"
-                            android:background="#FFF9DA"
+                            android:textSize="18sp"
+                            android:background="#B2FAE57E"
+                            android:textColor="@color/white"
                             android:text="A 可回收物"
                             android:textAlignment="textStart" />
 
@@ -104,7 +107,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            android:background="#DAF3FF"
+                            android:background="#A1EA3F3F"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="B 有害垃圾" />
@@ -122,7 +127,9 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:layout_weight="1"
-                            android:background="#E1FDC3"
+                            android:background="#B29CF38E"
+                            android:textSize="18sp"
+                            android:textColor="@color/white"
                             android:text="C 湿垃圾"
                             android:textAlignment="textStart" />
 
@@ -131,7 +138,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            android:background="#F5A2AE"
+                            android:background="#C3F498A4"
+                            android:textSize="18sp"
+                            android:textColor="@color/white"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="D 干垃圾" />

@@ -25,7 +25,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
 ) {
 
     private var avatarFile: File? = null
-    private lateinit var globalDialogBinding: DialogManageNewsBinding
+    private lateinit var globalManageNewsBinding: DialogManageNewsBinding
 
     private fun getManageNewsDialogBinding() =
         DataBindingUtil.inflate<DialogManageNewsBinding>(
@@ -157,7 +157,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
         onConfirmAction: (String, String, Int) -> Unit
     ) {
         val dialogBinding = getManageNewsDialogBinding()
-        globalDialogBinding = dialogBinding
+        globalManageNewsBinding = dialogBinding
         //添加封面的图片点击事件
         dialogBinding.newsImage.setOnClickListener {
             showSingleAlbum()
@@ -180,7 +180,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
         onConfirmAction: (String, String, File?, Int) -> Unit
     ) {
         val dialogBinding = getManageNewsDialogBinding()
-        globalDialogBinding = dialogBinding
+        globalManageNewsBinding = dialogBinding
         dialogBinding.etTitle.setText(news.title)
         dialogBinding.etUrl.setText(news.newsUrl)
         dialogBinding.imageUrl = news.newsUrl
@@ -211,7 +211,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
                 //根据返回的图片path路径生成文件（File）对象
                 avatarFile = File(images[0].path)
                 //更改弹窗中的图片
-                globalDialogBinding.imageUrl = images[0].path
+                globalManageNewsBinding.imageUrl = images[0].path
             }
         }
     }

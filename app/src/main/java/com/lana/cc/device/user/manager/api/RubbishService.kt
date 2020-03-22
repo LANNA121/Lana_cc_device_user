@@ -4,6 +4,7 @@ package com.lana.cc.device.user.manager.api
 import com.lana.cc.device.user.model.api.ResultModel
 import com.lana.cc.device.user.model.api.news.QuestionListModel
 import com.lana.cc.device.user.model.api.search.Category
+import com.lana.cc.device.user.model.api.search.ClassificationRequestModel
 import com.lana.cc.device.user.model.api.search.SearchKeyConclusion
 import io.reactivex.Single
 import okhttp3.ResponseBody
@@ -27,5 +28,16 @@ interface RubbishService {
 	@GET("game/question")
 	fun fetchQuestion(): Single<ResultModel<QuestionListModel>>
 
+
+	//增加分类信息
+	@POST("common/tools/categories")
+	fun addCategory(@Body classificationRequestModel: ClassificationRequestModel): Single<ResponseBody>
+
+	//修改分类信息
+	@PUT("common/tools/categories")
+	fun editCategory(
+		@Query ("classKey")classKey:String,
+		@Query ("classNum")classNum:Int
+		): Single<ResponseBody>
 
 }

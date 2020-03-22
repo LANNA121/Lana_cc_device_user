@@ -21,7 +21,6 @@ class TestViewModel(application: Application) : BaseViewModel(application) {
                 testList.postValue(it.data?.questionList)
                 title.postValue("当前题目  1/${testList.value?.size}")
             }
-
     }
 
     private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {

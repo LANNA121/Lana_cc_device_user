@@ -6,7 +6,6 @@ import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
-import com.lana.cc.device.user.model.api.guide.register.ROLE_OSS
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance

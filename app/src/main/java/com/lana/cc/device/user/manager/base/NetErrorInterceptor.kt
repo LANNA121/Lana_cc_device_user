@@ -3,6 +3,7 @@ package com.lana.cc.device.user.manager.base
 import com.lana.cc.device.user.model.api.ApiException
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.io.IOException
 import java.nio.charset.Charset
 
 class NetErrorInterceptor : Interceptor {
@@ -54,4 +55,4 @@ private fun String.getMessage(): String {
 }
 
 
-data class ServerError(val code: Int, val msg: String) : RuntimeException()
+data class ServerError(val code: Int, val msg: String) : IOException()

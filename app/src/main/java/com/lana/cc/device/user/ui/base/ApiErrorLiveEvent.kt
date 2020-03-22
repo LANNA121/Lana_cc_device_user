@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.observe
 import com.lana.cc.device.user.R
+import com.lana.cc.device.user.manager.base.ServerError
 import com.lana.cc.device.user.model.api.ApiException
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -39,9 +40,9 @@ fun ApiErrorLiveEvent.bindDialog(context: Context, owner: LifecycleOwner) {
                 when (error) {
                     is ApiException -> error.messageStr
                     is SocketTimeoutException -> context.getString(R.string.api_error_server_error)
+                    is ServerError -> context.getString(R.string.server_error)
                     else -> "未知异常"
                 }
-
             )
             .setCancelable(true)
             .setPositiveButton("ok") { _, _ -> }

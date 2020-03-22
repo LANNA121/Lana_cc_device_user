@@ -2,36 +2,65 @@ package com.lana.cc.device.user.ui.fragment.shop
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.lana.cc.device.user.manager.api.GoodsService
+import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.base.BaseViewModel
+import com.lana.cc.device.user.ui.fragment.mine.upLoadImage
+import com.lana.cc.device.user.util.switchThread
+import io.reactivex.Single
+import org.kodein.di.generic.instance
+import java.io.File
 
 class ShopViewModel(application: Application) : BaseViewModel(application) {
     val goodsList = MutableLiveData(listOf<Goods>())
-    fun getGoodsList() {
-        val goods = Goods(
-            123213,
-            "Dior",
-            "https://www.dior.cn/couture/var/dior/storage/images/19298687/25-chi-CN/pcd-miss-dior-rose-n-roses-eau-de-toilette2_1440_1200.jpg",
-            "Dior的口红",
-            123213,
-            123213,
-            213
-        )
-        goodsList.value = listOf(
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods,
-            goods
-        )
+    val isRefreshing = MutableLiveData(false)
+    private val goodsService by instance<GoodsService>()
+    private val userService by instance<UserService>()
+    val goodsImageFile = MutableLiveData<File>()
+
+    fun fetchGoodsList() {
+        goodsService.fetchGoodsList()
+            .doOnApiSuccess {
+                goodsList.postValue(it.data)
+            }
+    }
+
+    fun addGoods(
+        goodsName: String,
+        total: Int,
+        price: Int,
+        goodsDescription: String
+    ) {
+        userService.upLoadImage(goodsImageFile.value)
+            ?.flatMap {
+                goodsService.addGoods(
+                    AddGoodsRequestModel(
+                        goodsName,
+                        total,
+                        price,
+                        it.data?.imagePath,
+                        goodsDescription
+                    )
+                )
+            }?.doOnApiSuccess {
+            fetchGoodsList()
+        }
+
+    }
+
+    private fun <T> Single<T>.dealRefresh() =
+        doOnSubscribe { isRefreshing.postValue(true) }
+            .doFinally { isRefreshing.postValue(false) }
+
+
+    private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {
+        switchThread(
+        ).doOnSuccess {
+            action?.invoke(it)
+        }
+            .dealRefresh()
+            .catchApiError()
+            .bindLife()
     }
 }
