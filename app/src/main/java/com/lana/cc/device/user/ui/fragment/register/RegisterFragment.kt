@@ -5,7 +5,6 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
-import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.ui.base.BaseFragment
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.FragmentRegisterBinding
@@ -14,9 +13,6 @@ import com.lana.cc.device.user.util.showSingleAlbum
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.entity.LocalMedia
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 
 class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel>(
@@ -28,9 +24,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
         binding.imgGender.setOnClickListener {
             if (viewModel.gender.value == "M") {
                 viewModel.gender.value = "F"
-            } else {
-                viewModel.gender.value = "M"
-            }
+            } else viewModel.gender.value = "M"
+
         }
 
         //头像点击事件监听，点击进入相册选图
@@ -52,6 +47,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
             when {
                 viewModel.userEmail.value.isNullOrEmpty() -> showToast("用户名不能为空~")
                 viewModel.password.value != viewModel.rePassword.value -> showToast("两次输入密码不一致~")
+                viewModel.password.value?.length?:0 < 6 -> showToast("密码必须大于6位哦~")
                 else -> viewModel.registerAndLogin()
             }
         }

@@ -28,11 +28,9 @@ fun Completable.catchApiError(liveEvent: ApiErrorLiveEvent): Completable = doOnE
     if (it is IOException) liveEvent.value = Event(it)
 }
 
-
 fun ApiErrorLiveEvent.bindDialog(context: Context, owner: LifecycleOwner) {
     observe(owner) { event ->
         if (event.hasBeenHandled) return@observe
-
         val error = event.peekContent()
         AlertDialog.Builder(context)
             //.setTitle(error.errorModel.message)
