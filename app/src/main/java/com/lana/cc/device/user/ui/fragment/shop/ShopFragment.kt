@@ -4,6 +4,9 @@ package com.lana.cc.device.user.ui.fragment.shop
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
@@ -16,6 +19,7 @@ import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.UserAddressInfo
 import com.lana.cc.device.user.ui.activity.MainActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
+import com.lana.cc.device.user.util.getProvinceModelList
 import com.lana.cc.device.user.util.showSingleAlbum
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -117,9 +121,42 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                 null,//填null 无需多了解
                 false//填false无需多了解
             )
+        var chosenProvincePosition = 0
+        var chosenCityPosition = 0
+        var chosenAreaPosition = 0
+        val provinceList = getProvinceModelList()?: emptyList()
         dialogBinding.name = userAddressInfo.name
         dialogBinding.phone = userAddressInfo.phone
         dialogBinding.address = userAddressInfo.address
+        //省份
+        dialogBinding.spinnerProvince.run {
+            adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
+                provinceList?.map { it.name })
+            onItemSelectedListener = OnSpinnerItemSelected(
+                onItemSelectedAction = {provincePosition ->
+                chosenProvincePosition = provincePosition
+                    //城市
+                    dialogBinding.spinnerCity.run {
+                        adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
+                            provinceList[provincePosition].city?.map { it.name }?: emptyList() )
+                        onItemSelectedListener = OnSpinnerItemSelected(
+                            onItemSelectedAction = {cityPosition ->
+                                chosenCityPosition = cityPosition
+                                //区县
+                                dialogBinding.spinnerDistrict.run {
+                                    adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
+                                        provinceList[provincePosition].city?.get(cityPosition)?.area?.map { it.name }?: emptyList())
+                                    onItemSelectedListener = OnSpinnerItemSelected(
+                                        onItemSelectedAction = {areaPosition ->
+                                            chosenAreaPosition = areaPosition
+                                        })
+                                }
+                            })
+                    }
+            })
+        }
+
+
 
         //安卓原生弹窗  设置信息界面
         AlertDialog.Builder(context!!).setView(
@@ -189,6 +226,19 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                 globalManageGoodsDialogBinding.imgUrl = images[0].path
             }
         }
+    }
+
+}
+
+class OnSpinnerItemSelected(
+    val onItemSelectedAction:(Int)->Unit,
+    private val onNoSelectedAction:(()->Unit) ?= null
+): AdapterView.OnItemSelectedListener {
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        onItemSelectedAction(position)
+    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        onNoSelectedAction?.invoke()
     }
 
 }
