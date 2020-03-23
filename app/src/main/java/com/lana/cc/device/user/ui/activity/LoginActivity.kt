@@ -9,16 +9,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
-    //激励第一次点击back时的时间戳（以毫秒为单位的时间）
+    //纪录第一次点击back时的时间戳（以毫秒为单位的时间）
     private var quiteTime: Long = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        fun goToSearch() {
+            startActivity(
+                ContentActivity.createIntent(
+                    this,
+                    ContentActivity.Destination.Search
+                )
+            )
+        }
+
+        btn_to_search.setOnClickListener { goToSearch() }
 
         //利用 navigationController 设置打开登录界面，并设置在 当前从ativity 布局的 nav_guide_fragment 控件中
         if (SharedPrefModel.hasLogin) {
@@ -27,12 +38,7 @@ class LoginActivity : AppCompatActivity() {
             findNavController(R.id.nav_guide_fragment).navigate(
                 R.id.LoginFragment
             )
-            startActivity(
-                ContentActivity.createIntent(
-                    this,
-                    ContentActivity.Destination.Search
-                )
-            )
+            goToSearch()
         }
     }
 

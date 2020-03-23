@@ -3,6 +3,7 @@ package com.lana.cc.device.user.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
@@ -13,8 +14,9 @@ import com.lana.cc.device.user.ui.base.setupWithNavController
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentNavController: LiveData<NavController>? = null
+    //纪录第一次点击back时的时间戳（以毫秒为单位的时间）
     private var quiteTime: Long = System.currentTimeMillis()
+    private var currentNavController: LiveData<NavController>? = null
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                 ContentActivity.createIntent(
                     this,
                     ContentActivity.Destination.Search
-                )
+                ).putExtra("isWelcome",false)
             )
         }
     }
@@ -70,9 +72,22 @@ class MainActivity : AppCompatActivity() {
         return currentNavController?.value?.navigateUp() ?: false
     }
 
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - quiteTime > 3000) {
+            Toast.makeText(
+                this, R.string.exit_info, Toast.LENGTH_SHORT
+            ).show()
+            quiteTime = System.currentTimeMillis()
+        } else {
+            finish()
+        }
+    }
+
 }
 
 fun showMainActivity(activityTemp: AppCompatActivity) {
     activityTemp.startActivity(Intent(activityTemp, MainActivity::class.java))
     activityTemp.finish()
 }
+
+

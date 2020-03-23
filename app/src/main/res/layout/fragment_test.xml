@@ -87,7 +87,7 @@
             android:gravity="center"
             android:textSize="24dp"
             android:text="向上滑动浏览题卡\n\n点击关闭"
-            tools:visibility="gone"
+            tools:visibility="@{vm.hasClickedTip?View.GONE:View.VISIBLE}"
             android:background="#70000000"/>
 
         <androidx.viewpager2.widget.ViewPager2

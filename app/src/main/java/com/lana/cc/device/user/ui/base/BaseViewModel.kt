@@ -21,19 +21,16 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app),
     LifecycleObserver,
     BindLife,
     KodeinAware {
-
     override val kodein by kodein()
     override val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
-
     val apiError = ApiErrorLiveEvent()
     val dialogEvent = DialogLiveEvent()
-
     val progressDialog = MutableLiveData(false)
+    var vmInit = false
     val isOss by lazy {
         MutableLiveData(SharedPrefModel.getUserModel().role == ROLE_OSS)
     }
 
-    var vmInit = false
     protected fun <T> Single<T>.catchApiError(): Single<T> = catchApiError(apiError)
     protected fun <T> Single<T>.autoProgressDialog(): Single<T> = autoProgressDialog(progressDialog)
 

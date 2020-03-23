@@ -94,7 +94,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                         //Todo 调用兑换接口
 
                     }
-                })
+                },viewModel.isOss.value?:false)
         }
 
     }

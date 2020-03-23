@@ -32,7 +32,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private var chosenSortId: Int = 1
 
+
     override fun initView() {
+
+        binding.isWelcome = activity?.intent?.getBooleanExtra("isWelcome",true)
         //结果列表
         binding.recSearchList.run {
             layoutManager = LinearLayoutManager(context)
@@ -93,6 +96,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         binding.btnBack.setOnClickListener {
             activity?.finish()
         }
+
+        //去登录按钮
+        binding.btnToLogin.setOnClickListener { activity?.finish() }
+
     }
 
     override fun initData() {

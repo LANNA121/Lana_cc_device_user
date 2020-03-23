@@ -14,12 +14,15 @@ class TestViewModel(application: Application) : BaseViewModel(application) {
 
     val testList = MutableLiveData(emptyList<SearchKeyConclusion>())
     val title = MutableLiveData("")
+    val currentPager = MutableLiveData(0)
+    val hasClickedTip = MutableLiveData(false)
     private val rubbishService by instance<RubbishService>()
-    fun fetchTestList() {
+    fun fetchTestList(doOnRefresh:()->Unit) {
         rubbishService.fetchQuestion()
             .doOnApiSuccess {
                 testList.postValue(it.data?.questionList)
                 title.postValue("当前题目  1/${testList.value?.size}")
+                doOnRefresh()
             }
     }
 

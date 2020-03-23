@@ -16,15 +16,10 @@ class TestFragment : BaseFragment<FragmentTestBinding, TestViewModel>(
     TestViewModel::class.java, layoutRes = R.layout.fragment_test
 ) {
     override fun initView() {
-        binding.tipScroll.setOnClickListener { it.visibility = View.GONE }
+        binding.tipScroll.setOnClickListener { viewModel.hasClickedTip.value = true }
         binding.testPager.adapter = TestPagerAdapter(
             viewModel.testList.value ?: emptyList(),
             onAnswerCorrect = { testCardBinding, currentCardPosition, answerSortId ->
-                testCardBinding?.tickView?.visibility = View.VISIBLE
-                testCardBinding?.tvAnswer?.visibility = View.VISIBLE
-                testCardBinding?.tvAnswer?.text =
-                    SharedPrefModel.classficationMap[answerSortId]?.name
-                testCardBinding?.tickView?.isChecked = true
                 //延时一秒自动滑动至下一张
                 Completable.timer(1, TimeUnit.SECONDS)
                     .switchThread()
@@ -38,7 +33,9 @@ class TestFragment : BaseFragment<FragmentTestBinding, TestViewModel>(
                                 .setPositiveButton(
                                     "开启"
                                 ) { _, _ ->
-                                    viewModel.fetchTestList()
+                                    viewModel.fetchTestList{
+                                        binding.testPager.setCurrentItem(0, true)
+                                    }
                                 }.create().show()
                     }.bindLife()
             },
@@ -50,6 +47,7 @@ class TestFragment : BaseFragment<FragmentTestBinding, TestViewModel>(
             override fun onPageSelected(position: Int) {
                 //当pager翻页时 回调方法 并传过来当前页数
                 //给title设置当前页数
+                viewModel.currentPager.value = position
                 setTitle(position)
             }
         })
@@ -57,18 +55,22 @@ class TestFragment : BaseFragment<FragmentTestBinding, TestViewModel>(
         //观察测试列表数据变化
         viewModel.testList.observeNonNull {
             (binding.testPager.adapter as TestPagerAdapter).replaceData(it)
-            binding.testPager.setCurrentItem(0, true)
             setTitle(0)
         }
 
     }
 
     override fun initData() {
-        viewModel.fetchTestList()
+        viewModel.fetchTestList{}
     }
 
     private fun setTitle(position: Int) {
         viewModel.title.postValue("当前题目  ${position + 1}/${viewModel.testList.value?.size}")
+    }
+
+    override fun onResume() {
+        binding.testPager.setCurrentItem(viewModel.currentPager.value?:0,true)
+        super.onResume()
     }
 
 }

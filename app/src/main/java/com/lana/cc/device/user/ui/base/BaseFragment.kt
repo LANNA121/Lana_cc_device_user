@@ -63,8 +63,11 @@ constructor(
         initEventObserver()
         initView()
         initDataAlways()
-        if (!viewModel.vmInit) initData()
-        viewModel.vmInit = true
+        if (!viewModel.vmInit) {
+            initData()
+            viewModel.vmInit = true
+        }
+
     }
 
 

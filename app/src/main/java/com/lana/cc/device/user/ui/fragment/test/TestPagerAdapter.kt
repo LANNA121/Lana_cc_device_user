@@ -12,11 +12,9 @@ import com.lana.cc.device.user.model.api.search.SearchKeyConclusion
 
 class TestPagerAdapter(
     private var pagerList: List<SearchKeyConclusion>,
-    private var onAnswerCorrect: ((CardTestBinding?,Int,Int) -> Unit)? = null,
+    private var onAnswerCorrect: ((CardTestBinding?, Int, Int) -> Unit)? = null,
     private var onAnswerError: ((Int) -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.card_test, parent, false)
@@ -26,13 +24,23 @@ class TestPagerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = pagerList[position]
         (holder as TestPagerViewHolder).pagerBinding?.testCard = item
-        holder.pagerBinding?.tickView?.visibility = View.INVISIBLE
-        holder.pagerBinding?.tvAnswer?.visibility = View.INVISIBLE
-        holder.pagerBinding?.tickView?.isChecked = false
+        holder.pagerBinding?.tickView?.isChecked = item.isCorrect
+        holder.pagerBinding?.tickView?.visibility =
+            if (item.isCorrect) View.VISIBLE else View.INVISIBLE
+        holder.pagerBinding?.tvAnswer?.visibility =
+            if (item.isCorrect) View.VISIBLE else View.INVISIBLE
+        holder.pagerBinding?.tvAnswer?.text = item.answerText
 
-        fun checkAnswer(chosenSortId:Int){
-            if(chosenSortId == item.sortId) onAnswerCorrect?.invoke(holder.pagerBinding,position,chosenSortId)
-            else onAnswerError?.invoke(chosenSortId)
+        fun checkAnswer(chosenSortId: Int) {
+            if (chosenSortId == item.sortId) {
+                item.isCorrect = true
+                notifyItemChanged(position)
+                onAnswerCorrect?.invoke(holder.pagerBinding, position, chosenSortId)
+            } else {
+                item.isCorrect = false
+                onAnswerError?.invoke(chosenSortId)
+            }
+
         }
 
         holder.pagerBinding?.btnSort1?.setOnClickListener { checkAnswer(1) }
