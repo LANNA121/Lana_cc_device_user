@@ -8,7 +8,7 @@ data class NewsListModel(
 )
 
 data class News(
-    val id:Int,
+    val id:Long,
     val title:String,
     val newsUrl:String,
     val image:String,

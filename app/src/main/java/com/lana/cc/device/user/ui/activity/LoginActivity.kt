@@ -19,13 +19,19 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //判读是否已经登录
+
+        //利用 navigationController 设置打开登录界面，并设置在 当前从ativity 布局的 nav_guide_fragment 控件中
         if (SharedPrefModel.hasLogin) {
             showMainActivity(this)
         } else {
-            //利用 navigationController 设置打开登录界面，并设置在 当前从ativity 布局的 nav_guide_fragment 控件中
             findNavController(R.id.nav_guide_fragment).navigate(
                 R.id.LoginFragment
+            )
+            startActivity(
+                ContentActivity.createIntent(
+                    this,
+                    ContentActivity.Destination.Search
+                )
             )
         }
     }
@@ -54,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
 }
 
-fun showLoginActivity(activityTemp: Activity){
+fun showLoginActivity(activityTemp: Activity) {
     activityTemp.startActivity(Intent(activityTemp, LoginActivity::class.java))
     activityTemp.finish()
 }

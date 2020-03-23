@@ -59,7 +59,7 @@ class DatePopView(
 
         //为数据项赋值
         val thisYear = Integer.parseInt(SimpleDateFormat("yyyy").format(Date()))
-        for (i in 1980..thisYear)
+        for (i in 1950..thisYear)
         //从1980到今年
             gradeYear.add(i.toString())
         for (i in 1..12)

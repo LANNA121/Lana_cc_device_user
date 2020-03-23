@@ -47,8 +47,10 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
         SharedPrefModel.hasLogin = true
         SharedPrefModel.userEmail = userEmail.value!!
         SharedPrefModel.password = password.value!!
-        SharedPrefModel.token = loginResultModel?.token?:""
-        SharedPrefModel.uid = loginResultModel?.uid?:0
+        SharedPrefModel.token = loginResultModel?.token ?: ""
+        SharedPrefModel.uid = loginResultModel?.uid ?: 0
+        SharedPrefModel.setUserModel { role = loginResultModel?.role }
+        //SharedPrefModel.setUserModel { role = ROLE_OSS }
         SharedPrefModel.rememberPassword = rememberPassword.value!!
     }
 

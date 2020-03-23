@@ -1,41 +1,92 @@
 package com.lana.cc.device.user.ui.fragment.search
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lana.cc.device.user.ui.base.BaseFragment
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.lana.cc.device.user.R
+import com.lana.cc.device.user.databinding.DialogManageClassificationBinding
 import com.lana.cc.device.user.databinding.FragmentSearchBinding
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.model.api.search.SearchKeyConclusion
 import com.lana.cc.device.user.ui.activity.ContentActivity
+import com.lana.cc.device.user.ui.base.BaseFragment
+import java.util.concurrent.TimeUnit
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     SearchViewModel::class.java, layoutRes = R.layout.fragment_search
-
 ) {
-    override fun initView() {
+    private fun getDialogClassificationBinding(): DialogManageClassificationBinding? {
+        return DataBindingUtil.inflate(
+            LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
+            R.layout.dialog_manage_classification,//弹窗的layout文件
+            null,//填null 无需多了解
+            false//填false无需多了解
+        )
+    }
 
+    private var chosenSortId: Int = 1
+
+    override fun initView() {
         //结果列表
         binding.recSearchList.run {
             layoutManager = LinearLayoutManager(context)
-            adapter = SearchListAdapter {}
+            adapter = SearchListAdapter(
+                onClick = {},
+                onCellLongClick = {
+                    if (viewModel.isOss.value == true) {
+                        showManageChooseDialog(
+                            onEditClick = {
+                                showEditClassificationDialog(it) { name, sortId ->
+                                    viewModel.editClassification(
+                                        SearchKeyConclusion(
+                                            name,
+                                            sortId
+                                        )
+                                    )
+                                }
+                            },
+                            onDeleteClick = { viewModel.deleteClassification(it) }
+                        )
+                    }
+                }
+            )
         }
+
+        //监听输入框的文字变化 1秒钟延时 防止慢速连续输入多个字符时搜索多次
+        RxTextView.textChanges(binding.searchEdit)
+            .debounce(1, TimeUnit.SECONDS)
+            .doOnNext {
+                if ((viewModel.searchKey.value ?: "").isNotEmpty())
+                    viewModel.searchKey()
+            }.bindLife()
+
 
         //列表数据监听
         viewModel.searchList.observeNonNull {
             (binding.recSearchList.adapter as SearchListAdapter).replaceData(it)
         }
 
-        //监听输入框的文字变化
-        viewModel.searchKey.observeNonNull {
-            if (viewModel.searchKey.value!!.isNotEmpty()) {
-                viewModel.searchKey(it)
-            }
-        }
-
-
         //拍照搜索按钮
         binding.btnCamera.setOnClickListener {
             jumpToCameraSearch()
+        }
+
+        //添加分类信息
+        binding.addClassification.setOnClickListener {
+            showAddClassificationDialog { name, sortId ->
+                viewModel.addClassification(
+                    SearchKeyConclusion(
+                        name,
+                        sortId
+                    )
+                )
+            }
         }
 
         //返回按钮
@@ -45,7 +96,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun initData() {
-        viewModel.getCity()
+
     }
 
     //跳转至拍照搜索界面
@@ -69,4 +120,67 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         //将搜索关键字赋值未照相搜索识别后返回的关键字
         viewModel.searchKey.postValue(data?.getStringExtra("searchKey"))
     }
+
+    //添加分类的弹窗方法
+    @SuppressLint("SetTextI18n")
+    private fun showAddClassificationDialog(onConfirmAction: (String, Int) -> Unit) {
+        val dialogBinding = getDialogClassificationBinding()
+        dialogBinding?.initDialog()
+        //设置News弹窗
+        showViewDialog(dialogBinding?.root) {
+            //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
+            onConfirmAction(
+                dialogBinding?.etName?.text.toString(),
+                chosenSortId
+            )
+        }
+    }
+
+    //修改分类的弹窗方法
+    @SuppressLint("SetTextI18n")
+    private fun showEditClassificationDialog(
+        searchKeyConclusion: SearchKeyConclusion,
+        onConfirmAction: (String, Int) -> Unit
+    ) {
+        val dialogBinding = getDialogClassificationBinding()
+        dialogBinding?.initDialog(searchKeyConclusion)
+        //设置分类弹窗
+        showViewDialog(dialogBinding?.root) {
+            //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
+            onConfirmAction(
+                dialogBinding?.etName?.text.toString(),
+                chosenSortId
+            )
+        }
+    }
+
+    private fun DialogManageClassificationBinding.initDialog(searchKeyConclusion: SearchKeyConclusion? = null) {
+        etName.setText(searchKeyConclusion?.name)
+        val spinnerList = SharedPrefModel.classficationMap.values.toList().map { it.name }
+        spinnerClassification.run {
+            adapter =
+                ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item, spinnerList)
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    chosenSortId = position
+                }
+            }
+            setSelection((searchKeyConclusion?.sortId?:1) - 1, true)
+        }
+    }
+
+    override fun onDestroy() {
+        SharedPrefModel.setUserModel {
+            receiveSearchKey = ""
+        }
+        super.onDestroy()
+    }
+
+
 }

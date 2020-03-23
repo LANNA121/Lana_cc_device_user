@@ -42,7 +42,7 @@ class RegisterViewModel(application: Application) : BaseViewModel(application) {
                 avatarFile.value!!.name,
                 photoRequestBody
             )
-            userService.upLoadAvatar(
+            userService.upLoadImage(
                 photo
             ).doOnApiSuccess {
                 avatarRelative.postValue(it.data?.imagePath)

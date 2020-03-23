@@ -25,7 +25,7 @@ interface UserService {
     //上传头像
     @Multipart
     @POST("common/upload")
-    fun upLoadAvatar(@Part file: MultipartBody.Part): Single<ResultModel<UploadAvatarResultModel>>
+    fun upLoadImage(@Part file: MultipartBody.Part): Single<ResultModel<UploadAvatarResultModel>>
 
     //获取用户信息
     @GET("account/profile")
@@ -35,9 +35,6 @@ interface UserService {
     @PUT("account/modify")
     fun updateUserProfile(@Body updateUserModel: UpdateUserModel): Single<ResultModel<String?>>
 
-    //获取新闻列表
-    @GET("news")
-    fun getNews(): Single<ResultModel<NewsListModel>>
 
 
 }

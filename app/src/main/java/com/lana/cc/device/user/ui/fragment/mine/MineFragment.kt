@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,16 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
         binding.portrait.setOnClickListener {
             //打开选图
             showSingleAlbum()
+        }
+
+        binding.etSearch.setOnEditorActionListener { view, actionId, _ ->
+            val searchUid = binding.etSearch.text.toString()
+            if(searchUid.isNotEmpty()){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH)
+                    viewModel.fetchUserProfile(searchUid.toInt())
+            }
+
+            false
         }
 
         //设置按钮点击事件监听 点击调用弹窗
@@ -72,7 +84,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
 
         //刷新控件监听
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.getUserProfile()
+            viewModel.fetchUserProfile()
         }
 
         //注销按钮点击事件
@@ -92,7 +104,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
     }
 
     override fun initData() {
-        viewModel.getUserProfile()
+        viewModel.fetchUserProfile()
     }
 
 

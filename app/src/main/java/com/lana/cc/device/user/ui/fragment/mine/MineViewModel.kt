@@ -2,12 +2,12 @@ package com.lana.cc.device.user.ui.fragment.mine
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lana.cc.device.user.BuildConfig
 import com.lana.cc.device.user.manager.api.GoodsService
 import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.ResultModel
+import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.ui.utils.getImageFromServer
@@ -31,16 +31,16 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
     val avatar = MutableLiveData<String>()
     val isRefreshing = MutableLiveData(false)
 
-    fun getUserProfile() {
-        userService.getUserProfile(SharedPrefModel.uid)
-            .dealGetProfileSuccess()
-
+    fun fetchUserProfile(uid: Int = SharedPrefModel.uid) {
+        userService.getUserProfile(uid)
+            .doOnGetProfileSuccess()
     }
 
-    private fun Single<ResultModel<Profile>>.dealGetProfileSuccess() =
+    private fun Single<ResultModel<Profile>>.doOnGetProfileSuccess() =
         doOnApiSuccess {
             profile.postValue(it.data)
-            avatar.postValue("${BuildConfig.BASE_URL}/image/${it.data?.avatar}")
+            //avatar.postValue("${BuildConfig.BASE_URL}/image/${it.data?.avatar}")
+            avatar.postValue(getImageFromServer(it.data?.avatar))
             age.postValue(getAgeByBirth(Date(it.data?.birthday ?: 0.toLong())).toString() + "岁")
         }
 
@@ -53,17 +53,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
 
     //上传头像,并修改头像
     fun uploadAvatar() {
-        if (avatarFile.value != null) {
-            val photoRequestBody =
-                RequestBody.create("image/png".toMediaTypeOrNull(), avatarFile.value!!)
-            val photo = MultipartBody.Part.createFormData(
-                "imageFile",
-                avatarFile.value!!.name,
-                photoRequestBody
-            )
-            userService.upLoadAvatar(
-                photo
-            ).flatMap {
+        userService.upLoadImage(avatarFile.value)
+            ?.flatMap {
                 //上传成功就更新本地头像
                 avatar.postValue(getImageFromServer(it.data?.imagePath))
                 //调用修改头像api
@@ -72,8 +63,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
                         0, "", "", it.data?.imagePath
                     )
                 )
-            }.doOnApiSuccess {}
-        }
+            }?.doOnApiSuccess {}
+
     }
 
     //更改 昵称 生日 签名
@@ -84,9 +75,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
             )
         ).flatMap {
             userService.getUserProfile(SharedPrefModel.uid)
-        }.dealGetProfileSuccess()
+        }.doOnGetProfileSuccess()
     }
-
 
     private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {
         switchThread()
@@ -99,5 +89,19 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
             .catchApiError()
             .bindLife()
     }
+}
 
+fun UserService.upLoadImage(file: File?): Single<ResultModel<UploadAvatarResultModel>>? {
+    return if (file != null) {
+        val photoRequestBody =
+            RequestBody.create("image/png".toMediaTypeOrNull(), file)
+        val photo = MultipartBody.Part.createFormData(
+            "imageFile",
+            file.name,
+            photoRequestBody
+        )
+        upLoadImage(
+            photo
+        )
+    } else null
 }

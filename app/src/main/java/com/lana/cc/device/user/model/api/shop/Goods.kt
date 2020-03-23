@@ -1,11 +1,14 @@
 package com.lana.cc.device.user.model.api.shop
 
 data class Goods(
-    val id: Long,//id
-    val name: String,//名字
-    val image: String,//名字
-    val description: String,//描述
-    val coin: Int,//价值
-    val total: Int,//总数
-    val currentCount: Int//剩余
+    val id: Int = 0,
+    val goodsName: String? = null,
+    val total: Int,
+    val price: Int,
+    val goodsUrl: String? = null,
+    val goodsDescription: String? = null,
+    val createBy: Int = 0,
+    val createTime: Long = 0,
+    val status: Int = 0
 )
+

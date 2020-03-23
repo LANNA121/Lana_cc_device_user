@@ -8,6 +8,7 @@
         <variable
             name="goods"
             type="com.lana.cc.device.user.model.api.shop.Goods" />
+
         <variable
             name="currentCount"
             type="String" />
@@ -28,15 +29,15 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                imageUrl="@{goods.image}"
+                imageUrl="@{goods.goodsUrl}"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="w,8:7"
+                android:src="@drawable/icon_img"
+                app:layout_constraintDimensionRatio="w,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/icon_img" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -44,13 +45,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:paddingStart="8dp"
-                android:text="Dior"
+                android:text="@{goods.goodsName}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/imageView"
                 app:layout_constraintEnd_toEndOf="@id/imageView"
-                app:layout_constraintStart_toStartOf="@id/imageView" />
+                app:layout_constraintStart_toStartOf="@id/imageView"
+                app:layout_constraintTop_toBottomOf="@id/imageView"
+                tools:text="Dior" />
 
 
             <LinearLayout
@@ -68,20 +70,21 @@
                     android:id="@+id/tv_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{currentCount}"
+                    android:text="@{@string/tv_total + goods.total + @string/unit_goods}"
                     android:textColor="#858585"
                     android:textSize="12sp"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintEnd_toEndOf="@id/imageView"
                     app:layout_constraintStart_toStartOf="@id/imageView"
-                    tools:text="剩余100件" />
+                    tools:text="当前剩余100件" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_name"
                     app:layout_constraintStart_toStartOf="@+id/tv_name"
                     app:layout_constraintTop_toBottomOf="@id/tv_name">
@@ -89,17 +92,17 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:tint="@color/colorAccent"
-                        android:src="@drawable/coin"/>
+                        android:src="@drawable/coin"
+                        android:tint="@color/colorAccent" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:text="@{currentCount}"
+                        android:text='@{goods.price + " 积分"}'
                         android:textColor="@color/colorAccent"
                         android:textSize="10sp"
-                        tools:text="剩余100件" />
+                        tools:text="100 RMB" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -123,10 +126,10 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="4dp"
-                    android:textSize="12sp"
                     android:gravity="center"
                     android:text="立即兑换"
                     android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>

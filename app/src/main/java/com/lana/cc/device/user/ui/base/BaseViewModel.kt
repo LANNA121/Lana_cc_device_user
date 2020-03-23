@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import com.lana.cc.device.user.R
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.model.api.guide.register.ROLE_OSS
 import com.lana.cc.device.user.util.DialogUtil
 import com.lana.cc.device.user.util.autoProgressDialog
 import io.reactivex.Completable
@@ -27,9 +29,11 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app),
     val dialogEvent = DialogLiveEvent()
 
     val progressDialog = MutableLiveData(false)
+    val isOss by lazy {
+        MutableLiveData(SharedPrefModel.getUserModel().role == ROLE_OSS)
+    }
 
     var vmInit = false
-
     protected fun <T> Single<T>.catchApiError(): Single<T> = catchApiError(apiError)
     protected fun <T> Single<T>.autoProgressDialog(): Single<T> = autoProgressDialog(progressDialog)
 

@@ -5,16 +5,15 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-<!--        <item name="android:statusBarColor">@android:color/white</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/white</item>-->
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
         <!--设置没有Title-->
-        <!--        <item name="android:windowTranslucentStatus">true</item>
-                <item name="android:windowIsTranslucent">true</item>
-                <item name="android:windowFullscreen">true</item>
-                <item name="android:windowNoTitle">true</item>-->
+        <item name="android:windowTranslucentStatus">false</item>
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+   <!--     <item name="android:windowFullscreen">true</item>-->
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
         <item name="android:windowContentOverlay">@null</item>
 
     </style>
