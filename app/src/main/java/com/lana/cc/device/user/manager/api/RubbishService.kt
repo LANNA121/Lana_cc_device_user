@@ -1,6 +1,5 @@
 package com.lana.cc.device.user.manager.api
 
-
 import com.lana.cc.device.user.model.api.ResultModel
 import com.lana.cc.device.user.model.api.search.Category
 import com.lana.cc.device.user.model.api.search.SearchKeyConclusion
