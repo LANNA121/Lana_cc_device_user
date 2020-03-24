@@ -50,9 +50,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:background="@null"
-                    android:hint="按用户id搜索"
+                    android:text="@={vm.searchKey}"
+                    android:hint="按账号搜索"
                     android:imeOptions="actionSearch"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -76,11 +77,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/btn_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_gravity="center"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:paddingStart="48dp"
+                        android:paddingEnd="48dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:background="#ED5252"
+                        android:text="注销"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rec_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/cell_user"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         tools:itemCount="3"/>
 
                     <Space

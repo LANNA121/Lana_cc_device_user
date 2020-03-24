@@ -91,7 +91,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
             SharedPrefModel.hasLogin = false
             SharedPrefModel.token = ""
             activity?.run {
-                showLoginActivity(this)
+                showLoginActivity(this,true)
             }
         }
 

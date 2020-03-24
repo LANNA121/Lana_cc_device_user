@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="profile"
+            type="com.lana.cc.device.user.model.api.mine.Profile" />
+
+        <variable
             name="imageUrl"
             type="String" />
     </data>
@@ -27,10 +31,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="资讯"
+                android:text="用户"
                 android:textColor="@color/black"
                 android:textSize="24dp"
                 android:textStyle="bold" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="56dp"
+                    android:layout_height="0dp"
+                    app:cardCornerRadius="4dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="w,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/img_avatar"
+                        imageUrlWithAddIcon="@{imageUrl}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:minHeight="120dp"
+                        android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,15 +75,14 @@
                 android:gravity="center">
 
                 <TextView
-                    android:id="@+id/tv_"
+                    android:id="@+id/tv_user_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="标题"
+                    android:text="账号（不可修改）"
                     android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/et_title"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -56,6 +91,8 @@
                     android:gravity="center"
                     android:maxLength="10"
                     android:padding="4dp"
+                    android:text="@{profile.userName}"
+                    android:textIsSelectable="true"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:textColor="@color/black"
@@ -64,72 +101,40 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tv_"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="封面"
+                    android:text="昵称"
                     android:textColor="@color/black" />
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/et_nick_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:gravity="center">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="6dp"
-                        app:cardUseCompatPadding="true">
-
-                        <ImageView
-                            android:id="@+id/news_image"
-                            imageUrlWithAddIcon="@{imageUrl}"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            android:minHeight="120dp"
-                            android:padding="8dp"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/icon_add_pic" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_input_lin"
+                    android:gravity="center"
+                    android:maxLength="10"
+                    android:padding="4dp"
+                    android:text="@{profile.nikeName}"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    tools:text="百度" />
 
             </LinearLayout>
 
-
-            <RadioGroup
-                android:id="@+id/rg_news"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="自创文章" />
-
-                <RadioButton
-                    android:id="@+id/rb_url"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:text="网址文章" />
-            </RadioGroup>
 
             <LinearLayout
                 android:id="@+id/lin_url"
@@ -144,19 +149,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="网址"
+                    android:text="签名"
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/et_url"
+                    android:id="@+id/et_signature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_input_lin"
                     android:gravity="start"
-                    android:hint="http://"
+                    android:hint="风格签名"
                     android:inputType="textUri"
+                    android:text="@{profile.signature}"
                     android:padding="4dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
@@ -166,7 +172,42 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lin_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_tip_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="出生日期"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_birthday"
+                    time="@{profile.birthday}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_input_lin"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:textColor="#8F8F8F"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_tip_birthday"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="2020年2月2日" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -174,40 +215,30 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_tip_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="内容"
+                    android:text="积分（不可修改）"
                     android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/et_content"
+                <TextView
+                    android:id="@+id/et_coin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_input_lin"
-                    android:gravity="start"
-                    android:hint="编辑内容（最多800字）"
-                    android:inputType="textMultiLine"
-                    android:maxLength="800"
-                    android:minHeight="150dp"
+                    android:gravity="center"
+                    android:text="@{profile.coins.toString()}"
+                    android:hint="100"
+                    android:inputType="number"
+                    android:maxLength="8"
                     android:padding="4dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    tools:text="" />
-
+                    android:textSize="16sp" />
             </LinearLayout>
-
-            <CheckBox
-                android:id="@+id/check_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="置顶" />
 
         </LinearLayout>
 

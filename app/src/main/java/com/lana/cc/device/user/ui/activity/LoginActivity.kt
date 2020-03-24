@@ -38,7 +38,9 @@ class LoginActivity : AppCompatActivity() {
             findNavController(R.id.nav_guide_fragment).navigate(
                 R.id.LoginFragment
             )
-            goToSearch()
+            if (!intent.getBooleanExtra("isFromMain",false)) {
+                goToSearch()
+            }
         }
     }
 
@@ -66,7 +68,10 @@ class LoginActivity : AppCompatActivity() {
 
 }
 
-fun showLoginActivity(activityTemp: Activity) {
-    activityTemp.startActivity(Intent(activityTemp, LoginActivity::class.java))
+fun showLoginActivity(activityTemp: Activity, isFromMain: Boolean = false) {
+    activityTemp.startActivity(
+        Intent(activityTemp, LoginActivity::class.java)
+            .putExtra("isFromMain", isFromMain)
+    )
     activityTemp.finish()
 }

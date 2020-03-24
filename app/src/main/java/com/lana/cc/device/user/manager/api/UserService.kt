@@ -32,11 +32,11 @@ interface UserService {
     @GET("account/profile")
     fun getUserProfile(@Query("uid") uid: Int): Single<ResultModel<Profile>>
 
-    //更改用户头像
+    //更改用户信息
     @PUT("account/modify")
     fun updateUserProfile(@Body updateUserModel: UpdateUserModel): Single<ResultModel<String?>>
 
-    //更改用户头像
+    //拉取所有user
     @GET("account/all/user")
     fun fetchUserList(): Single<ResultModel<FetchAllUserProfileResultModel>>
 

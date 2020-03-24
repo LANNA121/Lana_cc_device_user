@@ -44,7 +44,6 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
             age.postValue(getAgeByBirth(Date(it.data?.birthday ?: 0.toLong())).toString() + "岁")
         }
 
-
     fun getExchangeGoodsList() {
         goodsService.getExchangeHistoryList().doOnApiSuccess {
 
@@ -64,7 +63,6 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
                     )
                 )
             }?.doOnApiSuccess {}
-
     }
 
     //更改 昵称 生日 签名
@@ -103,7 +101,7 @@ fun UserService.upLoadImage(file: File?): Single<ResultModel<UploadAvatarResultM
         upLoadImage(
             photo
         ).onErrorResumeNext {
-            Single.just(ResultModel(ResultModel.Meta(1999,""),UploadAvatarResultModel("")))
+            Single.just(ResultModel(ResultModel.Meta(1999, ""), UploadAvatarResultModel("")))
         }
     } else null
 }
