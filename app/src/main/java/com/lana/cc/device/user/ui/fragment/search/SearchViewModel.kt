@@ -20,7 +20,7 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
 
     val searchKey = MutableLiveData("")
 
-    fun searchKey(key: String = searchKey.value?:"") {
+    fun searchKey(key: String = searchKey.value ?: "") {
         rubbishService.searchClassByName(key)
             .switchThread()
             .autoProgressDialog()
@@ -55,21 +55,29 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun editClassification(
-        searchKeyConclusion: SearchKeyConclusion
+        className: String,
+        classNUm: Int
     ) {
         rubbishService.editCategory(
-            searchKeyConclusion.name,
-            searchKeyConclusion.sortId
-        ).doOnApiSuccess {
-            searchKey()
-        }
+            ClassificationRequestModel(
+                className,
+                classNUm
+            )
+        )
+            .doOnApiSuccess {
+                searchKey()
+            }
 
     }
 
     fun deleteClassification(
         searchKeyConclusion: SearchKeyConclusion
     ) {
-        rubbishService
+        rubbishService.deleteCategory(searchKeyConclusion.name)
+            .doOnApiSuccess {
+                searchKey()
+            }
+
     }
 
     private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {

@@ -47,10 +47,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                             onEditClick = {
                                 showEditClassificationDialog(it) { name, sortId ->
                                     viewModel.editClassification(
-                                        SearchKeyConclusion(
                                             name,
                                             sortId
-                                        )
                                     )
                                 }
                             },
@@ -175,7 +173,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                     position: Int,
                     id: Long
                 ) {
-                    chosenSortId = position
+                    chosenSortId = position+1
                 }
             }
             setSelection((searchKeyConclusion?.sortId?:1) - 1, true)

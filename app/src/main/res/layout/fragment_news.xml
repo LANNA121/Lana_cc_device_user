@@ -16,7 +16,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">>
+        android:fitsSystemWindows="true">
 
 
         <com.google.android.material.appbar.AppBarLayout
@@ -137,8 +137,7 @@
                             android:layout_marginTop="10dp"
                             app:canLoop="true"
                             app:indicatorAlign="center"
-                            app:indicatorPaddingLeft="20dp"
-                            app:middle_page_cover="false"
+                            app:middle_page_cover="true"
                             app:open_mz_mode="true" />
 
 
@@ -170,6 +169,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="16dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:orientation="vertical"
                             android:paddingBottom="160dp"
                             tools:listitem="@layout/cell_news" />

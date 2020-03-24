@@ -14,6 +14,7 @@ import com.lana.cc.device.user.ui.base.BaseFragment
 
 
 const val INTENT_KEY_NEWS_URl = "newsUrl"
+const val INTENT_KEY_NEWS_CONTENT = "newsContent"
 
 class NewsDetailFragment : BaseFragment<FragmentNewsDetailBinding, NewsDetailViewModel>(
     NewsDetailViewModel::class.java, R.layout.fragment_news_detail
@@ -22,7 +23,7 @@ class NewsDetailFragment : BaseFragment<FragmentNewsDetailBinding, NewsDetailVie
     override fun initView() {
 
         //设置webView的一些属性
-        binding.webView.webViewClient = object :WebViewClient(){
+        binding.webView.webViewClient = object : WebViewClient() {
             override fun onReceivedSslError(
                 view: WebView?,
                 handler: SslErrorHandler,
@@ -48,10 +49,22 @@ class NewsDetailFragment : BaseFragment<FragmentNewsDetailBinding, NewsDetailVie
 
     override fun initData() {
         //webView加载网页
-        binding.webView.loadUrl(
-            //从Fragment自己的属性arguments中拿到上个页面传过来的url的String
-            arguments?.getString(INTENT_KEY_NEWS_URl)
-        )
+        val url = arguments?.getString(INTENT_KEY_NEWS_URl)
+        val contentText = arguments?.getString(INTENT_KEY_NEWS_CONTENT)
+        if (url?.isNotEmpty() == true) {
+            binding.webView.loadUrl(
+                //从Fragment自己的属性arguments中拿到上个页面传过来的url的String
+                arguments?.getString(INTENT_KEY_NEWS_URl)
+            )
+        } else {
+            binding.webView.loadData(
+                contentText,
+                "text/html",
+                "utf-8"
+            )
+        }
+
+
     }
 
 

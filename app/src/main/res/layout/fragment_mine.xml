@@ -140,13 +140,13 @@
 
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/portrait"
-                                imageUrl="@{vm.avatar}"
+                                imageUrlWithAddIcon="@{vm.avatar}"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_marginStart="88dp"
                                 android:layout_marginTop="32dp"
                                 android:layout_marginEnd="88dp"
-                                android:src="@drawable/icon_img"
+                                tools:src="@drawable/icon_add_pic"
                                 app:civ_border_color="@color/white"
                                 app:civ_border_width="1dp"
                                 app:layout_constraintDimensionRatio="w,1:1"

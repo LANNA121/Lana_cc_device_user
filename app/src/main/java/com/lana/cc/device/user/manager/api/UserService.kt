@@ -6,6 +6,7 @@ import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.model.api.guide.register.RegisterRequestModel
 import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
+import com.lana.cc.device.user.model.api.manageuser.FetchAllUserProfileResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.model.api.news.NewsListModel
 import io.reactivex.Single
@@ -35,6 +36,9 @@ interface UserService {
     @PUT("account/modify")
     fun updateUserProfile(@Body updateUserModel: UpdateUserModel): Single<ResultModel<String?>>
 
+    //更改用户头像
+    @GET("account/all/user")
+    fun fetchUserList(): Single<ResultModel<FetchAllUserProfileResultModel>>
 
 
 }

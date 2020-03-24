@@ -26,8 +26,10 @@ class CameraSearchFragment : BaseFragment<CameraSearchBinding, CameraSearchViewM
         }
 
         //获取相机权限
-        RxPermissions(activity!!).request(Manifest.permission.CAMERA).doOnNext {
-            binding.viewFinder.post { startCamera() }
+        RxPermissions(activity!!).request(Manifest.permission.CAMERA)
+            .doOnNext {
+                if(it) binding.viewFinder.post { startCamera() }
+                else activity?.finish()
         }.bindLife()
 
         binding.viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->

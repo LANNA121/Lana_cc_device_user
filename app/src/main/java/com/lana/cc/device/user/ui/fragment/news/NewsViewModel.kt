@@ -51,7 +51,8 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
 
     fun addNews(
         title: String,
-        newsUrl: String,
+        type: Int,
+        content: String,
         imageFile: File?,
         needTop: Int
     ) {
@@ -60,7 +61,8 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
                 newsService.addNews(
                     AddNewsRequestModel(
                         title,
-                        newsUrl,
+                        type,
+                        content,
                         it.data?.imagePath,
                         needTop
                     )
@@ -76,7 +78,7 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
         id:Long,
         originImageUrl:String,
         title: String,
-        newsUrl: String,
+        content: String,
         imageFile: File?,
         needTop: Int
     ) {
@@ -84,7 +86,7 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
             EditNewsRequestModel(
                 id,
                 title,
-                newsUrl,
+                content,
                 imagePath,
                 needTop
             )

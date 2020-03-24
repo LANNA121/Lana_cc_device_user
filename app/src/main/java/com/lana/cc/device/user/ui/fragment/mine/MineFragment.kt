@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager

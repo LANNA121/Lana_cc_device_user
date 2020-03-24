@@ -11,22 +11,17 @@ import retrofit2.http.*
 
 interface RubbishService {
 	
-
-	
 	//根据物品名称搜索分类
 	@GET("common/tools/{searchKey}/search")
 	fun searchClassByName(@Path("searchKey") searchKey: String): Single<ResultModel<MutableList<SearchKeyConclusion>>>
-	
-	
+
 	//根据sortId搜索分类信息
 	@GET("common/tools/{classNum}/categories")
 	fun searchCategoryInfo(@Path("classNum") classNum: Int): Single<ResultModel<Category>>
 
-
-	//根据sortId搜索分类信息
+	//获取分类题卡
 	@GET("game/question")
 	fun fetchQuestion(): Single<ResultModel<QuestionListModel>>
-
 
 	//增加分类信息
 	@POST("common/tools/categories")
@@ -34,9 +29,12 @@ interface RubbishService {
 
 	//修改分类信息
 	@PUT("common/tools/categories")
-	fun editCategory(
-		@Query ("classKey")classKey:String,
-		@Query ("classNum")classNum:Int
-		): Single<ResponseBody>
+	fun editCategory(@Body classificationRequestModel: ClassificationRequestModel): Single<ResponseBody>
+
+	//删除分类信息
+	@DELETE("common/tools/categories")
+	fun deleteCategory(
+		@Query ("classKey")classKey:String
+	): Single<ResponseBody>
 
 }

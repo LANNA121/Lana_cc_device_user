@@ -102,6 +102,8 @@ fun UserService.upLoadImage(file: File?): Single<ResultModel<UploadAvatarResultM
         )
         upLoadImage(
             photo
-        )
+        ).onErrorResumeNext {
+            Single.just(ResultModel(ResultModel.Meta(1999,""),UploadAvatarResultModel("")))
+        }
     } else null
 }

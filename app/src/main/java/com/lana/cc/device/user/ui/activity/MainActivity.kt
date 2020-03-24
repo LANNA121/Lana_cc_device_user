@@ -10,6 +10,8 @@ import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.ActivityMainBinding
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.model.api.guide.register.ROLE_OSS
 import com.lana.cc.device.user.ui.base.setupWithNavController
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 ContentActivity.createIntent(
                     this,
                     ContentActivity.Destination.Search
-                ).putExtra("isWelcome",false)
+                ).putExtra("isWelcome", false)
             )
         }
     }
@@ -56,7 +58,8 @@ class MainActivity : AppCompatActivity() {
                 R.navigation.top_news,
                 R.navigation.top_test,
                 R.navigation.top_shop,
-                R.navigation.top_mine
+                if (SharedPrefModel.getUserModel().role == ROLE_OSS) R.navigation.top_manage_user
+                else R.navigation.top_mine
             ),
             fragmentManager = supportFragmentManager,
             containerId = R.id.nav_host_fragment_container,
