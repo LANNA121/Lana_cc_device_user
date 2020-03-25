@@ -108,9 +108,3 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             .bindLife()
     }
 }
-
-
-fun encodeByMd5(value: String?, slat: String?, uid: Int): String? {
-    val passString = String.format("L%sA%sN%sA", value, slat, uid)
-    return MD5Utils.calc(passString)
-}

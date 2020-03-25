@@ -10,6 +10,7 @@ import com.lana.cc.device.user.model.api.manageuser.EditUserRoleModel
 import com.lana.cc.device.user.model.api.manageuser.FetchAllUserProfileResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.model.api.news.NewsListModel
+import com.lana.cc.device.user.model.api.test.ChangeRedeemRequestModel
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -49,5 +50,9 @@ interface UserService {
     //更改用户权限
     @POST("account/role")
     fun editRole(@Body editUserRoleModel: EditUserRoleModel): Single<ResponseBody>
+
+    //换取积分
+    @POST("book/redeem")
+    fun changeRedeem(@Body changeRedeemRequestModel: ChangeRedeemRequestModel ): Single<ResponseBody>
 
 }

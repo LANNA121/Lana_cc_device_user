@@ -113,7 +113,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-
+    implementation files('libs/jsoup-1.13.1.jar')
     // Use the most recent version of CameraX, currently that is alpha06.
 
     implementation "androidx.camera:camera-core:${camerax_version}"

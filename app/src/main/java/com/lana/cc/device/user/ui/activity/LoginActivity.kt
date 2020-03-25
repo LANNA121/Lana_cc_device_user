@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
 
         btn_to_search.setOnClickListener { goToSearch() }
 
-        //利用 navigationController 设置打开登录界面，并设置在 当前从ativity 布局的 nav_guide_fragment 控件中
+        //利用 navigationController 设置打开登录界面，并设置在 当前从activity 布局的 nav_guide_fragment 控件中
         if (SharedPrefModel.hasLogin) {
             showMainActivity(this)
         } else {
@@ -53,16 +53,6 @@ class LoginActivity : AppCompatActivity() {
             quiteTime = System.currentTimeMillis()
         } else {
             finish()
-        }
-    }
-
-    companion object {
-
-        fun createIntent(context: Context): Intent {
-            return Intent(
-                context,
-                LoginActivity::class.java
-            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
     }
 

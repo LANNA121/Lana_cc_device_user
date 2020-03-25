@@ -16,10 +16,15 @@ import com.lana.cc.device.user.ui.fragment.newsdetail.INTENT_KEY_NEWS_CONTENT
 import com.lana.cc.device.user.ui.fragment.newsdetail.INTENT_KEY_NEWS_URl
 import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.util.showSingleAlbum
+import com.lana.cc.device.user.util.switchThread
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.entity.LocalMedia
+import io.reactivex.Single
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.io.File
+import java.io.IOException
 
 const val NEWS_TYPE_TEXT = 1
 const val NEWS_TYPE_URL = 2
@@ -154,7 +159,6 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
                 }
             )
         }
-
         //OSS管理员添加News按钮
         binding.btnAdd.setOnClickListener {
             showAddNewsDialog {

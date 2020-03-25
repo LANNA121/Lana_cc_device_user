@@ -20,6 +20,8 @@ class TestFragment : BaseFragment<FragmentTestBinding, TestViewModel>(
         binding.testPager.adapter = TestPagerAdapter(
             viewModel.testList.value ?: emptyList(),
             onAnswerCorrect = { testCardBinding, currentCardPosition, answerSortId ->
+                viewModel.changeRedeem(currentCardPosition)
+
                 //延时一秒自动滑动至下一张
                 Completable.timer(1, TimeUnit.SECONDS)
                     .switchThread()
