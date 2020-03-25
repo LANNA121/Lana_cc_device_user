@@ -7,6 +7,7 @@ import com.lana.cc.device.user.manager.api.UserService
 import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.ui.fragment.mine.upLoadImage
+import com.lana.cc.device.user.util.MD5Utils
 import com.lana.cc.device.user.util.switchThread
 import io.reactivex.Single
 import org.kodein.di.generic.instance
@@ -44,9 +45,52 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
                     )
                 )
             }?.doOnApiSuccess {
+                goodsImageFile.postValue(null)
+                fetchGoodsList()
+            }
+    }
+
+    fun editGoods(
+        goodsId: Int,
+        goodsName: String,
+        oldImageUrl:String,
+        total: Int,
+        price: Int,
+        goodsDescription: String
+    ) {
+        fun editGoods(imagePath: String? = oldImageUrl) =
+            goodsService.editGoods(
+                EditGoodsRequestModel(
+                    goodsId,
+                    goodsName,
+                    total,
+                    price,
+                    imagePath,
+                    goodsDescription
+                )
+            )
+
+        val single = if (goodsImageFile.value == null) {
+            editGoods()
+        } else {
+            userService.upLoadImage(goodsImageFile.value)
+                ?.flatMap {
+                    editGoods(it.data?.imagePath)
+                }
+        }
+        single?.doOnApiSuccess {
+            goodsImageFile.postValue(null)
             fetchGoodsList()
         }
+    }
 
+    fun deleteGoods(
+        goodsId: Int
+    ) {
+        goodsService.deleteGoods(goodsId)
+            .doOnApiSuccess {
+                fetchGoodsList()
+            }
     }
 
     private fun <T> Single<T>.dealRefresh() =
@@ -63,4 +107,10 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             .catchApiError()
             .bindLife()
     }
+}
+
+
+fun encodeByMd5(value: String?, slat: String?, uid: Int): String? {
+    val passString = String.format("L%sA%sN%sA", value, slat, uid)
+    return MD5Utils.calc(passString)
 }

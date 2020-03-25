@@ -4,6 +4,7 @@ data class UpdateUserModel(
     private val birthday: Long?,
     private val nikeName: String?,
     private val signature: String?,
-    private val avatar: String?
+    private val avatar: String?,
+    private val uid: Int? = null
 )
 

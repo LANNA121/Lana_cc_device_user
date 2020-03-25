@@ -10,6 +10,7 @@ import com.lana.cc.device.user.ui.utils.getImageFromServer
 
 class ShopRecyclerAdapter(
     onGoodsClick: (Goods) -> Unit,
+    val onGoodsLongClick: (Goods) -> Unit,
     val onExchangeClick: (Goods) -> Unit,
     val isOss:Boolean = false
 ) : BaseRecyclerAdapter<Goods, ItemGoodsBinding>(
@@ -22,6 +23,10 @@ class ShopRecyclerAdapter(
         binding.btnExchamge.visibility = if(isOss)View.INVISIBLE else View.VISIBLE
         binding.btnExchamge.setOnClickListener {
             onExchangeClick(goods)
+        }
+        binding.root.setOnLongClickListener {
+            onGoodsLongClick(goods)
+            true
         }
     }
 }

@@ -3,9 +3,14 @@ package com.lana.cc.device.user.ui.fragment.manageuser
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.lana.cc.device.user.manager.api.UserService
+import com.lana.cc.device.user.model.api.guide.register.ROLE_OSS
+import com.lana.cc.device.user.model.api.guide.register.ROLE_USER
+import com.lana.cc.device.user.model.api.manageuser.EditUserRoleModel
 import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
+import com.lana.cc.device.user.ui.base.Event
+import com.lana.cc.device.user.ui.base.LiveEvent
 import com.lana.cc.device.user.ui.fragment.mine.upLoadImage
 import io.reactivex.Single
 import com.lana.cc.device.user.util.switchThread
@@ -20,28 +25,48 @@ class ManageUserViewModel(application: Application) : BaseViewModel(application)
     val userList = MutableLiveData(emptyList<Profile>())
     val searchKey = MutableLiveData("")
     val avatarFile = MutableLiveData<File>()
-
+    val removeSuccess = LiveEvent<Event<Boolean>>()
 
     fun fetchUsers() {
         userService.fetchUserList()
             .doOnApiSuccess {
-                userList.postValue(it.data?.userProfileRspList)
-                oldUserList = it.data?.userProfileRspList ?: emptyList()
+                val profileList = it.data?.userProfileRspList
+                val ossList =
+                    profileList?.filter { profile -> profile.role == ROLE_OSS }
+                        ?.sortedBy { profile -> profile.createTime }
+                        ?: emptyList() //管理员列表
+                val commonUserList =
+                    profileList?.filter { profile -> profile.role == ROLE_USER }
+                        ?.sortedBy { profile -> profile.createTime }
+                        ?: emptyList() //普通用户列表
+                val resultList = listOf<Profile>().toMutableList()
+                    .apply {
+                        toMutableList()
+                        addAll(ossList)
+                        addAll(commonUserList)
+                    }.toList()
+
+                userList.postValue(resultList)
+                oldUserList = resultList
             }
     }
 
     //更改 昵称 生日 签名
     fun editUserProfile(
+        uid: Int?,
         birthLong: Long,
         nickName: String,
-        signature: String
+        signature: String,
+        role: String,
+        action: () -> Unit
     ) {
         fun editInfo(avatarPath: String = "") = userService.updateUserProfile(
             UpdateUserModel(
                 birthLong,
                 nickName,
                 signature,
-                avatarPath
+                avatarPath,
+                uid = uid
             )
         )
 
@@ -54,7 +79,26 @@ class ManageUserViewModel(application: Application) : BaseViewModel(application)
                     editInfo(it.data?.imagePath ?: "")
                 }
         }
-        single?.doOnApiSuccess { avatarFile.postValue(null) }
+        single?.flatMap {
+            userService.editRole(
+                EditUserRoleModel(
+                    uid = uid,
+                    role = role
+                )
+            )
+        }?.doOnApiSuccess {
+            //将此页面的全局的头像file文件置为空，避免进入其他用户弹窗时还没有头像的时候 把之前选择过的头像文件读取到
+            avatarFile.postValue(null)
+            action.invoke()
+        }
+    }
+
+    fun removeUser(uid: Int?) {
+        userService.deleteUser(uid)
+            .doOnApiSuccess {
+                removeSuccess.postValue(Event(true))
+                fetchUsers()
+            }
     }
 
     private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {
@@ -68,6 +112,5 @@ class ManageUserViewModel(application: Application) : BaseViewModel(application)
             .catchApiError()
             .bindLife()
     }
-
 
 }

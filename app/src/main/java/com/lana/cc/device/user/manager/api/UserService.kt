@@ -6,11 +6,13 @@ import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.model.api.guide.register.RegisterRequestModel
 import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
+import com.lana.cc.device.user.model.api.manageuser.EditUserRoleModel
 import com.lana.cc.device.user.model.api.manageuser.FetchAllUserProfileResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
 import com.lana.cc.device.user.model.api.news.NewsListModel
 import io.reactivex.Single
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface UserService {
@@ -36,9 +38,16 @@ interface UserService {
     @PUT("account/modify")
     fun updateUserProfile(@Body updateUserModel: UpdateUserModel): Single<ResultModel<String?>>
 
+    //删除用户
+    @DELETE("account/profile")
+    fun deleteUser(@Query ("uid")uid:Int?): Single<ResponseBody>
+
     //拉取所有user
     @GET("account/all/user")
     fun fetchUserList(): Single<ResultModel<FetchAllUserProfileResultModel>>
 
+    //更改用户权限
+    @POST("account/role")
+    fun editRole(@Body editUserRoleModel: EditUserRoleModel): Single<ResponseBody>
 
 }

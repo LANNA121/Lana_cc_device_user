@@ -1,5 +1,6 @@
 package com.lana.cc.device.user.model.api.mine
 
+import com.lana.cc.device.user.model.api.guide.register.ROLE_OSS
 import com.lana.cc.device.user.model.api.guide.register.ROLE_USER
 
 data class Profile(

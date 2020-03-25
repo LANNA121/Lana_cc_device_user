@@ -17,8 +17,11 @@ import com.lana.cc.device.user.databinding.DialogGoodsBinding
 import com.lana.cc.device.user.databinding.FragmentShopBinding
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
 import com.lana.cc.device.user.model.UserAddressInfo
+import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.activity.MainActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
+import com.lana.cc.device.user.ui.fragment.news.NEWS_TYPE_URL
+import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.util.getProvinceModelList
 import com.lana.cc.device.user.util.showSingleAlbum
 import com.luck.picture.lib.PictureSelector
@@ -32,13 +35,21 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
 ) {
     private lateinit var globalManageGoodsDialogBinding: DialogGoodsBinding
 
-    private fun getManageGoodsDialogBinding() =
-        DataBindingUtil.inflate<DialogGoodsBinding>(
+    private fun getManageGoodsDialogBinding(goods: Goods? = null): DialogGoodsBinding? {
+        val dialogBinding = DataBindingUtil.inflate<DialogGoodsBinding>(
             LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
             R.layout.dialog_goods,//弹窗的layout文件
             null,//填null 无需多了解
             false//填false无需多了解
         )
+        dialogBinding.goods = goods
+        dialogBinding.imgUrl = getImageFromServer(goods?.goodsUrl)
+        dialogBinding.goodsImage.setOnClickListener {
+            showSingleAlbum()
+        }
+        globalManageGoodsDialogBinding = dialogBinding
+        return dialogBinding
+    }
 
     override fun initView() {
 
@@ -55,12 +66,12 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
         }
 
         binding.cardAddGoods.setOnClickListener {
-            showAddGoodsDialog { goodsName, total, price, goodsDescription ->
+            showAddGoodsDialog {
                 viewModel.addGoods(
-                    goodsName,
-                    total,
-                    price,
-                    goodsDescription
+                    globalManageGoodsDialogBinding.etName.text.toString(),
+                    (if (globalManageGoodsDialogBinding.etTotal.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etTotal.text.toString()).toInt(),
+                    (if (globalManageGoodsDialogBinding.etCoin.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etCoin.text.toString()).toInt(),
+                    globalManageGoodsDialogBinding.etDes.text.toString()
                 )
 
             }
@@ -79,8 +90,27 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
             adapter = ShopRecyclerAdapter(
                 {
                     //商品单项点击事件
-                },
-                {
+                },{goods ->
+                    //商品单项长按事件
+                    showManageChooseDialog(
+                        onEditClick = {
+                            //点击编辑
+                            showEditGoodsDialog(goods) {
+                                viewModel.editGoods(
+                                    goods.id,
+                                    globalManageGoodsDialogBinding.etName.text.toString(),
+                                    goods.goodsUrl?:"",
+                                    (if (globalManageGoodsDialogBinding.etTotal.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etTotal.text.toString()).toInt(),
+                                    (if (globalManageGoodsDialogBinding.etCoin.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etCoin.text.toString()).toInt(),
+                                    globalManageGoodsDialogBinding.etDes.text.toString()
+                                )
+                            }
+                        },
+                        onDeleteClick = {
+                            //点击删除并确认（这里为下架，直接删除的话商品兑换会有矛盾）
+                            viewModel.deleteGoods(goods.id)
+                        })
+                }, {
                     //商品单项兑换按钮点击事件
                     showAddressDialog(
                         UserAddressInfo(
@@ -98,7 +128,9 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                         //Todo 调用兑换接口
 
                     }
-                },viewModel.isOss.value?:false)
+                },
+                viewModel.isOss.value ?: false
+            )
         }
 
     }
@@ -124,7 +156,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
         var chosenProvincePosition = 0
         var chosenCityPosition = 0
         var chosenAreaPosition = 0
-        val provinceList = getProvinceModelList()?: emptyList()
+        val provinceList = getProvinceModelList() ?: emptyList()
         dialogBinding.name = userAddressInfo.name
         dialogBinding.phone = userAddressInfo.phone
         dialogBinding.address = userAddressInfo.address
@@ -133,29 +165,33 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
             adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
                 provinceList?.map { it.name })
             onItemSelectedListener = OnSpinnerItemSelected(
-                onItemSelectedAction = {provincePosition ->
-                chosenProvincePosition = provincePosition
+                onItemSelectedAction = { provincePosition ->
+                    chosenProvincePosition = provincePosition
                     //城市
                     dialogBinding.spinnerCity.run {
-                        adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
-                            provinceList[provincePosition].city?.map { it.name }?: emptyList() )
+                        adapter =
+                            ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
+                                provinceList[provincePosition].city?.map { it.name } ?: emptyList()
+                            )
                         onItemSelectedListener = OnSpinnerItemSelected(
-                            onItemSelectedAction = {cityPosition ->
+                            onItemSelectedAction = { cityPosition ->
                                 chosenCityPosition = cityPosition
                                 //区县
                                 dialogBinding.spinnerDistrict.run {
-                                    adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
-                                        provinceList[provincePosition].city?.get(cityPosition)?.area?.map { it.name }?: emptyList())
+                                    adapter = ArrayAdapter<String>(context!!,
+                                        android.R.layout.simple_spinner_item,
+                                        provinceList[provincePosition].city?.get(cityPosition)?.area?.map { it.name }
+                                            ?: emptyList()
+                                    )
                                     onItemSelectedListener = OnSpinnerItemSelected(
-                                        onItemSelectedAction = {areaPosition ->
+                                        onItemSelectedAction = { areaPosition ->
                                             chosenAreaPosition = areaPosition
                                         })
                                 }
                             })
                     }
-            })
+                })
         }
-
 
 
         //安卓原生弹窗  设置信息界面
@@ -176,43 +212,16 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
             .show()
     }
 
-
     //增加商品弹窗
     private fun showAddGoodsDialog(
-        action: (
-            String, Int, Int, String
-        ) -> Unit
-    ) {
-        //dataBinding 建议查看官方文档
-        val dialogBinding = getManageGoodsDialogBinding()
-        globalManageGoodsDialogBinding = dialogBinding
+        action: () -> Unit
+    ) = showViewDialog(getManageGoodsDialogBinding()?.root, action)
 
-        dialogBinding.goodsImage.setOnClickListener {
-            showSingleAlbum()
-        }
-
-        //安卓原生弹窗  设置信息界面
-        AlertDialog.Builder(context!!).setView(
-            dialogBinding.root
-        ).setCancelable(true)
-            .setPositiveButton("完成") { _, _ ->
-                //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
-                val name = dialogBinding.etName.text.toString()
-                val total =
-                    (if (dialogBinding.etTotal.text.toString().isEmpty()) "0" else dialogBinding.etTotal.text.toString()).toInt()
-                val price =
-                (if (dialogBinding.etCoin.text.toString().isEmpty()) "0" else dialogBinding.etCoin.text.toString()).toInt()
-                val description = dialogBinding.etDes.text.toString()
-                if (name.isNotEmpty()
-                    && total > 0
-                    && price > 0
-                    && description.isNotEmpty()
-                    && viewModel.goodsImageFile.value != null
-                ) action.invoke(name, total, price, description)
-            }
-            .create()
-            .show()
-    }
+    //编辑商品弹窗
+    private fun showEditGoodsDialog(
+        goods: Goods,
+        action: () -> Unit
+    ) = showViewDialog(getManageGoodsDialogBinding(goods)?.root, action)
 
     //选图后的回调
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -231,12 +240,13 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
 }
 
 class OnSpinnerItemSelected(
-    val onItemSelectedAction:(Int)->Unit,
-    private val onNoSelectedAction:(()->Unit) ?= null
-): AdapterView.OnItemSelectedListener {
+    val onItemSelectedAction: (Int) -> Unit,
+    private val onNoSelectedAction: (() -> Unit)? = null
+) : AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         onItemSelectedAction(position)
     }
+
     override fun onNothingSelected(parent: AdapterView<*>?) {
         onNoSelectedAction?.invoke()
     }

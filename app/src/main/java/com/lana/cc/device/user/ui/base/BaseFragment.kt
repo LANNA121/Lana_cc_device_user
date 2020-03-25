@@ -31,6 +31,8 @@ constructor(
     private val bindingCreator: (LayoutInflater, ViewGroup?) -> Bind
 ) : Fragment(), BindLife, KodeinAware {
 
+    var currentDialog:AlertDialog? = null
+
     constructor(clazz: Class<VM>, @LayoutRes layoutRes: Int) : this(clazz, { inflater, group ->
         DataBindingUtil.inflate(inflater, layoutRes, group, false)
     })
@@ -121,7 +123,7 @@ constructor(
 
     //安卓原生弹窗  设置信息界面
     fun showViewDialog(view: View?, onConfirmAction: () -> Unit) {
-        AlertDialog.Builder(context!!)
+        currentDialog = AlertDialog.Builder(context!!)
             .setView(view)
             .setCancelable(true)
             .setPositiveButton("确定")
@@ -130,7 +132,7 @@ constructor(
                 onConfirmAction()
             }
             .create()
-            .show()
+            currentDialog?.show()
     }
 
     fun showManageChooseDialog(onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
