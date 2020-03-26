@@ -1,8 +1,7 @@
 package com.lana.cc.device.user.manager.api
 
-
-import com.lana.cc.device.user.model.GoodsHistory
 import com.lana.cc.device.user.model.api.ResultModel
+import com.lana.cc.device.user.model.api.shop.GetExchangeGoodsListResultModel
 import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.fragment.shop.AddGoodsRequestModel
 import com.lana.cc.device.user.ui.fragment.shop.EditGoodsRequestModel
@@ -11,10 +10,6 @@ import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface GoodsService {
-
-    //获取兑换列表
-    @POST("good/getExchangeList")
-    fun getExchangeHistoryList(): Single<ResultModel<GoodsHistory>>
 
     //拉去商品列表
     @GET("mall/goods")
@@ -30,6 +25,9 @@ interface GoodsService {
 
     //删除商品
     @DELETE("mall/goods")
-    fun deleteGoods(@Query ("goodsId")goodsId:Int): Single<ResponseBody>
+    fun deleteGoods(@Query("goodsId") goodsId: Int): Single<ResponseBody>
 
+    //获取兑换历史
+    @POST("history")
+    fun fetchExchangeHistoryList(@Query ("uid")uid:Int): Single<ResultModel<GetExchangeGoodsListResultModel>>
 }

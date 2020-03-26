@@ -45,7 +45,8 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
         }
 
     fun getExchangeGoodsList() {
-        goodsService.getExchangeHistoryList().doOnApiSuccess {
+        goodsService.fetchExchangeHistoryList(SharedPrefModel.uid)
+            .doOnApiSuccess {
 
         }
     }

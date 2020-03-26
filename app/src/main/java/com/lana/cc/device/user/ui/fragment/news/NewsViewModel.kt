@@ -16,6 +16,7 @@ import io.reactivex.Single
 import com.lana.cc.device.user.util.switchThread
 import io.reactivex.Observable
 import org.kodein.di.generic.instance
+import timber.log.Timber
 import java.io.File
 
 class NewsViewModel(application: Application) : BaseViewModel(application) {
@@ -39,6 +40,7 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
                 }
                 SharedPrefModel.classficationMap = map
             }
+
     }
 
     fun fetchNews() {
@@ -75,8 +77,8 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun editNews(
-        id:Long,
-        originImageUrl:String,
+        id: Long,
+        originImageUrl: String,
         title: String,
         content: String,
         imageFile: File?,

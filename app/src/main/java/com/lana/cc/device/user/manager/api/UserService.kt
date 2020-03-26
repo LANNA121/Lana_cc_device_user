@@ -18,6 +18,9 @@ import retrofit2.http.*
 
 interface UserService {
 
+    @GET("/")
+    fun test():Single<String>
+
     //登录
     @POST("account/login")
     fun login(@Body loginModel: LoginRequestModel): Single<ResultModel<LoginResultModel>>

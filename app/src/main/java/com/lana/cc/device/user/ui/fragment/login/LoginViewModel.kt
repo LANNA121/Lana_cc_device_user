@@ -9,6 +9,7 @@ import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.util.switchThread
 import org.kodein.di.generic.instance
+import timber.log.Timber
 
 class LoginViewModel(application: Application) : BaseViewModel(application) {
     private val userService by instance<UserService>()
