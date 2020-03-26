@@ -17,7 +17,7 @@ interface GoodsService {
     fun getExchangeHistoryList(): Single<ResultModel<GoodsHistory>>
 
     //拉去商品列表
-    @GET("mall")
+    @GET("mall/goods")
     fun fetchGoodsList(): Single<ResultModel<List<Goods>>>
 
     //新增商品
