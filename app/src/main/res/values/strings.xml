@@ -29,6 +29,7 @@
     <string name="receiveName">姓名</string>
     <string name="receivePhone">电话</string>
     <string name="receiveAddress">地址</string>
+    <string name="detailAddress">详细地址</string>
 
     <string name="tv_total">剩余</string>
     <string name="unit_goods">件</string>

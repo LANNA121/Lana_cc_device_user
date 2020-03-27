@@ -1,6 +1,5 @@
 package com.lana.cc.device.user.ui.fragment.shop
 
-
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
@@ -12,15 +11,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lana.cc.device.user.R
+import com.lana.cc.device.user.databinding.DialogAddAddressBinding
 import com.lana.cc.device.user.databinding.DialogAddressBinding
 import com.lana.cc.device.user.databinding.DialogGoodsBinding
 import com.lana.cc.device.user.databinding.FragmentShopBinding
-import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
-import com.lana.cc.device.user.model.UserAddressInfo
+import com.lana.cc.device.user.model.AddressInfo
+import com.lana.cc.device.user.model.api.shop.ExchangeGoodsRequestModel
 import com.lana.cc.device.user.model.api.shop.Goods
+import com.lana.cc.device.user.ui.activity.ContentActivity
 import com.lana.cc.device.user.ui.activity.MainActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
-import com.lana.cc.device.user.ui.fragment.news.NEWS_TYPE_URL
 import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.util.getProvinceModelList
 import com.lana.cc.device.user.util.showSingleAlbum
@@ -29,12 +29,13 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.util.*
 
 class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
     ShopViewModel::class.java, layoutRes = R.layout.fragment_shop
 ) {
     private lateinit var globalManageGoodsDialogBinding: DialogGoodsBinding
-
+    private var addressDialogIsShowing = false
     private fun getManageGoodsDialogBinding(goods: Goods? = null): DialogGoodsBinding? {
         val dialogBinding = DataBindingUtil.inflate<DialogGoodsBinding>(
             LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
@@ -63,6 +64,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
 
         binding.refreshLayout.setOnRefreshListener {
             viewModel.fetchGoodsList()
+            viewModel.fetchCoins()
         }
 
         binding.cardAddGoods.setOnClickListener {
@@ -73,7 +75,6 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                     (if (globalManageGoodsDialogBinding.etCoin.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etCoin.text.toString()).toInt(),
                     globalManageGoodsDialogBinding.etDes.text.toString()
                 )
-
             }
         }
 
@@ -85,12 +86,21 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
             findNavController().navigate(R.id.action_ShopFragment_to_CoinHistoryFragment)
         }
 
+        binding.btnUserExchangeGoodsHistory.setOnClickListener {
+            startActivity(
+                ContentActivity.createIntent(
+                    context!!,
+                    ContentActivity.Destination.ExchangeGoodsHistory
+                )
+            )
+        }
+
         binding.recShop.run {
             layoutManager = GridLayoutManager(context, 2)
             adapter = ShopRecyclerAdapter(
                 {
                     //商品单项点击事件
-                },{goods ->
+                }, { goods ->
                     //商品单项长按事件
                     showManageChooseDialog(
                         onEditClick = {
@@ -99,7 +109,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                                 viewModel.editGoods(
                                     goods.id,
                                     globalManageGoodsDialogBinding.etName.text.toString(),
-                                    goods.goodsUrl?:"",
+                                    goods.goodsUrl ?: "",
                                     (if (globalManageGoodsDialogBinding.etTotal.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etTotal.text.toString()).toInt(),
                                     (if (globalManageGoodsDialogBinding.etCoin.text.toString().isEmpty()) "0" else globalManageGoodsDialogBinding.etCoin.text.toString()).toInt(),
                                     globalManageGoodsDialogBinding.etDes.text.toString()
@@ -110,41 +120,29 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                             //点击删除并确认（这里为下架，直接删除的话商品兑换会有矛盾）
                             viewModel.deleteGoods(goods.id)
                         })
-                }, {
+                }, { goods ->
                     //商品单项兑换按钮点击事件
-                    showAddressDialog(
-                        UserAddressInfo(
-                            SharedPrefModel.getUserModel().receiveName,
-                            SharedPrefModel.getUserModel().receivePhone,
-                            SharedPrefModel.getUserModel().receiveAddress
-                        )
-                    ) {
-                        //存收货地址
-                        SharedPrefModel.setUserModel {
-                            receiveName = it.name
-                            receivePhone = it.phone
-                            receiveAddress = it.address
-                        }
-                        //Todo 调用兑换接口
-
+                    //拉取地址列表
+                    viewModel.fetchAddressList {
+                        showAddressListDialog(goods.id, it)
                     }
                 },
                 viewModel.isOss.value ?: false
             )
         }
-
     }
 
     override fun initData() {
         viewModel.fetchGoodsList()
+        viewModel.fetchCoins()
     }
 
-    //兑换输入地址弹窗
-    private fun showAddressDialog(
-        userAddressInfo: UserAddressInfo, action: (
-            UserAddressInfo
-        ) -> Unit
+    //地址列表弹窗
+    private fun showAddressListDialog(
+        goodsId: Int,
+        addressList: List<AddressInfo>
     ) {
+        var chosenAddressId = addressList[0].id ?: 0
         //dataBinding 建议查看官方文档
         val dialogBinding =
             DataBindingUtil.inflate<DialogAddressBinding>(
@@ -152,64 +150,116 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                 R.layout.dialog_address,//弹窗的layout文件
                 null,//填null 无需多了解
                 false//填false无需多了解
-            )
+            ).apply {
+                btnAdd.setOnClickListener {
+                    showAddAddressDialog()
+                }
+                this.rvAddress.run {
+                    adapter = AddressListAdapter { addressInfo ->
+                        chosenAddressId = addressInfo.id ?: 0
+                        addressList.forEach {
+                            it.isChecked = false
+                        }
+                        addressInfo.isChecked = true
+                        adapter?.notifyDataSetChanged()
+                    }
+                    (adapter as AddressListAdapter).replaceData(addressList)
+                }
+            }
+        showViewDialog(dialogBinding.root) {
+            AlertDialog.Builder(context!!)
+                .setTitle("确认兑换吗")
+                .setPositiveButton("确认") { _, _ ->
+                    //调用兑换商品接口
+                    viewModel.exchangeGoods(
+                        ExchangeGoodsRequestModel(
+                            goodsId = goodsId,
+                            addressId = chosenAddressId,
+                            lanaId = UUID.randomUUID().toString()
+                        )
+                    ){
+                        AlertDialog.Builder(context!!)
+                            .setTitle("兑换成功")
+                            .setPositiveButton("确认", null)
+                            .create().show()
+                        viewModel.fetchCoins()
+                    }
+                }.setNegativeButton("否", null)
+                .create().show()
+        }
+        addressDialogIsShowing = true
+
+    }
+
+
+    //增加地址弹窗
+    private fun showAddAddressDialog() {
+        val provinceList = getProvinceModelList() ?: emptyList()
         var chosenProvincePosition = 0
         var chosenCityPosition = 0
         var chosenAreaPosition = 0
-        val provinceList = getProvinceModelList() ?: emptyList()
-        dialogBinding.name = userAddressInfo.name
-        dialogBinding.phone = userAddressInfo.phone
-        dialogBinding.address = userAddressInfo.address
-        //省份
-        dialogBinding.spinnerProvince.run {
-            adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
-                provinceList?.map { it.name })
-            onItemSelectedListener = OnSpinnerItemSelected(
-                onItemSelectedAction = { provincePosition ->
-                    chosenProvincePosition = provincePosition
-                    //城市
-                    dialogBinding.spinnerCity.run {
-                        adapter =
-                            ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item,
-                                provinceList[provincePosition].city?.map { it.name } ?: emptyList()
-                            )
-                        onItemSelectedListener = OnSpinnerItemSelected(
-                            onItemSelectedAction = { cityPosition ->
-                                chosenCityPosition = cityPosition
-                                //区县
-                                dialogBinding.spinnerDistrict.run {
-                                    adapter = ArrayAdapter<String>(context!!,
+        //dataBinding 建议查看官方文档
+        val dialogBinding =
+            DataBindingUtil.inflate<DialogAddAddressBinding>(
+                LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
+                R.layout.dialog_add_address,//弹窗的layout文件
+                null,//填null 无需多了解
+                false//填false无需多了解
+            ).apply {
+                //省选择器
+                spinnerProvince.run {
+                    adapter = ArrayAdapter<String>(
+                        context!!,
+                        android.R.layout.simple_spinner_item,
+                        provinceList.map { it.name }
+                    )
+                    onItemSelectedListener = OnSpinnerItemSelected(
+                        onItemSelectedAction = { provincePosition ->
+                            chosenProvincePosition = provincePosition
+                            //城市选择器
+                            spinnerCity.run {
+                                adapter =
+                                    ArrayAdapter<String>(context!!,
                                         android.R.layout.simple_spinner_item,
-                                        provinceList[provincePosition].city?.get(cityPosition)?.area?.map { it.name }
+                                        provinceList[provincePosition].city?.map { it.name }
                                             ?: emptyList()
                                     )
-                                    onItemSelectedListener = OnSpinnerItemSelected(
-                                        onItemSelectedAction = { areaPosition ->
-                                            chosenAreaPosition = areaPosition
-                                        })
-                                }
-                            })
-                    }
-                })
+                                onItemSelectedListener = OnSpinnerItemSelected(
+                                    onItemSelectedAction = { cityPosition ->
+                                        chosenCityPosition = cityPosition
+                                        //区县选择器
+                                        spinnerDistrict.run {
+                                            adapter = ArrayAdapter<String>(context!!,
+                                                android.R.layout.simple_spinner_item,
+                                                provinceList[provincePosition].city?.get(
+                                                    cityPosition
+                                                )?.area?.map { it.name }
+                                                    ?: emptyList()
+                                            )
+                                            onItemSelectedListener = OnSpinnerItemSelected(
+                                                onItemSelectedAction = { areaPosition ->
+                                                    chosenAreaPosition = areaPosition
+                                                })
+                                        }
+                                    })
+                            }
+                        })
+                }
+            }
+        showViewDialog(dialogBinding.root) {
+            //调用增加地址的接口
+            viewModel.addNewAddress(
+                dialogBinding.etName.text.toString(),
+                dialogBinding.etPhone.text.toString(),
+                provinceList[chosenProvincePosition].name,
+                provinceList[chosenProvincePosition].city?.get(chosenCityPosition)?.name,
+                provinceList[chosenProvincePosition].city?.get(chosenCityPosition)?.area?.get(
+                    chosenAreaPosition
+                )?.name,
+                dialogBinding.etDetail.text.toString()
+            )
         }
 
-
-        //安卓原生弹窗  设置信息界面
-        AlertDialog.Builder(context!!).setView(
-            dialogBinding.root
-        ).setCancelable(true)
-            .setPositiveButton("完成") { _, _ ->
-                //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
-                action.invoke(
-                    UserAddressInfo(
-                        dialogBinding.name,
-                        dialogBinding.phone,
-                        dialogBinding.address
-                    )
-                )
-            }
-            .create()
-            .show()
     }
 
     //增加商品弹窗

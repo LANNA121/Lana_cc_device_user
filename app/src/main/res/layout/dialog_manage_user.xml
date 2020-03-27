@@ -200,9 +200,9 @@
 
                 <TextView
                     android:id="@+id/tv_tip_birthday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:text="出生日期"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -214,6 +214,7 @@
                     time="@{profile.birthday}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_input_lin"
                     android:gravity="center"

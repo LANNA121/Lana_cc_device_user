@@ -15,9 +15,17 @@
         <action
             android:id="@+id/action_bridgeFragment_to_navigation_camera_search"
             app:destination="@id/navigation_camera_search" />
+        <action
+            android:id="@+id/action_bridgeFragment_to_navigation_exchange_goods_history"
+            app:destination="@id/navigation_exchange_goods_history" />
+        <action
+            android:id="@+id/action_bridgeFragment_to_navigation_news_detail"
+            app:destination="@id/navigation_news_detail" />
 
     </fragment>
 
     <include app:graph="@navigation/top_search" />
+    <include app:graph="@navigation/top_news_detail" />
     <include app:graph="@navigation/top_camera_search" />
+    <include app:graph="@navigation/top_exchange_goods_history" />
 </navigation>

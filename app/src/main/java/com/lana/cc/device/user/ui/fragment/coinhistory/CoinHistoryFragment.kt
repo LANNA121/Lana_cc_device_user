@@ -22,6 +22,11 @@ class CoinHistoryFragment : BaseFragment<FragmentCoinHistoryBinding, CoinHistory
 
             }
         }
+
+        viewModel.isRefreshing.observeNonNull {
+            binding.refreshLayout.isRefreshing = it
+        }
+
         viewModel.coinHistoryList.observeNonNull {
             (binding.recCoinHistory.adapter as CoinHistoryListAdapter).replaceData(it)
         }
@@ -30,7 +35,7 @@ class CoinHistoryFragment : BaseFragment<FragmentCoinHistoryBinding, CoinHistory
     }
 
     override fun initData() {
-        viewModel.getCoinHistoryList()
+        viewModel.fetchCoinHistoryList()
     }
 
 

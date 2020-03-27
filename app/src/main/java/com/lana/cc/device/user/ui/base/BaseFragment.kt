@@ -125,12 +125,13 @@ constructor(
     fun showViewDialog(view: View?, onConfirmAction: () -> Unit) {
         currentDialog = AlertDialog.Builder(context!!)
             .setView(view)
-            .setCancelable(true)
+            .setCancelable(false)
             .setPositiveButton("确定")
             { _, _ ->
                 //将方法参数中的action行为 传入这里 即达到传入的action在点击之后调用
                 onConfirmAction()
             }
+            .setNegativeButton("取消",null)
             .create()
             currentDialog?.show()
     }

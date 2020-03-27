@@ -12,7 +12,6 @@ import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.DialogUserBinding
 import com.lana.cc.device.user.databinding.FragmentMineBinding
 import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
-import com.lana.cc.device.user.model.GoodsHistory
 import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.ui.activity.showLoginActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
@@ -29,15 +28,19 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
 ) {
     override fun initView() {
 
+        viewModel.exchangeGoodsList.observeNonNull {
+            (binding.recGoodsHistory.adapter as GoodsHistoryListAdapter).replaceData(it)
+        }
+
         //头像点击事件监听，点击进入相册选图
         binding.portrait.setOnClickListener {
             //打开选图
             showSingleAlbum()
         }
 
-        binding.etSearch.setOnEditorActionListener { view, actionId, _ ->
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             val searchUid = binding.etSearch.text.toString()
-            if(searchUid.isNotEmpty()){
+            if (searchUid.isNotEmpty()) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH)
                     viewModel.fetchUserProfile(searchUid.toInt())
             }
@@ -60,30 +63,23 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
         }
 
         //recyclerView初始化
-        binding.recGoodHistory.run {
+        binding.recGoodsHistory.run {
             layoutManager = LinearLayoutManager(context)
-            adapter = GoodsHistoryListAdapter {
-                //兑换记录单项点击事件
-
-            }
-            val good = GoodsHistory(
-                123213,
-                "Dior",
-                "https://www.dior.cn/couture/var/dior/storage/images/19298687/25-chi-CN/pcd-miss-dior-rose-n-roses-eau-de-toilette2_1440_1200.jpg",
-                "Dior的口红",
-                123213,
-                123213,
-                213,
-                "兑换于2020-2-22"
-            )
-            (adapter as GoodsHistoryListAdapter).replaceData(
-                listOf(good, good, good, good, good, good, good)
+            adapter = GoodsHistoryListAdapter(
+                onClick = {
+                    //兑换记录单项点击事件
+                },
+                onFinishClick = {
+                    //兑换记录单项点击事件
+                    viewModel.finishBill(it.id ?: "")
+                }
             )
         }
 
         //刷新控件监听
         binding.refreshLayout.setOnRefreshListener {
             viewModel.fetchUserProfile()
+            viewModel.fetchExchangeGoodsHistory()
         }
 
         //注销按钮点击事件
@@ -91,7 +87,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
             SharedPrefModel.hasLogin = false
             SharedPrefModel.token = ""
             activity?.run {
-                showLoginActivity(this,true)
+                showLoginActivity(this, true)
             }
         }
 
@@ -104,6 +100,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
 
     override fun initData() {
         viewModel.fetchUserProfile()
+        viewModel.fetchExchangeGoodsHistory()
     }
 
 
@@ -163,6 +160,7 @@ class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>(
             }
         }
     }
+
 
 }
 

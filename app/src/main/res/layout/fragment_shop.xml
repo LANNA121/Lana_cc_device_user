@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F0F0F0"
-        android:fitsSystemWindows="true">>
+        android:fitsSystemWindows="true">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refresh_layout"
@@ -54,14 +54,29 @@
                             android:elevation="2dp"
                             android:gravity="center"
                             android:lineSpacingExtra="10dp"
-                            android:text="0\n积分"
+                            android:text='@{vm.coins+""}'
                             android:textColor="@color/white"
                             android:textSize="24sp"
+                            tools:text="100"
                             app:layout_constraintBottom_toTopOf="@+id/card_earn_coin"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="2dp"
+                            android:gravity="center"
+                            android:lineSpacingExtra="10dp"
+                            android:text="积分"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_coins" />
                         <TextView
                             android:id="@+id/tv_coins_history"
                             android:layout_width="wrap_content"
@@ -95,6 +110,16 @@
                                 android:text="商品管理"
                                 android:textSize="32sp"
                                 android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/btn_user_exchange_goods_history"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="16dp"
+                                android:textColor="@color/white"
+                                android:text="用户兑换列表"
+                                android:textSize="16sp" />
 
                         </FrameLayout>
 
@@ -178,7 +203,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="160dp" />
+                        android:layout_height="200dp" />
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

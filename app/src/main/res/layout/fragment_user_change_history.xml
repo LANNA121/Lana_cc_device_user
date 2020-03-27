@@ -54,7 +54,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:gravity="center"
-                        android:text="积分纪录"
+                        android:text="用户兑换情况"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -63,10 +63,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rec_coin_history"
+                android:id="@+id/rec_exchange_goods_history"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_coin_history" />
+                tools:listitem="@layout/item_goods_history" />
 
 
         </LinearLayout>

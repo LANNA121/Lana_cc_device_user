@@ -11,8 +11,10 @@ import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.DialogManageNewsBinding
 import com.lana.cc.device.user.databinding.FragmentNewsBinding
 import com.lana.cc.device.user.model.api.news.News
+import com.lana.cc.device.user.ui.activity.ContentActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
 import com.lana.cc.device.user.ui.fragment.newsdetail.INTENT_KEY_NEWS_CONTENT
+import com.lana.cc.device.user.ui.fragment.newsdetail.INTENT_KEY_NEWS_IMAGE_URl
 import com.lana.cc.device.user.ui.fragment.newsdetail.INTENT_KEY_NEWS_URl
 import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.util.showSingleAlbum
@@ -122,8 +124,8 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
         fun jumpToDetail(news: News?) {
             //banner的点击事件，点击跳转至详情页
             if (news?.type == NEWS_TYPE_TEXT)
-                jumpToDetail("", news?.content ?: "")
-            else jumpToDetail(news?.content ?: "", "")
+                jumpToDetail("", news.content, news.image)
+            else jumpToDetail(news?.content ?: "", "", news?.image ?: "")
         }
 
         //置顶列表数据变化监听
@@ -186,13 +188,14 @@ class NewsFragment : BaseFragment<FragmentNewsBinding, NewsViewModel>(
 
 
     //跳转至新闻详情页面
-    private fun jumpToDetail(url: String, content: String) {
-        findNavController().navigate(
-            R.id.action_NewsFragment_to_NewsDetailFragment,
-            bundleOf(
-                Pair(INTENT_KEY_NEWS_URl, url),
-                Pair(INTENT_KEY_NEWS_CONTENT, content)
-            )
+    private fun jumpToDetail(url: String, content: String, imageUrl: String) {
+        startActivity(
+            ContentActivity.createIntent(
+                context!!,
+                ContentActivity.Destination.NewsDetail
+            ).putExtra(INTENT_KEY_NEWS_URl, url)
+                .putExtra(INTENT_KEY_NEWS_CONTENT, content)
+                .putExtra(INTENT_KEY_NEWS_IMAGE_URl, imageUrl)
         )
     }
 

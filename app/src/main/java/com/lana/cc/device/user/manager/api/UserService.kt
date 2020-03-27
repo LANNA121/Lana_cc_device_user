@@ -1,5 +1,7 @@
 package com.lana.cc.device.user.manager.api
 
+import com.lana.cc.device.user.manager.sharedpref.SharedPrefModel
+import com.lana.cc.device.user.model.AddressRequestInfo
 import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.ResultModel
 import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
@@ -9,7 +11,7 @@ import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
 import com.lana.cc.device.user.model.api.manageuser.EditUserRoleModel
 import com.lana.cc.device.user.model.api.manageuser.FetchAllUserProfileResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
-import com.lana.cc.device.user.model.api.news.NewsListModel
+import com.lana.cc.device.user.model.api.shop.FetchAddressListResultModel
 import com.lana.cc.device.user.model.api.test.ChangeRedeemRequestModel
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -54,8 +56,20 @@ interface UserService {
     @POST("account/role")
     fun editRole(@Body editUserRoleModel: EditUserRoleModel): Single<ResponseBody>
 
+    //获取积分数据
+    @GET("book/coins")
+    fun fetchCoins(): Single<ResultModel<Int>>
+
     //换取积分
     @POST("book/redeem")
     fun changeRedeem(@Body changeRedeemRequestModel: ChangeRedeemRequestModel ): Single<ResponseBody>
+
+    //新增收获地址
+    @POST("account/address")
+    fun createNewAddress(@Body addressRequestInfo: AddressRequestInfo): Single<ResponseBody>
+
+    //获取收获地址
+    @GET("account/address")
+    fun fetchAddressList(@Query("uid")uid:Int = SharedPrefModel.uid): Single<ResultModel<FetchAddressListResultModel>>
 
 }

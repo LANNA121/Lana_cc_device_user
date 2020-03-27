@@ -9,6 +9,7 @@ import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.model.api.ResultModel
 import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
+import com.lana.cc.device.user.model.api.shop.ChangeBillStatusRequestModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.util.getAgeByBirth
@@ -29,11 +30,30 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
     private val goodsService by instance<GoodsService>()
     val avatarFile = MutableLiveData<File>()
     val avatar = MutableLiveData<String>()
+    val exchangeGoodsList = MutableLiveData(emptyList<ExchangeGoodsHistoryModel>())
     val isRefreshing = MutableLiveData(false)
 
     fun fetchUserProfile(uid: Int = SharedPrefModel.uid) {
         userService.getUserProfile(uid)
             .doOnGetProfileSuccess()
+    }
+
+    fun fetchExchangeGoodsHistory() {
+        goodsService.fetchExchangeGoodsHistoryList()
+            .doOnApiSuccess {
+                exchangeGoodsList.postValue(it.data?.bills)
+            }
+    }
+
+    fun finishBill(billId: String) {
+        goodsService.changeBillStatus(
+            ChangeBillStatusRequestModel(
+                billId = billId,
+                billStatus = 3
+            )
+        ).doOnApiSuccess {
+            fetchExchangeGoodsHistory()
+        }
     }
 
     private fun Single<ResultModel<Profile>>.doOnGetProfileSuccess() =
@@ -44,12 +64,6 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
             age.postValue(getAgeByBirth(Date(it.data?.birthday ?: 0.toLong())).toString() + "岁")
         }
 
-    fun getExchangeGoodsList() {
-        goodsService.fetchExchangeHistoryList(SharedPrefModel.uid)
-            .doOnApiSuccess {
-
-        }
-    }
 
     //上传头像,并修改头像
     fun uploadAvatar() {

@@ -31,7 +31,7 @@ class TestViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
-    fun changeRedeem(testPosition: Int) {
+    fun changeRedeem(testPosition: Int,action:()->Unit) {
         val searchKeyConclusion = testList.value?.get(testPosition)
         val uuid = UUID.randomUUID().toString()
         val slat = "1${searchKeyConclusion?.name}"
@@ -43,11 +43,11 @@ class TestViewModel(application: Application) : BaseViewModel(application) {
                     slat,
                     SharedPrefModel.uid
                 ),
-                slat,
+                searchKeyConclusion?.name,
                 1
             )
         ).doOnApiSuccess {
-
+            action()
         }
 
     }

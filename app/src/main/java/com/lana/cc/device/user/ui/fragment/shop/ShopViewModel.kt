@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.lana.cc.device.user.manager.api.GoodsService
 import com.lana.cc.device.user.manager.api.UserService
+import com.lana.cc.device.user.model.AddressInfo
+import com.lana.cc.device.user.model.AddressRequestInfo
+import com.lana.cc.device.user.model.api.shop.ExchangeGoodsRequestModel
 import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.base.BaseViewModel
 import com.lana.cc.device.user.ui.fragment.mine.upLoadImage
-import com.lana.cc.device.user.util.MD5Utils
 import com.lana.cc.device.user.util.switchThread
 import io.reactivex.Single
 import org.kodein.di.generic.instance
@@ -19,6 +21,14 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
     private val goodsService by instance<GoodsService>()
     private val userService by instance<UserService>()
     val goodsImageFile = MutableLiveData<File>()
+    val coins = MutableLiveData(0)
+
+    fun fetchCoins() {
+        userService.fetchCoins()
+            .doOnApiSuccess {
+                coins.postValue(it.data)
+            }
+    }
 
     fun fetchGoodsList() {
         goodsService.fetchGoodsList()
@@ -53,7 +63,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
     fun editGoods(
         goodsId: Int,
         goodsName: String,
-        oldImageUrl:String,
+        oldImageUrl: String,
         total: Int,
         price: Int,
         goodsDescription: String
@@ -83,6 +93,53 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             fetchGoodsList()
         }
     }
+
+    //兑换商品
+    fun exchangeGoods(
+        exchangeGoodsRequestModel: ExchangeGoodsRequestModel,
+        action:()->Unit
+    ) {
+        goodsService.exchangeGoods(exchangeGoodsRequestModel)
+            .doOnApiSuccess {
+                //兑换成功
+                action()
+            }
+    }
+
+
+    fun fetchAddressList(action: (List<AddressInfo>) -> Unit) {
+        userService.fetchAddressList()
+            .doOnApiSuccess {
+                action(it.data?.addressList ?: emptyList())
+            }
+    }
+
+    fun addNewAddress(
+        name: String?,
+        phone: String?,
+        state: String?,
+        city: String?,
+        district: String?,
+        street: String?
+    ) {
+        userService.createNewAddress(
+            AddressRequestInfo(
+                name,
+                phone,
+                state,
+                city,
+                district,
+                street
+            )
+        ).doOnApiSuccess {}
+
+    }
+
+    fun deleteAddress() {
+
+
+    }
+
 
     fun deleteGoods(
         goodsId: Int

@@ -10,16 +10,6 @@
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
 
-        <action
-            android:id="@+id/action_NewsFragment_to_NewsDetailFragment"
-            app:destination="@id/NewsDetailFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/NewsDetailFragment"
-        android:name="com.lana.cc.device.user.ui.fragment.newsdetail.NewsDetailFragment"
-        android:label="fragment_news_detail"
-        tools:layout="@layout/fragment_news_detail" >
 
     </fragment>
 

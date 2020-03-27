@@ -11,8 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.lana.cc.device.user.R
 import com.lana.cc.device.user.databinding.FragmentNewsDetailBinding
 import com.lana.cc.device.user.ui.base.BaseFragment
+import com.lana.cc.device.user.ui.utils.getImageFromServer
 
-
+const val INTENT_KEY_NEWS_IMAGE_URl = "imageUrl"
 const val INTENT_KEY_NEWS_URl = "newsUrl"
 const val INTENT_KEY_NEWS_CONTENT = "newsContent"
 
@@ -40,17 +41,16 @@ class NewsDetailFragment : BaseFragment<FragmentNewsDetailBinding, NewsDetailVie
         }
 
         binding.btnBack.setOnClickListener {
-            //返回在当前navigation中的上一个页面
-            findNavController().popBackStack()
+            activity?.finish()
         }
-
     }
-
 
     override fun initData() {
         //webView加载网页
-        val url = arguments?.getString(INTENT_KEY_NEWS_URl)
-        val contentText = arguments?.getString(INTENT_KEY_NEWS_CONTENT)
+        val url = activity?.intent?.getStringExtra(INTENT_KEY_NEWS_URl)
+        val contentText = activity?.intent?.getStringExtra(INTENT_KEY_NEWS_CONTENT)
+        binding.imgUrl =
+            getImageFromServer(activity?.intent?.getStringExtra(INTENT_KEY_NEWS_IMAGE_URl))
         if (url?.isNotEmpty() == true) {
             binding.webView.loadUrl(
                 //从Fragment自己的属性arguments中拿到上个页面传过来的url的String
@@ -63,9 +63,6 @@ class NewsDetailFragment : BaseFragment<FragmentNewsDetailBinding, NewsDetailVie
                 "utf-8"
             )
         }
-
-
     }
-
 
 }

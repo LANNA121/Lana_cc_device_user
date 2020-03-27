@@ -2,17 +2,17 @@
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#F3B6A3</color>
+    <color name="colorAccent">#E6F37564</color>
 
-    <color name="colorAccentHalfTrans">#D5F3B6A3</color>
-    <color name="colorAccentTrans">#83DD778B</color>
+    <color name="colorAccentHalfTrans">#85F37564</color>
+    <color name="colorAccentTrans">#57F37564</color>
 
     <color name="colorLayoutBg">#FCFCFC</color>
     <color name="colorPlaceHolder">#E4EBEBEB</color>
 
     <color name="colorApp">#48CED3</color>
     <color name="colorCard">#83FFFFFF</color>
-    <color name="colorGuideBack">#F3B6A3</color>
+    <color name="colorGuideBack">#F3A3A3</color>
     <color name="colorRed">#D93D1E</color>
 
     <color name="colorOssBack">#86E3957D</color>

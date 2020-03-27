@@ -20,26 +20,21 @@ class TestFragment : BaseFragment<FragmentTestBinding, TestViewModel>(
         binding.testPager.adapter = TestPagerAdapter(
             viewModel.testList.value ?: emptyList(),
             onAnswerCorrect = { testCardBinding, currentCardPosition, answerSortId ->
-                viewModel.changeRedeem(currentCardPosition)
-
-                //延时一秒自动滑动至下一张
-                Completable.timer(1, TimeUnit.SECONDS)
-                    .switchThread()
-                    .doOnComplete {
-                        if (binding.testPager.currentItem != (viewModel.testList.value?.size
-                                ?: 0) - 1
-                        ) //不是最后一张，滑动到下一张
-                            binding.testPager.setCurrentItem(currentCardPosition + 1, true)
-                        else //是最后一张 弹框问用户是否需要获取新的一轮答题
-                            AlertDialog.Builder(context).setMessage("本轮答题结束，是否开启新的一轮答题")
-                                .setPositiveButton(
-                                    "开启"
-                                ) { _, _ ->
-                                    viewModel.fetchTestList{
-                                        binding.testPager.setCurrentItem(0, true)
-                                    }
-                                }.create().show()
-                    }.bindLife()
+                viewModel.changeRedeem(currentCardPosition){
+                    if (binding.testPager.currentItem != (viewModel.testList.value?.size
+                            ?: 0) - 1
+                    ) //不是最后一张，滑动到下一张
+                        binding.testPager.setCurrentItem(currentCardPosition + 1, true)
+                    else //是最后一张 弹框问用户是否需要获取新的一轮答题
+                        AlertDialog.Builder(context).setMessage("本轮答题结束，是否开启新的一轮答题")
+                            .setPositiveButton(
+                                "开启"
+                            ) { _, _ ->
+                                viewModel.fetchTestList{
+                                    binding.testPager.setCurrentItem(0, true)
+                                }
+                            }.create().show()
+                }
             },
             onAnswerError = {
                 Toast.makeText(context, "答错咯~", Toast.LENGTH_SHORT).show()

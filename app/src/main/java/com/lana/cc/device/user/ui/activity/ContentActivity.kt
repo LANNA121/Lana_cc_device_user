@@ -69,6 +69,8 @@ class ContentActivity : AppCompatActivity() {
 
     enum class Destination(@IdRes val id: Int) {
         Search(R.id.navigation_search),
-        CameraSearch(R.id.navigation_camera_search)
+        NewsDetail(R.id.navigation_news_detail),
+        CameraSearch(R.id.navigation_camera_search),
+        ExchangeGoodsHistory(R.id.navigation_exchange_goods_history)
     }
 }

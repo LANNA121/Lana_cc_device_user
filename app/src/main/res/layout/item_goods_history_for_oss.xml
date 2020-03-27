@@ -5,11 +5,13 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="imgUrl"
             type="String" />
+
+
 
         <variable
             name="goodsHistory"
@@ -91,7 +93,7 @@
                     tools:text="asdfhuidfsj" />
 
                 <TextView
-                    android:id="@+id/tv_status"
+                    android:id="@+id/tv_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -100,7 +102,7 @@
                     android:text="@{goodsHistory.billStateString}"
                     android:textColor="#9C9C9C"
                     android:textSize="12sp"
-                    tools:text="asdfhuidfsj" />
+                    tools:text="未发货" />
 
                 <TextView
                     android:id="@+id/tv_track_id"
@@ -112,22 +114,49 @@
                     android:text="@{goodsHistory.trackId}"
                     android:textColor="#9C9C9C"
                     android:textSize="12sp"
-                    tools:text="asdfhuidfsj" />
+                    tools:text="单号【15956514889498】" />
 
-                <TextView
-                    android:id="@+id/btn_change_status"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E67373"
                     android:gravity="center"
-                    android:padding="8dp"
-                    android:text="确认收货"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:visibility="@{(!goodsHistory.state3Enabled)?View.VISIBLE:View.GONE}" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_change_state_receive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="#EC6C6C"
+                        android:elevation="3dp"
+                        android:padding="8dp"
+                        android:visibility="@{goodsHistory.state0Enabled?View.VISIBLE:View.GONE}"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:text="接单" />
+
+                    <TextView
+                        android:id="@+id/btn_change_state_send"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:visibility="@{(goodsHistory.state0Enabled||goodsHistory.state1Enabled)?View.VISIBLE:View.GONE}"
+                        android:layout_weight="1"
+                        android:background="#EC6C6C"
+                        android:elevation="3dp"
+                        android:padding="8dp"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:text="发货" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

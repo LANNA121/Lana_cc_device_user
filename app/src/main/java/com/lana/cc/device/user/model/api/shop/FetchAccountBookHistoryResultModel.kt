@@ -3,7 +3,7 @@ package com.lana.cc.device.user.model.api.shop
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class GetExchangeGoodsListResultModel(
+data class FetchAccountBookHistoryResultModel(
     val accountBooks: List<AccountBook>
 )
 
@@ -44,4 +44,7 @@ data class AccountBook(
      */
     val status: Int
 
-)
+){
+    val typeOp = if(type == "achieve") "+" else ""
+
+}

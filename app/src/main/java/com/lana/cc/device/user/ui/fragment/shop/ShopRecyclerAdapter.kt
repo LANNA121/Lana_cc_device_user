@@ -24,9 +24,11 @@ class ShopRecyclerAdapter(
         binding.btnExchamge.setOnClickListener {
             onExchangeClick(goods)
         }
-        binding.root.setOnLongClickListener {
-            onGoodsLongClick(goods)
-            true
+        if(isOss){
+            binding.root.setOnLongClickListener {
+                onGoodsLongClick(goods)
+                true
+            }
         }
     }
 }

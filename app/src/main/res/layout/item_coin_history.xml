@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="coinHistory"
-            type="com.lana.cc.device.user.model.api.coinhistory.CoinHistory" />
+            name="accountBook"
+            type="com.lana.cc.device.user.model.api.shop.AccountBook" />
 
     </data>
 
@@ -19,9 +19,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="16dp">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -30,23 +30,43 @@
                 android:layout_weight="0"
                 app:srcCompat="@drawable/coin" />
 
-            <TextView
-                android:id="@+id/textView8"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="@{coinHistory.record}"
-                tools:text="+1"
-                android:textColor="@color/colorAccent"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@{accountBook.typeOp + accountBook.count}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="+1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:text="@{accountBook.remark}"
+                    android:textColor="#8A8A8A"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="{xxx}是啥垃圾}" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/textView9"
+                time="@{accountBook.createTime}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                time="@{coinHistory.time}"
                 android:layout_weight="0"
                 tools:text="2020-2-2" />
         </LinearLayout>
