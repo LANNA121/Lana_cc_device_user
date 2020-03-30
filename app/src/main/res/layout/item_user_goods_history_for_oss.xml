@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="imgUrl"
+            type="String" />
+
+
+        <variable
+            name="goodsHistory"
+            type="com.lana.cc.device.user.ui.fragment.mine.ExchangeGoodsHistoryModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{goodsHistory.goodsDetail.goodsName}"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="商品名" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_create_time"
+                    time="@{goodsHistory.createTime}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#9C9C9C"
+                    android:textSize="12sp"
+                    tools:text="2020年03月30日" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{goodsHistory.billStateString}"
+                android:textAlignment="textEnd"
+                android:textColor="#BA4A4A"
+                android:textSize="12sp"
+                tools:text="未发货" />
+
+            <TextView
+                android:id="@+id/tv_track_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/tv_track + goodsHistory.trackId}"
+                android:textAlignment="textEnd"
+                android:textColor="#9C9C9C"
+                android:textSize="12sp"
+                android:visibility="@{goodsHistory.trackId!=null?View.VISIBLE:View.GONE}"
+                tools:text="单号：15956514889498" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

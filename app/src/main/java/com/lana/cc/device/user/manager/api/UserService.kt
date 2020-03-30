@@ -8,6 +8,7 @@ import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.model.api.guide.register.RegisterRequestModel
 import com.lana.cc.device.user.model.api.guide.register.UploadAvatarResultModel
+import com.lana.cc.device.user.model.api.manageuser.EditPasswordRequestModel
 import com.lana.cc.device.user.model.api.manageuser.EditUserRoleModel
 import com.lana.cc.device.user.model.api.manageuser.FetchAllUserProfileResultModel
 import com.lana.cc.device.user.model.api.mine.UpdateUserModel
@@ -55,6 +56,10 @@ interface UserService {
     //更改用户权限
     @POST("account/role")
     fun editRole(@Body editUserRoleModel: EditUserRoleModel): Single<ResponseBody>
+
+    //更改用户密码
+    @PUT("account/modify/password")
+    fun editPassword(@Body editPasswordRequestModel: EditPasswordRequestModel): Single<ResponseBody>
 
     //获取积分数据
     @GET("book/coins")

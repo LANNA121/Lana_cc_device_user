@@ -16,6 +16,7 @@ import com.lana.cc.device.user.model.api.guide.register.ROLE_USER
 import com.lana.cc.device.user.model.api.mine.Profile
 import com.lana.cc.device.user.ui.activity.showLoginActivity
 import com.lana.cc.device.user.ui.base.BaseFragment
+import com.lana.cc.device.user.ui.fragment.mine.GoodsHistoryListAdapter
 import com.lana.cc.device.user.ui.utils.getImageFromServer
 import com.lana.cc.device.user.ui.widget.DatePopView
 import com.lana.cc.device.user.util.showSingleAlbum
@@ -31,16 +32,15 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
 
     //创建全局弹窗的binding的方法
     private fun getManageUserDialogBinding(profile: Profile? = null): DialogManageUserBinding? {
-
-
         val dialogBinding = DataBindingUtil.inflate<DialogManageUserBinding>(
             LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
             R.layout.dialog_manage_user, //弹窗的layout文件
             null,//填null 无需多了解
             false//填false无需多了解
         )
-        fun toggleEyeStatus(){
-            dialogBinding.showPassword = !(dialogBinding?.showPassword?:false)
+
+        fun toggleEyeStatus() {
+            dialogBinding.showPassword = !(dialogBinding?.showPassword ?: false)
         }
         dialogBinding.profile = profile
         if (profile?.role == ROLE_OSS) {//选中的user是管理员
@@ -85,8 +85,8 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
             globalManageUserBinding?.imageUrl = it.path
         }
         viewModel.removeSuccess.observeNonNull {
-            if(!it.hasBeenHandled){
-                if(it.peekContent()){
+            if (!it.hasBeenHandled) {
+                if (it.peekContent()) {
                     currentDialog?.dismiss()
                 }
             }
@@ -103,6 +103,7 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
                     viewModel.editUserProfile(
                         uid = it.uid,
                         birthLong = string2Date(globalManageUserBinding?.tvBirthday?.text.toString()).time,
+                        password = if (it.password == globalManageUserBinding?.etPassword?.text.toString()) "" else globalManageUserBinding?.etPassword?.text.toString(),
                         nickName = globalManageUserBinding?.etNickName?.text.toString(),
                         signature = globalManageUserBinding?.etSignature?.text.toString(),
                         role = if (globalManageUserBinding?.rbOss?.isChecked == true) ROLE_OSS
@@ -160,11 +161,21 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
         viewModel.fetchUsers()
     }
 
-    //添加资讯的弹窗
+    //修改用户的弹窗
     private fun showEditUserDialog(
         profile: Profile,
         onConfirmAction: () -> Unit
-    ) = showViewDialog(getManageUserDialogBinding(profile)?.root, onConfirmAction)
+    ) {
+        val dialogBinding = getManageUserDialogBinding(profile)
+        //兑换历史列表
+        dialogBinding?.rvHistory?.adapter = GoodsHistoryListAdapterForManageDialog()
+        viewModel.fetchUserExchangeHistory(profile.uid ?: 0) {
+            (dialogBinding?.rvHistory?.adapter as GoodsHistoryListAdapterForManageDialog).replaceData(
+                it
+            )
+        }
+        showViewDialog(dialogBinding?.root, onConfirmAction)
+    }
 
     //选图后的回调
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -178,8 +189,6 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
             }
         }
     }
-
-
 }
 
 

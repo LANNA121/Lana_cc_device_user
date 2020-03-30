@@ -200,7 +200,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/et_nick_password"
+                    android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -332,9 +332,26 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="0"
+                android:text="兑换历史"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_user_goods_history_for_oss" />
 
         </LinearLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

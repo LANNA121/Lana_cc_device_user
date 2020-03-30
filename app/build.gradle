@@ -24,7 +24,7 @@ android {
             //后端 api
             buildConfigField("String", "BASE_URL", '"https://debug.upuphub.com/"')
             //百度图像 api
-            buildConfigField("String", "BAIDU_IDENTIFY_URL", '"https://aip.baidubce.com/"')
+            buildConfigField("String", "BAIDU_IDENTIFY_URL", '"https://debug.upuphub.com/"')
             buildConfigField("String", "BAIDU_API_KEY", '"QURieP7T9IOFnZYtAwdZLPXG"')
             buildConfigField("String", "BAIDU_SECRET_KEY", '"AOWUcEhsmy14EVE2ApjHFSLMOnVxnDMW"')
             //允许证书
@@ -36,7 +36,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //后端 api
-            buildConfigField("String", "BASE_URL", '"https://192.168.0.112:8080"')
+            buildConfigField("String", "BASE_URL", '"https://debug.upuphub.com/"')
             //百度图像 api
             buildConfigField("String", "BASE_URL", '"http://debug.upuphub.com/"')
             buildConfigField("String", "BAIDU_API_KEY", '"QURieP7T9IOFnZYtAwdZLPXG"')
