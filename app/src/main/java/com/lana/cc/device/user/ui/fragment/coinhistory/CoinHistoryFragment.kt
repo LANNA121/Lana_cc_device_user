@@ -23,6 +23,10 @@ class CoinHistoryFragment : BaseFragment<FragmentCoinHistoryBinding, CoinHistory
             }
         }
 
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.fetchCoinHistoryList()
+        }
+
         viewModel.isRefreshing.observeNonNull {
             binding.refreshLayout.isRefreshing = it
         }

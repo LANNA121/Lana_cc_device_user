@@ -12,9 +12,20 @@ fun long2DateString(timeStamp: Long): String {
     return format.format(date)
 }
 
+fun long2MinTimeString(timeStamp: Long): String {
+    val format = SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss")
+    val date = Date(timeStamp)
+    return format.format(date)
+}
+
 @BindingAdapter("time")
 fun long2Date(textView: TextView, birthLong: Long) {
     textView.text = long2DateString(birthLong)
+}
+
+@BindingAdapter("minTime")
+fun long2Min(textView: TextView, birthLong: Long) {
+    textView.text = long2MinTimeString(birthLong)
 }
 
 

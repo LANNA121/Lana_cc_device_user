@@ -1,9 +1,9 @@
 package com.lana.cc.device.user.model
 
 data class AddressInfo(
-    // 收件人名称
+    // 地址id
     val id: Int?,
-    // 收件人名称
+    // 收件人uid
     val uid: Long?,
     // 收件人名称
     val name: String?,

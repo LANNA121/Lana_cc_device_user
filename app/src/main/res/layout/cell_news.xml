@@ -63,7 +63,7 @@
 
                 <TextView
                     android:id="@+id/cell_msg_time"
-                    time="@{news.createTime}"
+                    minTime="@{news.createTime}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"

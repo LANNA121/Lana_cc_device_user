@@ -12,7 +12,7 @@ data class ExchangeGoodsHistoryModel(
     //账单的创建时间
     val createTime: Long?,
     //账单的物流编号
-    val trackId: String? = "【暂无订单号】",
+    val trackId: String?,
     //账单的处理状态
     val billStatus: Int?, //0 未处理 1 未发货 2 已发货 3 完成
     //处理人信息
@@ -31,8 +31,8 @@ data class ExchangeGoodsHistoryModel(
         0 -> "未处理"
         1 -> "未发货"
         2 -> "已发货"
-        3 -> "完成"
-        else -> "状态获取失败"
+        3 -> "已完成"
+        else -> "兑换状态获取失败"
     }
 
     data class GoodsDetail(

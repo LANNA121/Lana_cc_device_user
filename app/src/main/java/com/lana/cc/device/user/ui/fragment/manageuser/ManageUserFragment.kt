@@ -31,12 +31,17 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
 
     //创建全局弹窗的binding的方法
     private fun getManageUserDialogBinding(profile: Profile? = null): DialogManageUserBinding? {
+
+
         val dialogBinding = DataBindingUtil.inflate<DialogManageUserBinding>(
             LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
             R.layout.dialog_manage_user, //弹窗的layout文件
             null,//填null 无需多了解
             false//填false无需多了解
         )
+        fun toggleEyeStatus(){
+            dialogBinding.showPassword = !(dialogBinding?.showPassword?:false)
+        }
         dialogBinding.profile = profile
         if (profile?.role == ROLE_OSS) {//选中的user是管理员
             dialogBinding.rbOss.isChecked = true //将管理员单选设置为选中
@@ -56,6 +61,9 @@ class ManageUserFragment : BaseFragment<FragmentManageUserBinding, ManageUserVie
                 dialogBinding.tvBirthday.text = "${year}年${month}月${day}日"
             }.show()
         }
+        //显示/隐藏眼睛
+        dialogBinding.btnEye.setOnClickListener { toggleEyeStatus() }
+        //清除用户数据
         dialogBinding.btnRemoveUser.setOnClickListener {
             viewModel.removeUser(profile?.uid)
         }

@@ -31,6 +31,9 @@ class UserChangeHistoryFragment :
                 }
             )
         }
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.fetchExchangeGoodsHistoryList()
+        }
 
         viewModel.isRefreshing.observeNonNull {
             binding.refreshLayout.isRefreshing = it
@@ -58,11 +61,10 @@ class UserChangeHistoryFragment :
                 dialogBing.trackId ?: ""
             )
         }
-
     }
 
     override fun initData() {
-        viewModel.fetchCoinHistoryList()
+        viewModel.fetchExchangeGoodsHistoryList()
     }
 
 

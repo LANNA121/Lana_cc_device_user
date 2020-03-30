@@ -6,7 +6,11 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.text.InputType" />
 
+        <variable
+            name="showPassword"
+            type="Boolean" />
         <variable
             name="profile"
             type="com.lana.cc.device.user.model.api.mine.Profile" />
@@ -90,6 +94,31 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/btn_remove_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:background="@drawable/bg_cornerbtn_nor"
+                    android:backgroundTint="@color/colorRed"
+                    android:layout_weight="0"
+                    android:text="移除此用户"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -153,6 +182,47 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     tools:text="百度" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="密码"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/et_nick_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_input_lin"
+                    android:inputType="@{showPassword ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT }"
+                    android:gravity="center"
+                    android:maxLength="10"
+                    android:padding="4dp"
+                    android:text="@{profile.password}"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textColor="@color/black"
+                    tools:text="123456" />
+
+                <ImageView
+                    android:id="@+id/btn_eye"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="0"
+                    android:layout_marginStart="8dp"
+                    android:src="@{showPassword ? @drawable/show_password_btn_hide : @drawable/show_password_btn_indicate, default=@drawable/icn_indicate_gray}" />
 
             </LinearLayout>
 
@@ -262,29 +332,6 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/btn_remove_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:background="@drawable/bg_cornerbtn_nor"
-                    android:backgroundTint="@color/colorRed"
-                    android:layout_weight="0"
-                    android:text="移除此用户"
-                    android:textColor="@color/white" />
-
-
-            </LinearLayout>
 
 
         </LinearLayout>

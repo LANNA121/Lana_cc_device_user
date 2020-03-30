@@ -15,7 +15,6 @@ import com.lana.cc.device.user.databinding.DialogAddAddressBinding
 import com.lana.cc.device.user.databinding.DialogAddressBinding
 import com.lana.cc.device.user.databinding.DialogGoodsBinding
 import com.lana.cc.device.user.databinding.FragmentShopBinding
-import com.lana.cc.device.user.model.AddressInfo
 import com.lana.cc.device.user.model.api.shop.ExchangeGoodsRequestModel
 import com.lana.cc.device.user.model.api.shop.Goods
 import com.lana.cc.device.user.ui.activity.ContentActivity
@@ -35,7 +34,6 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
     ShopViewModel::class.java, layoutRes = R.layout.fragment_shop
 ) {
     private lateinit var globalManageGoodsDialogBinding: DialogGoodsBinding
-    private var addressDialogIsShowing = false
     private fun getManageGoodsDialogBinding(goods: Goods? = null): DialogGoodsBinding? {
         val dialogBinding = DataBindingUtil.inflate<DialogGoodsBinding>(
             LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
@@ -122,10 +120,8 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                         })
                 }, { goods ->
                     //商品单项兑换按钮点击事件
-                    //拉取地址列表
-                    viewModel.fetchAddressList {
-                        showAddressListDialog(goods.id, it)
-                    }
+                    //地址弹窗
+                    showAddressListDialog(goods.id)
                 },
                 viewModel.isOss.value ?: false
             )
@@ -137,35 +133,67 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
         viewModel.fetchCoins()
     }
 
+
+
     //地址列表弹窗
     private fun showAddressListDialog(
-        goodsId: Int,
-        addressList: List<AddressInfo>
+        goodsId: Int
     ) {
-        var chosenAddressId = addressList[0].id ?: 0
-        //dataBinding 建议查看官方文档
+        //当前选中的addressId
+        var chosenAddressId = 0
+        //地址弹窗的binding对象
         val dialogBinding =
             DataBindingUtil.inflate<DialogAddressBinding>(
                 LayoutInflater.from(context),//一个Inflater对象，打开新布局都需要使用Inflater对象
                 R.layout.dialog_address,//弹窗的layout文件
                 null,//填null 无需多了解
                 false//填false无需多了解
-            ).apply {
-                btnAdd.setOnClickListener {
-                    showAddAddressDialog()
+            )
+
+        //获取地址列表的方法
+        fun fetchAddress() {
+            viewModel.fetchAddressList { addressList ->
+                chosenAddressId = if (addressList.isEmpty()) 0 else addressList[0].id ?: 0
+                addressList.forEachIndexed { index, addressInfo ->
+                    addressInfo.isChecked = (index == 0)
                 }
-                this.rvAddress.run {
-                    adapter = AddressListAdapter { addressInfo ->
-                        chosenAddressId = addressInfo.id ?: 0
-                        addressList.forEach {
-                            it.isChecked = false
-                        }
-                        addressInfo.isChecked = true
-                        adapter?.notifyDataSetChanged()
+                (dialogBinding.rvAddress.adapter as AddressListAdapter).replaceData(addressList)
+            }
+        }
+
+        //删除地址弹窗
+        fun showDeleteAddressDialog(addressid:Int){
+            AlertDialog.Builder(context!!).setMessage("确认删除该地址吗？")
+                .setPositiveButton("确认"){ _,_ ->
+                    viewModel.deleteAddress(addressid){
+                        fetchAddress()
                     }
-                    (adapter as AddressListAdapter).replaceData(addressList)
+                }
+                .setNegativeButton("取消",null)
+                .create().show()
+        }
+
+        //配置弹窗中的view
+        dialogBinding.apply {
+            btnAdd.setOnClickListener {
+                showAddAddressDialog {
+                    fetchAddress()
                 }
             }
+            rvAddress.run {
+                adapter = AddressListAdapter(
+                    { addressInfo,baseList -> //onClick
+                        baseList.forEach { it.isChecked = false }
+                        addressInfo.isChecked = true
+                        adapter?.notifyDataSetChanged()
+                        chosenAddressId = addressInfo.id ?: 0
+                    },
+                    {addressInfo -> //onLOngClick
+                        showDeleteAddressDialog(addressInfo.id?:0)
+                    }
+                )
+            }
+        }
         showViewDialog(dialogBinding.root) {
             AlertDialog.Builder(context!!)
                 .setTitle("确认兑换吗")
@@ -177,7 +205,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                             addressId = chosenAddressId,
                             lanaId = UUID.randomUUID().toString()
                         )
-                    ){
+                    ) {
                         AlertDialog.Builder(context!!)
                             .setTitle("兑换成功")
                             .setPositiveButton("确认", null)
@@ -187,13 +215,14 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                 }.setNegativeButton("否", null)
                 .create().show()
         }
-        addressDialogIsShowing = true
-
+        //拉取地址列表
+        fetchAddress()
     }
 
 
+
     //增加地址弹窗
-    private fun showAddAddressDialog() {
+    private fun showAddAddressDialog(onAdded: () -> Unit) {
         val provinceList = getProvinceModelList() ?: emptyList()
         var chosenProvincePosition = 0
         var chosenCityPosition = 0
@@ -257,7 +286,9 @@ class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(
                     chosenAreaPosition
                 )?.name,
                 dialogBinding.etDetail.text.toString()
-            )
+            ){
+                onAdded()
+            }
         }
 
     }

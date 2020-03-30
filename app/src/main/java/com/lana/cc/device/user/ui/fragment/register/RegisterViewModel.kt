@@ -9,6 +9,7 @@ import com.lana.cc.device.user.model.api.guide.login.LoginRequestModel
 import com.lana.cc.device.user.model.api.guide.login.LoginResultModel
 import com.lana.cc.device.user.model.api.guide.register.RegisterRequestModel
 import com.lana.cc.device.user.ui.base.BaseViewModel
+import com.lana.cc.device.user.ui.utils.getImageFromServer
 import io.reactivex.Single
 import com.lana.cc.device.user.util.switchThread
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -46,7 +47,8 @@ class RegisterViewModel(application: Application) : BaseViewModel(application) {
                 photo
             ).doOnApiSuccess {
                 avatarRelative.postValue(it.data?.imagePath)
-                avatar.postValue("${BuildConfig.BASE_URL}/image/${it.data?.imagePath}")
+                avatar.postValue(
+                    getImageFromServer(it.data?.imagePath))
             }
         }
     }

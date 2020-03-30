@@ -21,7 +21,7 @@ import retrofit2.http.*
 interface UserService {
 
     @GET("/")
-    fun test():Single<String>
+    fun test(): Single<String>
 
     //登录
     @POST("account/login")
@@ -46,7 +46,7 @@ interface UserService {
 
     //删除用户
     @DELETE("account/profile")
-    fun deleteUser(@Query ("uid")uid:Int?): Single<ResponseBody>
+    fun deleteUser(@Query("uid") uid: Int?): Single<ResponseBody>
 
     //拉取所有user
     @GET("account/all/user")
@@ -62,14 +62,21 @@ interface UserService {
 
     //换取积分
     @POST("book/redeem")
-    fun changeRedeem(@Body changeRedeemRequestModel: ChangeRedeemRequestModel ): Single<ResponseBody>
+    fun changeRedeem(@Body changeRedeemRequestModel: ChangeRedeemRequestModel): Single<ResponseBody>
 
     //新增收获地址
     @POST("account/address")
     fun createNewAddress(@Body addressRequestInfo: AddressRequestInfo): Single<ResponseBody>
 
+    //新增收获地址
+    @DELETE("account/address")
+    fun deleteAddress(
+        @Query("addressId") addressId: Int,
+        @Query("uid") uid: Int = SharedPrefModel.uid
+    ): Single<ResponseBody>
+
     //获取收获地址
     @GET("account/address")
-    fun fetchAddressList(@Query("uid")uid:Int = SharedPrefModel.uid): Single<ResultModel<FetchAddressListResultModel>>
+    fun fetchAddressList(@Query("uid") uid: Int = SharedPrefModel.uid): Single<ResultModel<FetchAddressListResultModel>>
 
 }

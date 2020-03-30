@@ -16,10 +16,10 @@ class UserChangeHistoryViewModel(application: Application) : BaseViewModel(appli
     val exchangeGoodsHistoryList = MutableLiveData(emptyList<ExchangeGoodsHistoryModel>())
     val isRefreshing = MutableLiveData(false)
 
-    fun fetchCoinHistoryList() {
+    fun fetchExchangeGoodsHistoryList() {
         goodsService.fetchAllUsersExchangeGoodsHistoryList()
             .doOnApiSuccess {
-                exchangeGoodsHistoryList.postValue(it.data?.bills?.sortedBy { it.createTime })
+                exchangeGoodsHistoryList.postValue(it.data?.bills?.sortedByDescending { it.createTime })
             }
     }
 
@@ -31,7 +31,7 @@ class UserChangeHistoryViewModel(application: Application) : BaseViewModel(appli
                 billStatus = 1
             )
         ).doOnApiSuccess {
-            fetchCoinHistoryList()
+            fetchExchangeGoodsHistoryList()
         }
     }
 
@@ -44,7 +44,7 @@ class UserChangeHistoryViewModel(application: Application) : BaseViewModel(appli
                 billStatus = 2
             )
         ).doOnApiSuccess {
-            fetchCoinHistoryList()
+            fetchExchangeGoodsHistoryList()
         }
     }
 

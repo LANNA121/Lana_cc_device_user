@@ -23,6 +23,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
     val goodsImageFile = MutableLiveData<File>()
     val coins = MutableLiveData(0)
 
+    //拉取积分
     fun fetchCoins() {
         userService.fetchCoins()
             .doOnApiSuccess {
@@ -30,6 +31,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
+    //拉取商品列表
     fun fetchGoodsList() {
         goodsService.fetchGoodsList()
             .doOnApiSuccess {
@@ -37,6 +39,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
+    //增加商品
     fun addGoods(
         goodsName: String,
         total: Int,
@@ -60,6 +63,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
+    //更改商品信息
     fun editGoods(
         goodsId: Int,
         goodsName: String,
@@ -97,7 +101,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
     //兑换商品
     fun exchangeGoods(
         exchangeGoodsRequestModel: ExchangeGoodsRequestModel,
-        action:()->Unit
+        action: () -> Unit
     ) {
         goodsService.exchangeGoods(exchangeGoodsRequestModel)
             .doOnApiSuccess {
@@ -106,7 +110,7 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
-
+    //拉取地址列表
     fun fetchAddressList(action: (List<AddressInfo>) -> Unit) {
         userService.fetchAddressList()
             .doOnApiSuccess {
@@ -114,13 +118,15 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
+    //增加新地址
     fun addNewAddress(
         name: String?,
         phone: String?,
         state: String?,
         city: String?,
         district: String?,
-        street: String?
+        street: String?,
+        action: () -> Unit
     ) {
         userService.createNewAddress(
             AddressRequestInfo(
@@ -131,16 +137,18 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
                 district,
                 street
             )
-        ).doOnApiSuccess {}
-
+        ).doOnApiSuccess { action() }
     }
 
-    fun deleteAddress() {
-
-
+    //删除地址
+    fun deleteAddress(addressId: Int,onDeleted:()->Unit) {
+        userService.deleteAddress(addressId)
+            .doOnApiSuccess {
+                onDeleted()
+            }
     }
 
-
+    //删除商品
     fun deleteGoods(
         goodsId: Int
     ) {
@@ -150,11 +158,12 @@ class ShopViewModel(application: Application) : BaseViewModel(application) {
             }
     }
 
+    //更新刷新控件状态用的状态变量
     private fun <T> Single<T>.dealRefresh() =
         doOnSubscribe { isRefreshing.postValue(true) }
             .doFinally { isRefreshing.postValue(false) }
 
-
+    //Single的扩展方法，网络请求成功后的操作
     private fun <T> Single<T>.doOnApiSuccess(action: ((T) -> Unit)?) {
         switchThread(
         ).doOnSuccess {

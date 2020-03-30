@@ -46,8 +46,8 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
     fun fetchNews() {
         newsService.getNews()
             .doOnApiSuccess {
-                newsList.postValue(it.data?.newsList)
-                topList.postValue(it.data?.topNewsList)
+                newsList.postValue(it.data?.newsList?.sortedByDescending { it.createTime })
+                topList.postValue(it.data?.topNewsList?.sortedByDescending { it.createTime })
             }
     }
 

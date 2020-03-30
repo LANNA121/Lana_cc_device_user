@@ -41,7 +41,7 @@ class MineViewModel(application: Application) : BaseViewModel(application) {
     fun fetchExchangeGoodsHistory() {
         goodsService.fetchExchangeGoodsHistoryList()
             .doOnApiSuccess {
-                exchangeGoodsList.postValue(it.data?.bills)
+                exchangeGoodsList.postValue(it.data?.bills?.sortedByDescending{it.createTime})
             }
     }
 
