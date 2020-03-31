@@ -48,9 +48,7 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
                 searchKeyConclusion.name,
                 searchKeyConclusion.sortId
             )
-        ).doOnApiSuccess {
-            searchKey()
-        }
+        ).doOnApiSuccess {}
 
     }
 
