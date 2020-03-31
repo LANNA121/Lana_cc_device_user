@@ -1,12 +1,15 @@
 package com.lana.cc.device.user.ui.fragment.mine
 
 import com.lana.cc.device.user.model.AddressInfo
+import com.lana.cc.device.user.ui.utils.getImageFromServer
 
 data class ExchangeGoodsHistoryModel(
     //兑换的账单ID
     val id: String?,
     // 账单所有人的ID
     val uid: Int?,
+    // 账单所有人的信息
+    val userInfo: UserInfo?,
     //账单兑换的商品
     val goodsDetail: GoodsDetail?,
     //账单的创建时间
@@ -49,5 +52,14 @@ data class ExchangeGoodsHistoryModel(
         val nikeName: String?,
         val avatar: String?
     )
+
+    data class UserInfo(
+        val id: Int?,
+        val nikeName: String?,
+        val avatar: String?,
+        val userName: String?
+    ) {
+        val avatarUrl = getImageFromServer(avatar)
+    }
 
 }

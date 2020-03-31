@@ -59,7 +59,7 @@
                     android:background="@drawable/selector_input_lin"
                     android:gravity="center"
                     android:hint="输入商品名"
-                    android:maxLength="10"
+                    android:maxLength="20"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:paddingStart="18dp"
@@ -72,7 +72,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tv_tip_nickname"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="nickName" />
+                    tools:text="goodsName" />
 
             </LinearLayout>
 
@@ -220,7 +220,7 @@
 
                 <ImageView
                     android:id="@+id/goods_image"
-                    imageUrl="@{imgUrl}"
+                    imageUrlWithAddIcon="@{imgUrl}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
