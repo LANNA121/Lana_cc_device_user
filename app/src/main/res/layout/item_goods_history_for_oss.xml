@@ -89,7 +89,7 @@
 
                     <TextView
                         android:id="@+id/tv_create_time"
-                        time="@{goodsHistory.createTime}"
+                        minTime="@{goodsHistory.createTime}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
